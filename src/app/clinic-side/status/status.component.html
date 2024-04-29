@@ -1,0 +1,43 @@
+<body>
+  <div class="outer-clinic-container">
+    <h1 class="clinics">Rejected Clinics</h1>
+    <div class="inner-clinic-container">
+      <div class="clinic-card-container">
+        <a *ngFor="let clinic of rejectedClinics" [routerLink]="['/rclinic-details', clinic.id]" style="text-decoration: none;">
+          <mat-card class="clinic-card" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" style="background-image: url('assets/bg.png');">
+            <mat-card-content>
+              <div class="clinic-logo">
+                <img [src]="clinic.logo || 'assets/logo.png'" alt="Profile Image">
+                <div class="clinic-txt">
+                  <!-- <h1>{{ clinic.cName }}</h1> -->
+                  <!-- <h2>{{ clinic.cAddress }}</h2> -->
+                </div>
+              </div>
+              <div class="see-more1" *ngIf="isHovered">
+                <mat-icon>arrow_forward_ios</mat-icon>
+                <label><strong>See more</strong></label>
+              </div>
+              <div class="bot-part-container">
+                <div class="see-more">
+                  <!-- <button mat-raised-button class="see-more1" (click)="popSeeMoreDetails(clinic)">See more<mat-icon>chevron_right</mat-icon></button> -->
+                  <h2>{{ clinic.cName || clinic.arName }}</h2>
+                  <!-- <h2>{{ clinic.cAddress || clinic.arAddress }}</h2> -->
+                  <h2 class="danger">{{ clinic.arStatus }}</h2>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="!rejectedClinics || rejectedClinics.length == 0">
+      <div class="no-data">
+        <img src="assets/add clinic.svg" alt="">
+      </div>
+      <div class="no-data-txt">
+        <h1>You haven't had a rejected clinic</h1>
+        <h2>Go to clinics and click the add button to display your clinic here.</h2>
+      </div>
+    </div>
+  </div>
+</body>

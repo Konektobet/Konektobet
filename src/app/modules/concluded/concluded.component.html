@@ -1,0 +1,102 @@
+<body>
+  <div class="outer-appointment-container">
+    <h1 class="appointments">Clinic Appointments</h1>
+    <div class="filtering">
+      <!-- Filter by Status -->
+      <div class="status-filter">
+        <mat-form-field appearance="outline">
+          <mat-label>Filter by Status</mat-label>
+          <mat-select [(value)]="selectedStatus" (selectionChange)="filterAppointments()">
+            <mat-option value="all">All</mat-option>
+            <mat-option value="concluded">Concluded</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- Filter by Date -->
+      <div class="filter">
+        <mat-form-field appearance="outline">
+          <mat-label>Filter by Month</mat-label>
+          <mat-select [(value)]="selectedMonth" (selectionChange)="filterAppointments()">
+            <mat-option value="all">All</mat-option>
+            <mat-option *ngFor="let month of uniqueMonths" [value]="month">{{ month }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Filter by Day</mat-label>
+          <mat-select [(value)]="selectedDay" (selectionChange)="filterAppointments()">
+            <mat-option value="all">All</mat-option>
+            <mat-option *ngFor="let day of uniqueDays" [value]="day">{{ day }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Filter by Year</mat-label>
+          <mat-select [(value)]="selectedYear" (selectionChange)="filterAppointments()">
+            <mat-option value="all">All</mat-option>
+            <mat-option *ngFor="let year of uniqueYears" [value]="year">{{ year }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="inner-appointment-container">
+      <div *ngIf="filteredAppointments && filteredAppointments.length > 0">
+        <mat-card *ngFor="let appointment of filteredAppointments" class="appointment-card">
+          <mat-card-header color="primary">
+            <mat-card-title>{{ appointment.aName }} Appointment</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="clinic-details" [style.backgroundImage]="'url(assets/bg.png)'">
+            <div class="details-container">
+              <div class="details-logo-container">
+                <img src="assets/logo.png" alt="logo.png">
+              </div>
+              <div class="details-txt-container">
+                <div class="icons">
+                  <h1>{{ appointment.aName }}</h1>
+                </div>
+                <div class="icons">
+                  <mat-icon>sentiment_satisfied_alt</mat-icon>
+                  <h2>{{ appointment.aService }}</h2>
+                </div>
+                <div class="icons">
+                  <mat-icon>schedule</mat-icon>
+                  <h2>{{ appointment.aTime }}</h2>
+                </div>
+                <div class="icons">
+                  <mat-icon>date_range</mat-icon>
+                  <h2>{{ formatDate(appointment.aDate) }}</h2>
+                </div>
+                <div class="icons">
+                  <mat-icon>today</mat-icon>
+                  <h2 [ngClass]="getStatusColorClass(appointment.status)">{{ appointment.status }}</h2>
+                </div>
+                <div class="rate">
+                    <button mat-raised-button color="primary" (click)="rateClinic(clinic)">
+                      <mat-icon>star</mat-icon>Rate
+                    </button>
+                </div>
+              </div>
+              <div class="buttons" *ngIf="isAppointmentPending(appointment.status)">
+                <button mat-raised-button class="update-btn" color="primary" (click)="openUpdateAppointment(appointment.id)">
+                  <mat-icon>edit</mat-icon>Edit
+                </button>
+                <button mat-raised-button class="cancel-btn" color="primary" (click)="deleteAppointment(appointment.id)">
+                  <mat-icon>close</mat-icon>Cancel
+                </button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div *ngIf="!filteredAppointments || filteredAppointments.length === 0">
+        <!-- No appointments message -->
+        <div class="no-data">
+          <img src="assets/appointment.svg" alt="">
+        </div>
+        <div class="no-data-txt">
+          <h1>No appointments found</h1>
+          <h2>Select a status from the dropdown to filter appointments.</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+

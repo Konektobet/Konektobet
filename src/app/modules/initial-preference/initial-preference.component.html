@@ -1,0 +1,59 @@
+<html>
+    <body>
+        <div class="initial-pref-outer-container">
+            <div class="initial-pref-inner-container" color="primary">
+                <div class="initial-pref-container">
+                    <div class="pref-logo">
+                        <img src="assets/logo.png" alt="konektobetlogo.png">
+                    </div>
+                    <h1 class="initial-pref-title">What are your interests?</h1>
+                    <!-- chips -->
+                    <div class="chips-container">
+                        <div class="service-chip">
+                            <mat-chip-listbox>
+                                <mat-chip *ngFor="let service of services" (click)="toggleSelectService(service)"
+                                    [ngClass]="{'selected': selectedServices.includes(service), 'blue': selectedServices.includes(service)}">
+                                    {{ service }}
+                                </mat-chip>
+                            </mat-chip-listbox>
+                        </div>
+
+                        <!-- <div class="just-space">
+                            <mat-divider></mat-divider>
+                        </div>
+
+                        <div class="service-chip">
+                            <mat-chip-listbox>
+                                <mat-chip *ngFor="let healthcare of healthcares" (click)="toggleSelectHealthcare(healthcare)" 
+                                    [ngClass]="{'selected': selectedHealthcares.includes(healthcare), 'pink': selectedHealthcares.includes(healthcare)}">
+                                    {{ healthcare }}
+                                </mat-chip>
+                            </mat-chip-listbox>
+                        </div> -->
+
+                      <div class="just-space">
+                        <mat-divider></mat-divider>
+                      </div>
+                      
+                        <div class="sched-chip">
+                            <mat-chip-listbox>
+                                <mat-chip *ngFor="let schedule of schedules" (click)="toggleSelectSchedule(schedule)"
+                                    [ngClass]="{'selected': selectedSchedules.includes(schedule), 'blue': selectedSchedules.includes(schedule)}">
+                                    {{ schedule }}
+                                </mat-chip>
+                            </mat-chip-listbox>
+                        </div>
+                    </div>
+
+                    <!-- buttons -->
+                    <div class="btn-container">
+                        <div class="btns">
+                            <button mat-raised-button (click)="findClinic()">Done</button>
+                            <!-- <button mat-raised-button (click)="closeDialog()">Skip</button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

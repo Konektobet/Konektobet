@@ -1,0 +1,123 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <html>
+    <body>
+      <div class="details-outer-container">
+        <button mat-raised-button color="primary" (click)="backToClinics()">Back</button>
+        <div class="details-inner-container">
+          <h1 class="details-title"></h1>
+          <div class="container">
+            <div class="details-container1">
+              <div class="details-pic">
+                  <div class="details-cover">
+                      <img src="assets/bg.png" alt="">
+                  </div>
+                <div class="details">
+                  <div class="details-pic-container">
+                    <img src="{{  'assets/defaultprofile.png' }}" alt="assets/defaultprofile.png" />
+                  </div>
+                  <div class="details-credentials">
+                    <h1><strong>{{ clinic?.arName }}</strong></h1>
+                    <div class="btns">
+                      <div class="favorites" *ngIf="!isFavorite">
+                        <button mat-raised-button color="primary">
+                          <mat-icon>close</mat-icon>This Clinic is Rejected
+                        </button>
+                      </div>
+                      <div class="appointment">
+                        <button mat-raised-button color="primary" (click)="deleteClinic(clinic)">
+                          <mat-icon>delete</mat-icon>Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+              <div class="column" >
+                <div class="col1">
+                  <div class="icons">
+                    <mat-icon>location_on</mat-icon>
+                    <h2>{{ clinic?.arAddress }}</h2>
+                  </div>
+      
+                  <div class="icons">
+                    <mat-icon>local_phone</mat-icon>
+                    <h2>{{ clinic?.arNumber }}</h2>
+                  </div>
+      
+                  <div class="icons">
+                    <mat-icon> email</mat-icon>
+                    <h2>{{ clinic?.arEmail }}</h2>
+                  </div>
+      
+                  <div class="icons">
+                    <mat-icon>date_range</mat-icon>
+                    <h2>{{ clinic?.arSchedule }}</h2>
+                  </div>
+      
+                  <div class="icons">
+                    <mat-icon>schedule</mat-icon>
+                    <h2>{{ clinic?.arTime }}</h2>
+                  </div>
+                </div>
+    
+                <div class="col2">
+                  <div class="icons">
+                    <mat-icon>sentiment_satisfied_alt</mat-icon>
+                    <h2>{{ clinic?.arService }}</h2>
+                  </div>
+      
+                  <div class="icons">
+                    <mat-icon>money</mat-icon>
+                    <h2>Grooming Services - ₱{{ clinic?.arPrice }}</h2>
+                  </div>
+      
+                  <div class="icons">
+                    <mat-icon>money</mat-icon>
+                    <h2>Laboratory Services - ₱{{ clinic?.arPrice }}</h2>
+                  </div>
+      
+                  <div class="icons">
+                    <mat-icon>money</mat-icon>
+                    <h2>Surgery - ₱{{ clinic?.arPrice }}</h2>
+                  </div>
+      
+                  <div class="icons">
+                    <mat-icon>link</mat-icon>
+                    <h2> <a [href]="clinic?.arLink" target="_blank">{{ clinic?.arLink }}</a></h2>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+  
+            <!-- <div class="recommended-container">
+              <div class="recommended-title">
+                <h1><strong>YOU MAY ALSO LIKE</strong></h1>
+              </div>
+              <div class="recommended-card" *ngFor="let item of recommendedClinics">
+                <mat-card>
+                  <mat-card-content>
+                    <div class="recommended-pic-container">
+                      <img src="{{ item.image }}" alt="{{ item.name }}" />
+                    </div>
+                    <div class="name-add">
+                      <h1>{{ item.name }}</h1>
+                      <h1>{{ item.address }}</h1>
+                      <div class="see-more-btn">
+                        <button mat-raised-button color="primary">See more...</button>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div> -->
+  
+            </div>
+          </div>
+        </div>
+    </body>
+  </html>
+  

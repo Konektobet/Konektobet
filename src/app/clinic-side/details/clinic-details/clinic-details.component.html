@@ -1,0 +1,195 @@
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<html>
+
+<body>
+  <div class="details-outer-container">
+    <button mat-raised-button color="primary" (click)="backToClinics()">Back</button>
+    <div class="details-inner-container">
+      <h1 class="details-title"></h1>
+      <div class="container">
+        <div class="details-container1">
+          <div class="details-pic">
+
+            <div class="details-cover">
+              <div class="cover-pic-container" (mouseenter)="showChooseFile = true" (mouseleave)="showChooseFile = false">
+                <img src="{{ cover || 'assets/defaultCover.png' }}" alt="">
+                  <div class="cover-input-container" *ngIf="showChooseFile">
+                    <mat-icon>edit</mat-icon>
+                    <label for="coverInput"><b>Change Cover</b></label>
+                    <input type="file" id="coverInput" (change)="onSelectCover($event)">
+                  </div>
+              </div>
+            </div>
+
+            <div class="details">
+              <div class="profile-pic-container" (mouseenter)="showChooseFile = true" (mouseleave)="showChooseFile = false">
+                <img src="{{ profile || 'assets/defaultprofile.png' }}" alt="">
+                  <div class="profile-input-container" *ngIf="showChooseFile">
+                    <mat-icon>edit</mat-icon>
+                    <label for="profileInput"><b>Change Profile</b></label>
+                    <input type="file" id="profileInput" (change)="onSelectProfile($event)">
+                  </div>
+                </div>
+              <div class="details-credentials">
+                <h1><strong>{{ clinic?.cName }}</strong></h1>
+                <div class="btns">
+                  <div class="appointment">
+                    <button mat-raised-button color="warn" (click)="deleteClinic(clinic)">
+                      <mat-icon>delete</mat-icon>Remove Clinic
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="pet-details-container">
+            <div class="col-container">
+              <form [formGroup]="clinicForm">
+                <div class="pet-size">
+                  <h2>Clinic Details</h2>
+                  <div class="size">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Clinic Name</mat-label>
+                      <input matInput formControlName="cName">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Address</mat-label>
+                      <input matInput formControlName="cAddress">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="size">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Number</mat-label>
+                      <input matInput formControlName="cNumber">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Email</mat-label>
+                      <input matInput formControlName="cEmail">
+                    </mat-form-field>
+                  </div>
+                  
+                  <div class="size">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Facebook Link</mat-label>
+                      <input matInput formControlName="cLink">
+                    </mat-form-field>
+                  </div>
+
+                  <mat-divider></mat-divider>
+                  <div class="pet-size">
+                    <h2>Clinic Availability</h2>
+                    <div class="size">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Opening Time</mat-label>
+                        <input type="time" matInput formControlName="cSTime" [step]="900" placeholder="HH:MM am/pm" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Closing Time</mat-label>
+                        <input type="time" matInput formControlName="cETime" [step]="900" placeholder="HH:MM am/pm" required>
+                    </mat-form-field>
+                    </div>
+
+                    <div class="size">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Day Available</mat-label>
+                        <mat-select formControlName="cSchedule" [multiple]="true" (openedChange)="dayOpen($event)">
+                          <mat-option *ngFor="let day of dayList" [value]="day" [attr.selected]="isDaySelected(day)">{{ day }}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <mat-divider></mat-divider>
+                  <div class="pet-size">
+                    <h2>Clinic Offers</h2>
+                    <div class="size">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Services Offered</mat-label>
+                        <mat-select formControlName="cService" [multiple]="true" (openedChange)="serviceOpen($event)">
+                          <mat-option *ngFor="let service of services" [value]="service" [attr.selected]="isServiceSelected(service)">{{service}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Grooming Price</mat-label>
+                        <input matInput formControlName="cGrmPrice">
+                      </mat-form-field>
+                    </div>
+
+                    <div class="size">
+                                            <mat-form-field appearance="outline">
+                        <mat-label>Laboratory Price</mat-label>
+                        <input matInput formControlName="cLabPrice">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Surgery Price</mat-label>
+                        <input matInput formControlName="cSrgPrice">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <mat-divider></mat-divider>
+                  <div class="documents">
+                    <h2>Uploaded Documents</h2>
+                    <div class="docs-container">
+                      <div class="business-container">
+                        <h3>Business Permit</h3>
+                        <div class="docs-permit">
+                          <img [src]="businessPermit || 'assets/defaultDocs.png'" alt="Business Permit Image">
+                        </div>
+                      </div>
+
+                      <div class="health-container">
+                        <h3>Health and Safety Certificate</h3>
+                        <div class="docs-permit">
+                          <img [src]="healthSafety || 'assets/defaultDocs.png'" alt="Business Permit Image">
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="docs-container">
+                      <div class="business-container">
+                        <h3>Veterinary Practice Certificate</h3>
+                        <div class="docs-permit">
+                          <img [src]="vetPractice || 'assets/defaultDocs.png'" alt="Business Permit Image">
+                        </div>
+                      </div>
+
+                      <div class="health-container">
+                        <h3>Permission Applications</h3>
+                        <div class="docs-permit">
+                          <img [src]="permApps || 'assets/defaultDocs.png'" alt="Business Permit Image">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="clinicForm.dirty && formChanged">
+      <div class="save-changes">
+        <div class="edit-buttons">
+          <button mat-raised-button (click)="editClinic()">Save changes</button>
+          <button mat-raised-button (click)="resetForm()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

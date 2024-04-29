@@ -1,0 +1,37 @@
+<body>
+  <div class="outer-clinic-container">
+    <h1 class="clinics">Clinic</h1>
+    <div class="inner-clinic-container">
+      <div class="clinic-card-container">
+        <a *ngFor="let clinic of clinics" [routerLink]="['/clinic/clinic-details', clinic.id]" style="text-decoration: none;">
+          <mat-card class="clinic-card" style="background-image: url('assets/bg.png');">
+            <mat-card-content>
+              <div class="clinic-logo">
+                <img [src]="clinic.profile || 'assets/logo.png'" alt="Profile Image">
+              </div>
+              <div class="see-more1" *ngIf="isHovered">
+                <mat-icon>arrow_forward_ios</mat-icon>
+                <label><strong>See more</strong></label>
+              </div>
+              <div class="bot-part-container">
+                <div class="see-more">
+                  <h2>{{ clinic.cName  }}</h2>
+                  <h2>{{ clinic.cAddress  }}</h2>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </a>
+      </div>
+    </div>
+    <div *ngIf="!clinics || clinics.length == 0">
+      <div class="no-data">
+        <img src="assets/add clinic.svg" alt="">
+      </div>
+      <div class="no-data-txt">
+        <h1>Your clinic registration is being reviewed.</h1>
+        <h2>Kindly wait for 1 to 3 working days. Thank you</h2>
+      </div>
+    </div>
+  </div>
+</body>

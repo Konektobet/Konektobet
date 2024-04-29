@@ -1,0 +1,152 @@
+<head>
+  <link rel="shortcut icon" type="x-icon" href="assets/logo.png">
+</head>
+<div>
+  <!-- <mat-progress-spinner *ngIf="loadingUserData" mode="indeterminate" diameter="20"></mat-progress-spinner> -->
+    <mat-toolbar color="primary">
+      <!-- <mat-toolbar-row> -->
+        <button mat-icon-button (click)="sidenav.toggle()" class="menu-button">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <div class="nav-logo">
+            <img src="assets/logo.png" alt="konektobetlogo" class="navlogo" routerLink="/">
+        </div>
+        <div class="nav-links">
+            <a class="a-link" routerLink="/" mat-button>Home</a>
+            <a class="a-link" routerLink="/clinic" mat-button>Clinics</a>
+            <a class="a-link" routerLink="/find" mat-button>Find Clinic</a>
+            <a class="a-link" routerLink="/appointment" mat-button>Appointments</a>
+            <a class="a-link" routerLink="/concluded" mat-button>Concluded</a>
+            <span class="menu-spacer"></span>
+        </div>
+        <div class="flex-container"></div>
+
+        <button class="favorite" mat-icon-button routerLink="/favorites"><mat-icon>favorite</mat-icon></button>
+        <button *ngIf="!user" class="login-button" mat-raised-button routerLink="/user-selection">Login</button>
+
+        <div *ngIf="user" class="user-dropdown">
+          <img src="{{ url || 'assets/defaultprofile.png' }}" alt="Profile Picture" />
+          <!-- <span class="user-name">{{ userFirstname }} {{ userLastname }}</span> -->
+          <button mat-icon-button [matMenuTriggerFor]="userMenu">
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+
+          <mat-menu #userMenu="matMenu" class="mat-menu">
+            <button mat-menu-item routerLink="/user-profile">Profile</button>
+            <button mat-menu-item routerLink="/pet-profile">Pets</button>
+            <button mat-menu-item (click)="logout()">Logout</button>
+          </mat-menu>
+        </div>
+
+      <!-- </mat-toolbar-row> -->
+    </mat-toolbar>
+  
+    <mat-sidenav-container class="sidenav-container">
+      <!-- <mat-progress-spinner *ngIf="loadingUserData" mode="indeterminate" diameter="20"></mat-progress-spinner> -->
+      <mat-sidenav #sidenav>
+        <mat-nav-list>
+          <a (click)="sidenav.toggle()"></a>
+          <button *ngIf="!user" class="login-mobile" mat-raised-button routerLink="/user-selection">Login</button>
+          <div class="profile-pic" *ngIf="user">
+            <div class="profile-pic-container">
+              <img src="{{ url || 'assets/defaultprofile.png' }}" alt="assets/defaultprofile.png" />
+            </div>
+          </div>
+          <span *ngIf="user" class="user-mobile">{{ userFirstname }} {{ userLastname }}</span>
+          <span *ngIf="user" class="user-mobile">Dog Owner</span>
+          <mat-divider *ngIf="user"></mat-divider>
+          <div class="just-margin"></div>
+          
+          <div class="list" [class.active]="isActiveLink('/user-profile')" *ngIf="user">
+            <a routerLink="/user-profile" mat-list-item>
+              <div class="list-item">
+                <div class="list-circle">
+                  <mat-icon [style.color]="isActiveLink('/user-profile') ? '#ffffff' : ''">person</mat-icon>
+                </div>
+                <span [style.color]="isActiveLink('/user-profile') ? '#ffffff' : ''">Profile</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="list" [class.active]="isActiveLink('/pet-profile')" *ngIf="user">
+            <a routerLink="/pet-profile" mat-list-item>
+              <div class="list-item">
+                <div class="list-circle">
+                  <mat-icon [style.color]="isActiveLink('/petprofile') ? '#ffffff' : ''">pets</mat-icon>
+                </div>
+                <span [style.color]="isActiveLink('/petprofile') ? '#ffffff' : ''">Pets</span>
+              </div>
+            </a>
+          </div>
+
+          <mat-divider></mat-divider>
+          <div class="just-margin"></div>
+
+          <div class="list" [class.active]="isActiveLink('/')">
+            <a routerLink="/" mat-list-item>
+              <div class="list-item">
+                <div class="list-circle">
+                  <mat-icon [style.color]="isActiveLink('/') ? '#ffffff' : ''">home</mat-icon>
+                </div>
+                <span [style.color]="isActiveLink('/') ? '#ffffff' : ''">Home</span>
+              </div>
+            </a>
+          </div>
+
+          <div class="list" [class.active]="isActiveLink('/clinic')">
+            <a routerLink="/clinic" mat-list-item>
+              <div class="list-item">
+                <div class="list-circle">
+                  <mat-icon [style.color]="isActiveLink('/clinic') ? '#ffffff' : ''"> local_hospital</mat-icon>
+                </div>
+                <span [style.color]="isActiveLink('/clinic') ? '#ffffff' : ''">Clinics</span>                
+              </div>
+            </a>
+          </div>
+
+          <div class="list" [class.active]="isActiveLink('/find')">
+            <a routerLink="/find" mat-list-item>
+              <div class="list-item">
+                <div class="list-circle">
+                  <mat-icon [style.color]="isActiveLink('/find') ? '#ffffff' : ''">search</mat-icon>
+                </div>
+                <span [style.color]="isActiveLink('/find') ? '#ffffff' : ''">Find Clinic</span>                
+              </div>
+            </a>
+          </div>
+
+          <div class="list" [class.active]="isActiveLink('/appointment')">
+            <a routerLink="/appointment" mat-list-item>
+              <div class="list-item">
+                <div class="list-circle">
+                  <mat-icon [style.color]="isActiveLink('/appointment') ? '#ffffff' : ''">event</mat-icon>
+                </div>
+                <span [style.color]="isActiveLink('/appointment') ? '#ffffff' : ''">Appointment</span>                
+              </div>
+            </a>
+          </div>
+
+          <div class="list" [class.active]="isActiveLink('/concluded')">
+            <a routerLink="/concluded" mat-list-item>
+              <div class="list-item">
+                <div class="list-circle">
+                  <mat-icon [style.color]="isActiveLink('/concluded') ? '#ffffff' : ''">event</mat-icon>
+                </div>
+                <span [style.color]="isActiveLink('/concluded') ? '#ffffff' : ''">Concluded</span>                
+              </div>
+            </a>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="logout" *ngIf="user">
+            <div class="logout-circle">
+              <a (click)="logout()" ><mat-icon>exit_to_app</mat-icon></a>
+            </div>
+          </div>
+          
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content class="sidenav-content"><router-outlet></router-outlet></mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>

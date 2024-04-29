@@ -1,0 +1,17 @@
+<!-- <div class="profile-preview-container">
+    <h1>Profile Preview</h1>
+    <img [src]="selectedImage" alt="Profile Image" *ngIf="selectedImage">
+    <button mat-raised-button color="primary" (click)="onClose()">Close</button>
+</div> -->
+
+<div class="outer-container">
+    <div class="inner-container">
+        <div class="title">
+            <h1 mat-dialog-title><strong>Resize Image</strong></h1>
+            <button class="close-icon" mat-icon-button (click)="onClose()"><mat-icon>close</mat-icon></button>
+        </div>
+        <div class="image-preview-container" mat-dialog-content>
+            <img [src]="selectedImage" alt="Profile Image" *ngIf="selectedImage">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,120 @@
+// body{
+//     background-color: #fafafa;
+//     height: 93vh;
+//     margin: 0;
+//   }
+// .outer-container{
+//     display: flex;
+// }
+
+// .form-container1{
+//     display: flex;
+//     justify-content: flex-start;
+//     flex-direction: column;
+//     width: 70%;
+// }
+
+// .containers{ 
+//     display: flex;
+//     width: 100%;
+//     justify-content: space-around;
+// }
+
+// .service-container, .sched-container{
+//     display: flex;
+//     flex-direction: row;
+//     flex-wrap: wrap;
+//     justify-content: center;
+//     margin-top: 35px;
+//     padding: 0 24px 9px;
+// }
+
+// .box {
+//     display: flex; 
+//     width: 300px;
+//     height: 70%;
+//     border: 1px solid #f5f5f5;
+//     background-color: #f5f5f5;
+//     border-radius: 20px;
+//     box-sizing: border-box;
+//     margin: 0 0 90px;
+//     flex-wrap: wrap;
+//     flex-direction: column;
+// }
+
+body{
+    background-color: #fafafa;
+    height: 93vh;
+    margin: 0;
+}
+
+.inner-find-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.find-bg {
+    position: absolute; /* Position the image absolutely */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+}
+
+.find-bg img {
+    width: 100%; /* Make the image fill the container */
+    height: 70%;
+    object-fit: cover; /* Ensure proper image scaling */
+}
+
+.find-form {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+    margin-left: 300px;
+}
+
+.find-form>div{
+    border: 1px solid #0000;
+    padding: 10px;
+    margin: 0 5px;
+}
+
+.form{
+    width: 100%;
+}
+
+.find-btn{
+    display: flex;
+    justify-content: flex-start;
+    // width: 100%;
+}
+
+.find-btn button{
+    height: 55px;
+    width: 100px
+}
+
+.example-card {
+    max-width: 400px;
+}
+
+.icons{
+    display: flex;
+    // margin-top: 20px;
+}
+
+.icons h2{
+  margin-left: 10px;
+}
+
+.icons mat-icon{
+    margin: 3px;
+}
+
+

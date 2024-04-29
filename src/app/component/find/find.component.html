@@ -1,0 +1,109 @@
+<mat-horizontal-stepper #stepper class="stepper">
+  <mat-step [stepControl]="firstFormGroup">
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Pick Your Prefered Service</ng-template>
+
+      <div class="outer-box-container">
+        <h1 class="find-clinic">Pick Your Prefered Service</h1>
+        <div color="primary" class="inner-box-container">
+          <div class="find-container">
+            
+            <!-- Service -->
+            <div class="card-container">
+              <mat-card>
+                <form class="InputContainer">
+                </form>
+                <mat-card-header>
+                  <mat-card-title>Service</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-checkbox *ngFor="let service of services" (change)="onSelectServices(service)" [checked]="selectedServices.includes(service)" required>
+                    {{ service }}
+                  </mat-checkbox>
+                </mat-card-content>
+              </mat-card>
+            </div>
+        
+            <!-- Schedule -->
+            
+            <div class="card-container">
+              <mat-card>
+                <form class="InputContainer">
+                </form>
+                <mat-card-header>
+                  <mat-card-title>Schedule</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-checkbox *ngFor="let schedule of schedules" (change)="onSelectSchedules(schedule)" [checked]="selectedSchedules.includes(schedule)" required>
+                    {{ schedule }}
+                  </mat-checkbox>
+                </mat-card-content>
+              </mat-card>
+            </div>
+        
+            <!-- Healthcare -->
+        
+            <div class="card-container">
+              <mat-card>
+                <form class="InputContainer">
+                </form>
+                <mat-card-header>
+                  <mat-card-title>Healthcare</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <mat-checkbox *ngFor="let healthcare of healthcares" (change)="onSelectHealthcares(healthcare)" [checked]="selectedHealthcares.includes(healthcare)" required>
+                    {{ healthcare }}
+                  </mat-checkbox>
+                </mat-card-content>
+              </mat-card>
+            </div>
+        
+            <!-- Button -->
+            <div class="button-container">
+              <button mat-raised-button matStepperNext [disabled]="!areServicesSelected()">Find</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </mat-step>
+
+  <mat-step [stepControl]="secondFormGroup" [completed]="firstFormGroup.valid">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Select Your Desired Clinic</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Address" formControlName="secondCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step [stepControl]="thirdFormGroup" [completed]="secondFormGroup.valid">
+    <form [formGroup]="thirdFormGroup">
+      <ng-template matStepLabel>Check Clinic Details</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Address" formControlName="thirdCtrl" required>
+      </mat-form-field>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    You are now done.
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>
+
+
+

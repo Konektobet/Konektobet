@@ -1,0 +1,416 @@
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    // background-color: #ffff;
+}
+
+.profile-inner-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100%;
+    
+}
+
+.profile-title{
+    display: flex;
+    justify-content: center;  
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    position: relative; 
+    margin-top: 30px;
+    width: 100%;
+}
+
+// profile-container
+
+.profile-container{
+    // width: 100%; /* Set to 100% to make it responsive */
+    // max-width: 1160px; /* Set a maximum width if necessary */
+    height: 500px;
+    background-color: #ffff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    // border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px 30px 10px;
+    font-family: "Josefin Sans", sans-serif;
+    display: flex;
+    flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
+    position: relative;
+    flex-direction: column;
+    margin-right: 30px;
+}
+
+.profile-container1{
+    width: 100%; /* Set to 100% to make it responsive */
+    max-width: 1160px; /* Set a maximum width if necessary */
+    height: auto;
+    background-color: #ffff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    // border-radius: 10px;
+    box-sizing: border-box;
+    padding: 20px 30px 10px;
+    font-family: "Josefin Sans", sans-serif;
+    display: flex;
+    flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+.profile-pic-container{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    position: relative;
+
+  .file-input-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.8); // Adjust the background color and opacity as needed
+    opacity: 0; // Initially invisible
+    transition: opacity 0.3s ease;
+
+    label {
+      cursor: pointer; // Show pointer cursor when hovering
+      margin-bottom: 8px; // Adjust spacing between label and input
+    }
+
+    input {
+      opacity: 0; // Make the file input invisible
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer; // Show pointer cursor when hovering
+    }
+  }
+
+  &:hover .file-input-container {
+    opacity: 1; // Make the file input container visible when hovering over the image
+  }
+}
+
+
+.profile-pic-container img{
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border:5px solid #3f51b5;
+}
+
+.profile-credentials{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.profile-credentials h2{ 
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin-top: -20px;
+}
+
+// form
+.user-form{
+    display: flex;
+    width: 40%;
+    margin-top: 50px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+
+@media screen and (max-width: 769px){
+    .profile-pic-container img{
+        width: 150px;
+        height: 150px;
+    }
+    .profile-pic{
+        margin-top: -40px;
+    }
+    .user-form{
+        width: 100%;
+        margin-top: -10px;
+    }
+}
+
+.interests-container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    // margin-left: -240px;
+}
+
+.interest-title{
+    display: flex;
+    justify-content: center;
+}
+
+.chips-container{
+    // margin: 0 auto;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // flex-wrap: wrap;
+    // flex-direction: column;
+
+    .service-chip, .sched-chip, .health-chip{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    --mdc-chip-elevated-container-color: #ffff;
+    --mdc-chip-label-text-color: #ffff;
+
+    .selected {
+      color: #ffff !important; 
+      --mdc-chip-label-text-color: #ffff;
+      size: bold;
+      }
+    
+      // Adjust the background color for the selected chips with the 'pink' class
+      .pink {
+        background-color: #ff4081; // Change this color to your preference
+      }
+    
+      // Adjust the background color for the selected chips with the 'blue' class
+      .blue {
+        background-color: #3f51b5; // Change this color to your preference
+        color: #ffff;
+      }
+    
+      // Adjust the background color for the selected chips with the 'orange' class
+      .orange {
+        background-color: #ff9800; // Change this color to your preference
+      }
+    
+      mat-chip {
+        width: auto;
+        min-width: 130px;
+        max-width: 500px;
+      }
+
+}
+
+@media screen and (max-width: 769px){
+    .service-chip, .sched-chip, .health-chip{
+        margin-left: 40px;
+    }
+}
+
+.just-space{
+    margin: 20px;
+}
+
+.service-chip{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.mat-mdc-standard-chip{
+    width: 130px;
+    text-align: center;
+    // --mdc-chip-elevated-container-color: #ffff;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.selected .mat-mdc-standard-chip {
+    text-align: center;
+  }
+
+// btn
+
+.save-changes-btn{
+    margin: 30px 0 30px 0;
+}
+
+
+body{
+    background-color: #fafafa;
+    height: 93vh;
+    margin: 0;
+  }
+  
+  .clinics{
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 30px;
+  }
+  
+  .inner-clinic-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .clinic-card-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    margin: 3% 10% 0 10%;
+  }
+  
+  .clinic-card{
+    width: 450px;
+    height: 150px;
+    margin-bottom: 100px;
+    overflow: absolute;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  .clinic-card mat-card-content{
+    padding: 0;
+    display: flex;
+    width: auto;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    flex-direction: column;
+  }
+  
+  .clinic-logo img{
+    width: 100px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+  }
+  
+  .clinic-logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  
+  .clinic-txt{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin: 20px 10px 0 0;
+    color: #ffff;
+  }
+  
+  .clinic-txt h1{
+    width: 100%;
+  }
+  
+  .clinic-txt h2{
+    font-size: 1rem;
+    width: 100%;
+  }
+  
+  @media screen and (max-width: 769px) {
+  
+    .clinic-cards mat-card-content{
+      display: flex;
+      width: 350px;
+    }
+    
+    .clinic-card{
+        width: 350px;
+        height: 150px;
+        margin-bottom: 100px;
+        overflow: absolute;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+  
+      .clinic-txt h1{
+        font-size: 16px;
+      }
+    
+      .clinic-txt h2{
+        font-size: 15px;
+      }
+  }
+  
+  .see-more{
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: flex-end;
+    overflow: relative;
+    margin-right: 20px;
+  }
+  
+  /* Move the icon to the right side */
+  .see-more mat-icon {
+    order: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+  }
+  
+  .see-more1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Reset the order for the button text */
+  .see-more mat-raised-button {
+    order: 1;
+    width: auto;
+  }
+  
+  .bot-part-container {
+    height: 70px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: row;
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: relative;
+    /* padding: 3px; */
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+    background-color: #1c4370;
+  }
+  

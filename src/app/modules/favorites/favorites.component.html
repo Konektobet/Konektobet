@@ -1,0 +1,73 @@
+<!-- <body>
+    <div class="outer-clinic-container">
+      <h1 class="clinics">Favorite Clinics</h1>
+      <div class="inner-clinic-container">
+        
+          <div class="clinic-card-container">
+            <mat-card class="clinic-card" *ngFor="let clinic of clinics" style="background-image: url('assets/bg.png');">
+              <mat-card-content>
+                <div class="clinic-logo">
+                  <img [src]="clinic.logo || 'assets/logo.png'" alt="Profile Image">
+                  <div class="clinic-txt">
+                    <h1>{{ clinic.fvName }}</h1>
+                    <h2>{{ clinic.fvAddress }}</h2>
+                  </div>
+                </div>
+            
+                <div class="bot-part-container">
+                  <div class="crud-btn">
+                    <button mat-icon-button (click)="deleteClinic(clinic)"><mat-icon>delete</mat-icon></button>
+                  </div>
+                  <div class="see-more">
+                    <button mat-raised-button class="see-more1" (click)="popSeeMoreDetails(clinic)">See more<mat-icon>chevron_right</mat-icon></button>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+      
+          </div>
+      </div>
+    </div>
+  </body> -->
+  <body>
+    <div class="outer-clinic-container">
+      <h1 class="clinics">Favorite Clinics</h1>
+      <div class="inner-clinic-container">
+        <div class="clinic-card-container">
+          <a *ngFor="let clinic of clinics" [routerLink]="['/favorite-details', clinic.fvClinic_id]" style="text-decoration: none;">
+            <mat-card class="clinic-card" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" style="background-image: url('assets/bg.png');">
+              <mat-card-content>
+                <div class="clinic-logo">
+                  <img [src]="clinic.logo || 'assets/logo.png'" alt="Profile Image">
+                  <div class="clinic-txt">
+                    <!-- <h1>{{ clinic.cName }}</h1> -->
+                    <!-- <h2>{{ clinic.cAddress }}</h2> -->
+                  </div>
+                </div>
+                <div class="see-more1" *ngIf="isHovered">
+                  <mat-icon>arrow_forward_ios</mat-icon>
+                  <label><strong>See more</strong></label>
+                </div>
+                <div class="bot-part-container">
+                  <div class="see-more">
+                    <!-- <button mat-raised-button class="see-more1" (click)="popSeeMoreDetails(clinic)">See more<mat-icon>chevron_right</mat-icon></button> -->
+                    <h2>{{ clinic.fvName }}</h2>
+                    <h2>{{ clinic.fvAddress }}</h2>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </a>
+        </div>
+      </div>
+      <div *ngIf="!clinics || clinics.length == 0">
+        <div class="no-data">
+          <img src="assets/favorites.svg" alt="">
+        </div>
+        <div class="no-data-txt">
+          <h1>You haven't added a clinic to your favorites</h1>
+          <h2>Select a clinic then click the heart icon to see the clinic here.</h2>
+        </div>
+      </div>
+    </div>
+  </body>

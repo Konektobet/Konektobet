@@ -1,0 +1,215 @@
+<html>
+  <body>
+    <mat-horizontal-stepper #stepper class="stepper" isLinear="false">
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel>Pick</ng-template>
+        
+          <div class="outer-box-container">
+            <div *ngIf="loading" class="loading-overlay"></div>
+            <h1 class="find-clinic">Pick Your Preferred Service</h1>
+            <div color="primary" class="inner-box-container">
+              <div class="find-container">
+                
+                <!-- Service -->
+                <div class="card-container">
+                  <mat-card>
+                    <mat-card-header>
+                      <mat-card-title>Service</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <div class="chips-container">
+                        <div class="service-chip">
+                          <mat-chip-listbox>
+                            <mat-chip *ngFor="let service of services" (click)="toggleSelectService(service)"
+                                [ngClass]="{'selected': selectedServices.includes(service), 'blue': selectedServices.includes(service)}">
+                                {{ service }}
+                            </mat-chip>
+                        </mat-chip-listbox>
+                        </div>
+                      </div>
+                    </mat-card-content>
+
+                    <!-- <div class="just-space"></div>
+                    <mat-divider></mat-divider>
+
+                    <mat-card-header>
+                      <mat-card-title>Healthcare</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <div class="chips-container">
+                        <div class="sched-chip">
+                          <mat-chip-listbox>
+                            <mat-chip *ngFor="let healthcare of healthcares" (click)="toggleSelectHealthcare(healthcare)" 
+                              [ngClass]="{'selected': selectedHealthcares.includes(healthcare), 'pink': selectedHealthcares.includes(healthcare)}">
+                              {{ healthcare }}
+                            </mat-chip>
+                        </mat-chip-listbox>
+                        </div>
+                      </div>
+                    </mat-card-content> -->
+                  </mat-card>
+                </div>
+    
+                <!-- Healthcare -->
+                <!-- <div class="card-container">
+                  <mat-card>
+                    <mat-card-header>
+                      <mat-card-title>Healthcare</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <div class="chips-container">
+                        <div class="sched-chip">
+                          <mat-chip-listbox>
+                            <mat-chip *ngFor="let healthcare of healthcares" (click)="toggleSelectHealthcare(healthcare)" 
+                              [ngClass]="{'selected': selectedHealthcares.includes(healthcare), 'pink': selectedHealthcares.includes(healthcare)}">
+                              {{ healthcare }}
+                            </mat-chip>
+                        </mat-chip-listbox>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div> -->
+          
+                <!-- Schedule -->
+                <div class="card-container">
+                  <mat-card>
+                    <mat-card-header>
+                      <mat-card-title>Schedule</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <div class="chips-container">
+                        <div class="sched-chip">
+                          <mat-chip-listbox>
+                            <mat-chip *ngFor="let schedule of schedules" (click)="toggleSelectSchedule(schedule)"
+                                [ngClass]="{'selected': selectedSchedules.includes(schedule), 'blue': selectedSchedules.includes(schedule)}">
+                                {{ schedule }}
+                            </mat-chip>
+                        </mat-chip-listbox>
+                        </div>
+                      </div>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+          
+                 <!-- Button -->
+                 <div class="button-container">
+                  <button mat-raised-button [disabled]="!areServicesSelected() || loading" (click)="findClinic()">
+                    <span *ngIf="!loading">Find</span>
+                    <span *ngIf="loading">
+                      <mat-progress-spinner diameter="20" mode="indeterminate" color="white"></mat-progress-spinner>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+    
+        </form>
+      </mat-step>
+    
+      <mat-step [stepControl]="secondFormGroup" [completed]="firstFormGroup.valid">
+        <form [formGroup]="secondFormGroup">
+          <ng-template matStepLabel>Select</ng-template>
+          
+          <div class="outer-foundc-container">
+            <h1 class="found-clinic">Found Clinic/s</h1>
+            <div class="inner-foundc-container" color="primary">
+              <div class="foundc-container">
+                <div class="back-container">
+                  <button class="back" matStepperPrevious>
+                    <mat-icon>keyboard_backspace</mat-icon>
+                  </button>
+
+                  <div class="extend">
+                    <mat-accordion>
+                      <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>
+                            Your Preferences
+                          </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <div class="prefs">
+                          <p>Selected Services: {{ selectedServices.join(', ') }}</p>
+                          <!-- <p>Selected Healthcares: {{ selectedHealthcares.join(', ') }}</p> -->
+                          <p>Selected Schedules: {{ selectedSchedules.join(', ') }}</p>
+                        </div>
+                      </mat-expansion-panel>
+                    </mat-accordion>
+                  </div>
+                </div>
+
+    
+                <mat-card class="clinic-card" *ngFor="let clinic of clinics" style="background-image: url('assets/bg.png');">
+                  <mat-card-content>
+                    <div class="clinic-logo">
+                      <img [src]="clinic.logo || 'assets/logo.png'" alt="Profile Image">
+                      <div class="clinic-txt">
+                        <h1>{{ clinic.cName }}</h1>
+                        <h2>{{ clinic.cAddress }}</h2>
+                      </div>
+                    </div>
+                
+                    <div class="bot-part-container">
+                      <!-- <div class="rank">
+                        <h2>#{{ clinic.rank }} Match Found: {{ clinic.matchCount }}</h2>
+                      </div> -->
+                      <div class="see-more">
+                        <button mat-raised-button class="see-more1" (click)="popSeeMoreDetails(clinic)">See more<mat-icon>chevron_right</mat-icon></button>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+
+                <mat-divider></mat-divider>
+
+                <!-- <div class="recommended-container">
+                  <h1 class="recommended-title">You may also like</h1>
+                  <div class="recommended-clinics">
+                    <mat-card class="clinic-card" *ngFor="let clinic of lastTwoClinics" style="background-image: url('assets/bg.png');">
+                      <mat-card-content>
+                        <div class="clinic-logo">
+                          <img [src]="clinic.logo || 'assets/logo.png'" alt="Profile Image">
+                          <div class="clinic-txt">
+                            <h1>{{ clinic.cName }}</h1>
+                            <h2>{{ clinic.cAddress }}</h2>
+                          </div>
+                        </div>
+                    
+                        <div class="bot-part-container">
+                          <div class="see-more">
+                            <button mat-raised-button class="see-more1" (click)="popSeeMoreDetails(clinic)">See more<mat-icon>chevron_right</mat-icon></button>
+                          </div>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                </div> -->
+                
+                <!-- Next step -->
+                <div class="next">
+                  <button mat-raised-button matStepperNext>Done</button>
+                </div>
+                <!-- <mat-paginator [pageSize]="4" [length]="clinics.length" (page)="onPageChange($event)" class="paginator"></mat-paginator> -->
+              </div>
+            </div>
+          </div>
+      
+          <mat-divider [vertical]="true"></mat-divider>
+          <!-- <div class="recommend-container">
+            <div class="recommended-title">You may also like</div>
+          </div> -->
+        </form>
+      </mat-step>
+    
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <div class="done">
+          <img src="assets/done.svg">
+        </div>
+      </mat-step>
+    </mat-horizontal-stepper>
+    
+  </body>
+</html>

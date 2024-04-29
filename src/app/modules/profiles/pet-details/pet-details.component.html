@@ -1,0 +1,149 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+  <html>
+    <body>
+      <div class="details-outer-container" *ngFor="let pet of pets">
+        <div class="title-container">
+          <button mat-raised-button color="primary" (click)="backToPets()">Back</button>
+          <!-- <h1 class="pets">{{ pet.petName }}'s Profile</h1> -->
+        </div>
+        <div class="details-inner-container">
+          <h1 class="details-title"></h1>
+          <div class="container">
+            <div class="details-container1">
+              <div class="details-pic">
+
+                <div class="details-cover">
+                  <div class="cover-pic-container" (mouseenter)="showChooseFile = true" (mouseleave)="showChooseFile = false">
+                    <img src="{{ cover || 'assets/defaultCover.png' }}" alt="">
+                      <div class="cover-input-container" *ngIf="showChooseFile">
+                        <mat-icon>edit</mat-icon>
+                        <label for="coverInput"><b>Change Cover</b></label>
+                        <input type="file" id="coverInput" (change)="onSelectCover($event)">
+                      </div>
+                  </div>
+                </div>
+
+                <div class="details">
+                  <div class="profile-pic-container" (mouseenter)="showChooseFile = true" (mouseleave)="showChooseFile = false">
+                  <img src="{{ profile || 'assets/defaultprofile.png' }}" alt="">
+                    <div class="profile-input-container" *ngIf="showChooseFile">
+                      <mat-icon>edit</mat-icon>
+                      <label for="profileInput"><b>Change Profile</b></label>
+                      <input type="file" id="profileInput" (change)="onSelectProfile($event)">
+                    </div>
+                  </div>
+                  <div class="details-credentials">
+                    <h1><strong>{{ pet.petName }}</strong></h1>
+                    <div class="btns">
+                      <div class="remove-pet">
+                        <button mat-raised-button color="warn" (click)="removePet(petId)">
+                          <mat-icon>delete</mat-icon>Remove Pet
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <mat-divider></mat-divider>
+
+              <div class="pet-details-container">
+                <div class="col-container">
+                  <form [formGroup]="petForm">
+                    <div class="pet-info">
+                      <h2>Basic Information</h2>
+                      <div class="info">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Name</mat-label>
+                          <input matInput formControlName="petName" [readonly]="!isEditable"/>
+                        </mat-form-field>
+  
+                        <mat-form-field appearance="outline">
+                          <mat-label>Birthdate</mat-label>
+                          <input matInput formControlName="petBday" type="date" [readonly]="!isEditable"/>
+                        </mat-form-field>
+  
+                        <mat-form-field appearance="outline">
+                          <mat-label>Age</mat-label>
+                          <input matInput formControlName="petAge" [readonly]="!isEditable"/>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <mat-divider></mat-divider>
+                    <div class="pet-type">
+                      <h2>Breed Information</h2>
+                      <div class="type">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Type</mat-label>
+                          <mat-select disableRipple formControlName="petType">
+                            <mat-option value="Dog">Dog</mat-option>
+                            <mat-option value="Cat">Cat</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                          <mat-label>Breed</mat-label>
+                          <input matInput formControlName="petBreed" />
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                          <mat-label>Sex</mat-label>
+                          <mat-select disableRipple formControlName="petSex">
+                            <mat-option value="Male">Male</mat-option>
+                            <mat-option value="Female">Female</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+
+                    <mat-divider></mat-divider>
+                    <div class="pet-size">
+                      <h2>Physical Measurements</h2>
+                      <div class="size">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Height</mat-label>
+                          <input matInput formControlName="petHeight" type="number"/>
+                        </mat-form-field>
+  
+                        <mat-form-field appearance="outline">
+                          <mat-label>Weight</mat-label>
+                          <input matInput formControlName="petWeight" type="number"/>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </form>
+
+                  <mat-divider></mat-divider>
+                  <div class="pet-vax">
+                    <h2>Vaccination Card</h2>
+                    <div class="vaccination-pic-container" (mouseenter)="showChooseFile = true" (mouseleave)="showChooseFile = false">
+                      <img src="{{ vax || 'assets/defaultvax.png' }}" alt="">
+                      <div class="vaxcard-input-container" *ngIf="showChooseFile">
+                        <mat-icon>edit</mat-icon>
+                        <label for="vaxcardInput"><b>Change VaxCard</b></label>
+                        <input type="file" id="vaxcardInput" (change)="onSelectVax($event)">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+              
+            </div>
+            </div>
+          </div>
+
+          <div *ngIf="petForm.dirty && formChanged">
+            <div class="save-changes">
+              <div class="edit-buttons">
+                <button mat-raised-button (click)="editPet()">Save changes</button>
+                <button mat-raised-button (click)="resetForm()">Cancel</button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+    </body>
+  </html>
+  

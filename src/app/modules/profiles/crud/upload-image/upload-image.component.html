@@ -1,0 +1,26 @@
+<div class="outer-container">
+    <div class="inner-container">
+        <div class="title">
+            <h1 mat-dialog-title><strong>Upload Vaccination Card</strong></h1>
+            <button class="close-icon" mat-icon-button (click)="onClose()"><mat-icon>close</mat-icon></button>
+        </div>
+        <div class="upload-container" mat-dialog-content>
+            <img [src]="selectedImage ? selectedImage : 'assets/upload.png'" alt="Uploaded Image" style="max-width: 100%; max-height: 200px;">
+            <!-- Hide the input visually -->
+            <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept="image/*">
+            <!-- Button to trigger file input -->
+            <button mat-raised-button color="primary" (click)="fileInput.click()">Select Image</button>
+            <p><strong>Maximum size of 2mb</strong></p>
+        </div>
+        <!-- <div class="upload-container" mat-dialog-content>
+            <img src="assets/upload.png" alt="">
+            <button mat-raised-button color="primary">Select Image</button>
+            <p><strong>Maximum the size of 2mb</strong></p>
+        </div> -->
+
+        <div class="buttons">
+            <button mat-raised-button color="primary" (click)="submitVax()">Submit</button>
+            <button mat-raised-button color="primary" (click)="onClose()">Cancel</button>
+        </div>
+    </div>
+</div>

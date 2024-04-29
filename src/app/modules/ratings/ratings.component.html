@@ -1,0 +1,124 @@
+<div class="ratings-container">
+    <div class="title">
+        <h1 mat-dialog-title>Rate Clinic</h1>
+        <button class="close-icon" mat-icon-button (click)="onClose()"><mat-icon>close</mat-icon></button>
+    </div>
+
+    <div class="ratings-details" mat-dialog-content>
+        <div class="rate-container">
+            <div class="name-rate">
+                <h2>Service</h2>
+                <h2>Facility</h2>
+                <h2>Price</h2>
+            </div>
+            <div class="star-rate">
+                <div class="rating">
+                    <input type="radio" id="service-star-1" name="service-star-radio" value="1">
+                    <label for="service-star-1" (click)="onStarClick(1, 'service')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="service-star-2" name="service-star-radio" value="1">
+                    <label for="service-star-2" (click)="onStarClick(2, 'service')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="service-star-3" name="service-star-radio" value="1">
+                    <label for="service-star-3" (click)="onStarClick(3, 'service')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="service-star-4" name="service-star-radio" value="1">
+                    <label for="service-star-4" (click)="onStarClick(4, 'service')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="service-star-5" name="service-star-radio" value="1">
+                    <label for="service-star-5" (click)="onStarClick(5, 'service')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                </div>
+
+                <div class="rating">
+                    <input type="radio" id="facility-star-6" name="facility-star-radio" value="6">
+                    <label for="facility-star-6" (click)="onStarClick(1, 'facility')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="facility-star-7" name="facility-star-radio" value="6">
+                    <label for="facility-star-7" (click)="onStarClick(2, 'facility')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="facility-star-8" name="facility-star-radio" value="6">
+                    <label for="facility-star-8" (click)="onStarClick(3, 'facility')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="facility-star-9" name="facility-star-radio" value="6">
+                    <label for="facility-star-9" (click)="onStarClick(4, 'facility')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="facility-star-10" name="facility-star-radio" value="6">
+                    <label for="facility-star-10" (click)="onStarClick(5, 'facility')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                </div>
+
+                <div class="rating">
+                    <input type="radio" id="price-star-11" name="price-star-radio" value="11">
+                    <label for="price-star-11" (click)="onStarClick(1, 'price')">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="price-star-12" name="price-star-radio" value="11">
+                    <label for="price-star-12" (click)="onStarClick(2, 'price')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="price-star-13" name="price-star-radio" value="11">
+                    <label for="price-star-13" (click)="onStarClick(3, 'price')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="price-star-14" name="price-star-radio" value="11">
+                    <label for="price-star-14" (click)="onStarClick(4, 'price')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                    <input type="radio" id="price-star-15" name="price-star-radio" value="11">
+                    <label for="price-star-15" (click)="onStarClick(5, 'price')">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path></svg>
+                    </label>
+                </div>
+                
+            </div>
+            <!-- <div class="equivalent-rate">
+                <div *ngIf="selectedService">
+                   <h2>- {{ selectedService }}</h2>
+                </div>
+                <div *ngIf="selectedFacility">
+                    <h2>- {{ selectedFacility }}</h2>
+                </div>
+                <div *ngIf="selectedPrice">
+                    <h2>- {{ selectedPrice }}</h2>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <mat-divider></mat-divider>
+    <div class="show-username">
+      <label>
+        <input type="checkbox" class="toggle-checkbox" [(ngModel)]="showUsername">
+        <div class="toggle-switch"></div>
+      </label>
+      Show your name on review
+    </div>
+
+    <div class="comments">
+      <h1>Tell us about your experience</h1>
+      <div class="add-comment">
+        <div class="comment-box">
+          <form (ngSubmit)="submitReview(clinic.id)" #reviewForm="ngForm">
+            <mat-form-field class="comment-form">
+              <mat-label>Write a review...</mat-label>
+              <textarea matInput [(ngModel)]="newReview" name="newReview"></textarea>
+            </mat-form-field>
+            <div class="submit-btn">
+              <button mat-raised-button color="primary" type="submit" [disabled]="!reviewForm.valid">Submit Review</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>

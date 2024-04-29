@@ -1,0 +1,166 @@
+<div class="outer-container">
+  <form [formGroup]="clinicForm" (ngSubmit)="saveChanges()" class="form-container">
+    <div>
+      <h1 mat-dialog-title class="edit-title">Edit Clinic</h1>
+      <div mat-dialog-content class="details-container">
+        <mat-form-field>
+          <mat-label>Clinic Name</mat-label>
+          <input matInput formControlName="cName" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="cAddress" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Contact Number</mat-label>
+          <input matInput formControlName="cNumber" />
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="cEmail" />
+        </mat-form-field>
+
+        <!-- <mat-form-field>
+          <mat-label>Veterinarian</mat-label>
+          <input matInput formControlName="cVet" />
+        </mat-form-field> -->
+
+        <mat-form-field>
+          <mat-label>Starting Grooming Price</mat-label>
+          <input matInput formControlName="cGrmPrice" >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Starting Service Price</mat-label>
+          <input matInput formControlName="cLabPrice" >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Starting Surgery Price</mat-label>
+          <input matInput formControlName="cSrgPrice" >
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Opening</mat-label>
+          <input type="time" matInput formControlName="cSTime" [step]="900" placeholder="HH:MM am/pm">
+        </mat-form-field>
+        
+        <mat-form-field>
+          <mat-label>Closing</mat-label>
+          <input type="time" matInput formControlName="cETime" [step]="900" placeholder="HH:MM am/pm">
+        </mat-form-field>  
+
+        <mat-form-field>
+          <mat-label>Link</mat-label>
+          <input matInput formControlName="cLink" />
+        </mat-form-field>
+
+        <!-- <mat-form-field>
+          <mat-label>Service</mat-label>
+          <input matInput [formControl]="serviceControl" [matAutocomplete]="serviceAuto" formControlName="cService" />
+          <mat-autocomplete #serviceAuto="matAutocomplete" (optionSelected)="addService($event.option.value)">
+            <mat-option *ngFor="let service of services" [value]="service">
+              {{ service }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Healthcare</mat-label>
+          <input matInput [formControl]="healthcareControl" [matAutocomplete]="healthcareAuto" formControlName="cHealthcare" />
+          <mat-autocomplete #healthcareAuto="matAutocomplete" (optionSelected)="addHealthcare($event.option.value)">
+            <mat-option *ngFor="let healthcare of healthcares" [value]="healthcare">
+              {{ healthcare }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Schedule</mat-label>
+          <input matInput [formControl]="scheduleControl" [matAutocomplete]="scheduleAuto" formControlName="cSchedule" />
+          <mat-autocomplete #scheduleAuto="matAutocomplete" (optionSelected)="addSchedule($event.option.value)">
+            <mat-option *ngFor="let schedule of schedules" [value]="schedule">
+              {{ schedule }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field> -->
+
+        <div class="add-clinic-btn">
+          <button mat-raised-button type="submit" color="primary" (click)="updateClinic()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  
+  <div class="service-container">
+    <form [formGroup]="clinicForm" (ngSubmit)="saveChanges()" class="form-container1">
+      <mat-form-field>
+        <mat-label>Search for Service</mat-label>
+        <input matInput [formControl]="serviceControl" [matAutocomplete]="serviceAuto" formControlName="cService" />
+        <mat-autocomplete #serviceAuto="matAutocomplete" (optionSelected)="addService($event.option.value)">
+          <mat-option *ngFor="let service of filteredServices | async" [value]="service">
+            {{ service }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  
+    <div class="box">
+      <mat-chip-listbox>
+        <mat-chip *ngFor="let service of selectedServices" (removed)="removeService(service)">
+          {{ service }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+  </div>
+
+  <!-- <div class="healthcare-container">
+    
+    <form [formGroup]="clinicForm" (ngSubmit)="saveChanges()" class="form-container1">
+      <mat-form-field>
+       <mat-label>Search for Healthcare</mat-label>
+       <input matInput [formControl]="healthcareControl" [matAutocomplete]="healthcareAuto" formControlName="cHealthcare"/>
+       <mat-autocomplete #healthcareAuto="matAutocomplete" (optionSelected)="addHealthcare($event.option.value)">
+        <mat-option *ngFor="let healthcare of healthcares" [value]="healthcare">
+         {{ healthcare }}
+        </mat-option>
+       </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
+    <div class="box">
+      <mat-chip-listbox>
+        <mat-chip *ngFor="let healthcare of selectedHealthcares" (removed)="removeHealthcare(healthcare)">
+          {{ healthcare }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+  </div> -->
+  
+  <div class="sched-container">
+    <form [formGroup]="clinicForm" (ngSubmit)="saveChanges()" class="form-container1">
+      <mat-form-field>
+        <mat-label>Search for Schedule</mat-label>
+        <input matInput [formControl]="scheduleControl" [matAutocomplete]="scheduleAuto" formControlName="cSchedule">
+        <mat-autocomplete #scheduleAuto="matAutocomplete" (optionSelected)="addSchedule($event.option.value)">
+          <mat-option *ngFor="let schedule of schedules" [value]="schedule">
+            {{ schedule }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+  </form>
+    <div class="box">
+      <mat-chip-listbox>
+        <mat-chip *ngFor="let schedule of selectedSchedules" (removed)="removeSchedule(schedule)">
+          {{ schedule }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-listbox>
+    </div>
+  </div>
+</div>

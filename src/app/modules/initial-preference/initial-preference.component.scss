@@ -1,0 +1,138 @@
+html, body{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #ffff;
+}
+
+.initial-pref-inner-container{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.initial-pref-container{
+    width: 100%; /* Set to 100% to make it responsive */
+    max-width: 1160px; /* Set a maximum width if necessary */
+    height: auto;
+    background-color: #ffff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    box-sizing: border-box;
+    padding: 20px 30px 10px;
+    font-family: "Josefin Sans", sans-serif;
+    display: flex;
+    flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
+    position: relative;
+    flex-direction: column;
+}
+
+.initial-pref-title{
+    display: flex;
+    justify-content: center;
+    color: #ffff;
+    width: 100%;
+    height: auto;
+}
+
+.pref-logo img{
+    width: 150px;
+    height: 150px;
+}
+
+.pref-logo{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    height: 150px
+}
+
+// chips
+.chips-container{
+    // margin: 0 auto;
+    // display: flex;
+    // justify-content: center;
+    // flex-wrap: wrap;
+    // flex-direction: column;
+
+    .service-chip, .sched-chip{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    --mdc-chip-elevated-container-color: #ffff;
+    --mdc-chip-label-text-color: #ffff;
+
+    .selected {
+        color: #ffff !important; 
+        --mdc-chip-label-text-color: #ffff;
+      }
+    
+      // Adjust the background color for the selected chips with the 'pink' class
+      .pink {
+        background-color: #ff4081; // Change this color to your preference
+      }
+    
+      // Adjust the background color for the selected chips with the 'blue' class
+      .blue {
+        background-color: #3f51b5; // Change this color to your preference
+      }
+    
+      // Adjust the background color for the selected chips with the 'orange' class
+      .orange {
+        background-color: #ff9800; // Change this color to your preference
+      }
+    
+      mat-chip {
+        width: auto;
+        min-width: 130px;
+        max-width: 500px;
+      }
+      
+}
+
+@media screen and (max-width: 769px){
+
+}
+
+.just-space{
+    margin: 20px;
+}
+
+.service-chip{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.mat-mdc-standard-chip{
+    width: 130px;
+    text-align: center;
+    --mdc-chip-elevated-container-color: #ffff;
+}
+
+.selected .mat-mdc-standard-chip {
+    text-align: center;
+  }
+
+// btn
+.btn-container{
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+}
+.btns{
+    display: flex;
+    justify-content: space-around;
+    width: 50%;
+}
+
+@media screen and (max-width: 769px) {
+    .btn-container{
+        display: flex;
+        justify-content: space-evenly;
+    }
+}

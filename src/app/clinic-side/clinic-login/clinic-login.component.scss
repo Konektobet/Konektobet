@@ -1,0 +1,224 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
+  // font-family: "Josefin Sans", sans-serif;
+}
+
+.form-container {
+  width: 350px;
+  height: auto;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 20px 30px;
+  // font-family: "Josefin Sans", sans-serif;
+}
+
+.logo{
+  width: 40%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.logo-place{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  text-align: center;
+  margin: 10px 0 30px 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #12547E;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 15px;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.line {
+  flex: 1;
+}
+
+.text {
+  padding-left: 10px;
+  padding-right: 10px;
+  // font-family: "Josefin Sans", sans-serif;
+  color: #999999;
+}
+
+.input {
+  border-radius: 20px;
+  border: 1px solid #c0c0c0;
+  outline: 0 !important;
+  box-sizing: border-box;
+  padding: 15px 15px;
+  // font-family: "Josefin Sans", sans-serif;
+  display: flex;
+  align-items: center;
+  // margin-top: -20px;
+}
+
+.input-pass {
+  border-radius: 20px;
+  border: 1px solid #c0c0c0;
+  outline: 0 !important;
+  box-sizing: border-box;
+  padding: 0 15px;
+  // font-family: "Josefin Sans", sans-serif;
+  display: flex;
+  align-items: center;
+}
+
+.input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  // font-family: "Josefin Sans", sans-serif;
+  // font-size: 1rem;
+  background: transparent;
+}
+
+.input-pass input {
+  flex: 1;
+  border: none;
+  outline: none;
+  // font-family: "Josefin Sans", sans-serif;
+  // font-size: 1rem;
+  background: transparent;
+  padding: 0;
+}
+
+.error{
+  padding: -30px;
+}
+
+.eye-pass {
+  cursor: pointer;
+  user-select: none;
+  font-size: 20px;
+  padding: 0;
+}
+
+.page-link {
+  text-decoration: none;
+  margin: 0;
+  text-align: end;
+  color: #747474;
+  text-decoration-color: #747474;
+}
+
+.page-link-label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  color: #12547E;
+}
+
+.page-link-label:hover {
+  color: #1979F5;
+}
+
+.form-btn {
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: 0 !important;
+  outline: 0 !important;
+  background: #0165B2;
+  color: white;
+  cursor: pointer;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  // font-family: "Josefin Sans", sans-serif;
+
+}
+
+.form-btn:active {
+  box-shadow: none;
+}
+
+.sign-up-label {
+  margin: 0;
+  font-size: 12px;
+  color: #12547E;
+}
+
+.sign-up-link {
+  margin-left: 1px;
+  font-size: 12px;
+  text-decoration: none;
+  text-decoration-color: #0165B2;
+  color: #0165B2;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.sign-up-link:hover{
+  color: #1979F5;
+}
+
+.buttons-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.facebook-login-button,
+    .google-login-button {
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  box-shadow: #1979F5
+        rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 11px;
+  gap: 5px;
+}
+
+.facebook-login-button {
+  background-color: #1979F5;
+  color: #fff;
+  border: 2px solid #1979F5;
+}
+
+.google-login-button {
+  border: 2px solid #747474;
+}
+
+.apple-icon,
+    .google-icon {
+  font-size: 18px;
+  margin-bottom: 1px;
+}
+
+.centered-toast {
+  display: flex;
+  justify-content: center;
+}

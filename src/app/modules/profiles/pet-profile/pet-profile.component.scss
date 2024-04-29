@@ -1,0 +1,58 @@
+body {
+  background-color: #fafafa;
+  height: 100vh;
+  margin: 0;
+}
+
+.pets {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.btn {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px;
+}
+
+.example-card {
+  max-width: 400px;
+}
+
+.example-header-image {
+  background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+  background-size: cover;
+}
+
+.pet-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.pet-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pet-name {
+  margin: 20px 0 0 0;
+}
+
+.see-more {
+  display: flex;
+  align-items: center;
+}
+
+.img-container img {
+  width: 400px;
+  height: 240px;
+  background-size: contain;
+}
+
+.btns{
+  display: flex;
+  margin-right: -30px;
+}

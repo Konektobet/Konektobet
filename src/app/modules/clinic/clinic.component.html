@@ -1,0 +1,79 @@
+<body>
+  <div class="outer-clinic-container">
+    <h1 class="clinics">Clinics</h1>
+        <!-- Service Rating Sort Dropdown -->
+    <div class = "filter">
+          <!-- Service Rating Sort Dropdown -->
+    <div class="status-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>Sort by Service Rating:</mat-label>
+        <mat-select [(value)]="selectedServiceSort" (selectionChange)="sortClinics('service')">
+          <mat-option value="highest">Highest to Lowest</mat-option>
+          <mat-option value="lowest">Lowest to Highest</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Facility Rating Sort Dropdown -->
+    <div class="status-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>Sort by Facility Rating:</mat-label>
+        <mat-select [(value)]="selectedFacilitySort" (selectionChange)="sortClinics('facility')">
+          <mat-option value="highest">Highest to Lowest</mat-option>
+          <mat-option value="lowest">Lowest to Highest</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Price Rating Sort Dropdown -->
+    <div class="status-filter">
+      <mat-form-field appearance="outline">
+        <mat-label>Sort by Price Rating:</mat-label>
+        <mat-select [(value)]="selectedPriceSort" (selectionChange)="sortClinics('price')">
+          <mat-option value="highest">Highest to Lowest</mat-option>
+          <mat-option value="lowest">Lowest to Highest</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    </div>
+    <div class="inner-clinic-container">
+      <div class="clinic-card-container">
+        <a *ngFor="let clinic of clinics" [routerLink]="['/new-details', clinic.id]" style="text-decoration: none;">
+          <mat-card class="clinic-card" style="background-image: url('assets/bg.png');">
+            <mat-card-content>
+              <div class="clinic-logo">
+                <img [src]="clinic.profile || 'assets/logo.png'" alt="Profile Image">
+                <div class="clinic-txt">
+                  <!-- <h1>{{ clinic.cName }}</h1> -->
+                  <!-- <h2>{{ clinic.cAddress }}</h2> -->
+                </div>
+              </div>
+              <div class="see-more1" *ngIf="isHovered">
+                <mat-icon>arrow_forward_ios</mat-icon>
+                <label><strong>See more</strong></label>
+              </div>
+              <div class="bot-part-container">
+                <div class="see-more">
+                  <!-- <button mat-raised-button class="see-more1" (click)="popSeeMoreDetails(clinic)">See more<mat-icon>chevron_right</mat-icon></button> -->
+                  <h2>{{ clinic.cName }}</h2>
+                  <h2>{{ clinic.cAddress }}</h2>
+                  <div *ngIf="getAverageRating(clinic.id)">
+                    <p>Service Rating: 
+                      <span class="rating1">{{ getAverageRating(clinic.id).service }} {{ generateStarRating(getAverageRating(clinic.id).service) }}</span>
+                    </p>
+                    <p>Facility Rating: 
+                      <span class="rating2">{{ getAverageRating(clinic.id).facility }} {{ generateStarRating(getAverageRating(clinic.id).facility) }}</span>
+                    </p>
+                    <p>Price Rating: 
+                      <span class="rating3">{{ getAverageRating(clinic.id).price }} {{ generateStarRating(getAverageRating(clinic.id).price) }}</span>
+                    </p>
+                  </div>                  
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>

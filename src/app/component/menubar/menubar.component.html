@@ -1,0 +1,76 @@
+<!-- <mat-drawer-container autosize class="drawer-container">
+    <mat-drawer #drawer [mode]="isMobile ? 'over' : 'over'" opened> -->
+        <!-- Profile details -->
+        <!-- <img src="assets/defaultprofile.png" alt="default-profile" class="defaultprofile">
+        <span class="name">RANIEL JOHNDRIE LUZ</span>
+        <span class="owner-title">PET OWNER</span>
+        <mat-divider></mat-divider> -->
+        <!-- <div >
+            <img src="assets/logo.png" alt="konektobetlogo" class="sidelogo">
+        </div> -->
+        <!-- Sidebar items -->
+        <!-- <mat-nav-list> -->
+            <!-- <mat-list-item>
+                <button mat-button routerLink="/profile" class="menu-btn">
+                    <mat-icon>face</mat-icon>
+                    <span>Profile</span>
+                </button>
+            </mat-list-item>
+
+            <mat-list-item>
+                <button mat-button routerLink="/pet" class="menu-btn">
+                    <mat-icon>pets</mat-icon>
+                    <span>Pet</span>
+                </button>
+            </mat-list-item> -->
+
+            <!-- <mat-list-item >
+                <span routerLink="/home" class="menu-btn">
+                    <mat-icon class="icon">home</mat-icon>
+                    <span>Home</span>
+                </span>
+            </mat-list-item>
+
+            <mat-list-item>
+                <span routerLink="/find" class="menu-btn">
+                    <mat-icon class="icon">search</mat-icon>
+                    <span>Find Clinic</span>
+                </span>
+            </mat-list-item>
+
+            <mat-list-item>
+                <span routerLink="/about" class="menu-btn">
+                    <mat-icon class="icon">info</mat-icon>
+                    <span>About</span>
+                </span>
+            </mat-list-item> -->
+
+            <!-- Log out -->
+            <!-- <mat-list-item class="logout-item">
+                <span routerLink="/logout" class="logout-btn">
+                    <mat-icon>exit_to_app</mat-icon>
+                </span>
+            </mat-list-item> -->
+        <!-- </mat-nav-list>
+    </mat-drawer> -->
+<link href='https://fonts.googleapis.com/css?family=Josefin Sans' rel='stylesheet'>
+
+<mat-drawer-container>
+    <!-- Navbar -->
+    <mat-drawer-content>
+        <mat-toolbar color="primary" class="mat-elevation-z8">
+            <!-- <button mat-icon-button (click)="drawer.toggle()" >
+                <mat-icon>menu</mat-icon>
+            </button> -->
+            <img src="assets/logo.png" alt="konektobetlogo" class="navlogo" routerLink="/">
+            <!-- <span>Konektobet</span> -->
+            <span class="nav-link" routerLink="/">Home</span>
+            <span class="nav-link" routerLink="/clinic">Clinics</span>
+            <span class="nav-link" routerLink="/find">Find Clinic</span>
+            <span class="nav-link" routerLink="/about">About</span>
+            <span class="example-spacer"></span>
+            <button routerLink="/login" mat-raised-button>Login</button>
+        </mat-toolbar>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>

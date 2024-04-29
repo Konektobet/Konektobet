@@ -1,0 +1,339 @@
+.example-spacer{
+    flex: 1 1 auto;
+}
+
+.menu-spacer {
+    flex: 1 1 auto;
+  }
+
+.toRight{
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.drawer-container{
+    height: 100%;
+    width: auto;
+}
+
+mat-drawer{
+    border-radius: 0 10px 0 0;
+}
+
+.menu-btn{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 1rem;
+    cursor: pointer;
+    user-select: none; 
+    border: none;
+    padding: 0;
+}
+
+.menu-btn .icon {
+    font-size: 24px;
+    margin-right: 8px;
+}
+
+.menu-btn span {
+    font-weight:bold;
+}
+
+.menu-button {
+    display: none; /* Hide by default */
+  
+    /* Show on small screens */
+    @media (max-width: 959px) {
+      display: inline-block; /* Or use 'block' if you want it on a new line */
+    }
+    
+    /* Hide on medium screens and above */
+    @media (min-width: 959px) {
+      display: none;
+    }
+  }
+
+.a-link{
+    font-size: 18px;
+}
+
+.a-link:hover{
+    background-color: #2d3a8c;
+}
+
+.sidenav-container{
+    display: flex;
+    height: auto;
+}
+
+.sidenav-content {
+    flex: 1;
+    overflow: auto;
+    padding: 0; /* Adjust the padding as needed */
+  }
+
+// mat-sidenav{
+//     background: #0165b2; /* Set the background color to #0165b2 */
+// }
+
+@media (max-width: 959px) {
+    .nav-links {
+        display: none;
+    }
+}
+
+.flex-container {
+    flex: 1; /* This creates a flexible space to push the next items to the right */
+  }
+
+  .login-button {
+
+    @media (max-width: 959px) {
+      display: none;
+    }
+  }
+
+.login-center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.defaultprofile{
+    width: 180px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -10px;
+    margin-bottom: -15px;
+}
+
+.sidelogo{
+    width: 50px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px; 
+    margin-left: 45px;
+}
+
+.navlogo{
+    width: 50px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.name{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.owner-title{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+mat-divider{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.nav-link {
+    cursor: pointer;
+    padding: auto;
+    // display: inline-block; /* Set display to inline-block */
+    display: flex;
+    flex-direction: row;
+    margin-right: 20px;
+}
+
+.nav-link:hover {
+    background-color: #2d3a8c;
+    display: inline-block; /* Ensure the same display type on hover */
+}
+
+.favorite{
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.user-dropdown{
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+}
+
+.user-name{
+    text-decoration: none;
+}
+
+.mat-menu{
+    width: 100%;
+}
+
+mat-menu mat-menu-item{
+    display: flex;
+    justify-content: center;
+}
+
+@media screen and (max-width: 959px) {
+  .user-dropdown {
+    display: none;
+  }
+  
+}
+
+@media screen and (max-width: 959px) {
+    .nav-logo {
+        min-height: 60px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+      }
+    
+      .navlogo{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+}
+
+.login-mobile{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 30px 0;
+}
+
+.user-mobile{
+   display: flex;
+   justify-content: center; 
+   font-size: 15px;
+}
+
+mat-sidenav-container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden; /* Disable the default scroll behavior */
+  }
+  
+  mat-sidenav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    // width: 250px; /* Adjust the width as needed */
+  }
+
+mat-nav-list{
+    margin-top: 20px;
+    padding: 8px 0;
+    list-style-type: none;
+}
+
+.just-margin{
+    margin-top: 20px;
+}
+
+.list{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    color: #fff;
+    cursor: pointer;
+    transition: ease 0.3s;
+    // margin-top: 20px;
+}
+
+.list:active{
+    background-color: #3f51b5;
+    color: #ffff;
+}
+
+.list-circle{
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0;
+    border-radius: 0.2em;
+}
+
+.list-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
+}
+
+.list.active {
+    background-color: #3f51b5;
+    color: #ffffff;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    bottom: 30px;
+    cursor: pointer;
+}
+
+.logout mat-icon{
+    color: #ffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-circle{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 40px;
+    height: 40px;
+    background: #3f51b5;
+    color: #3f51b5;
+}
+
+
+

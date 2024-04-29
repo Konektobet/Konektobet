@@ -1,0 +1,33 @@
+<html>
+
+<body>
+  <div class="outer-pet-container">
+    <h1 class="pets">Pets</h1>
+    <div class="btn">
+      <button mat-raised-button color="primary" (click)="addPet()">Add Pet</button>
+    </div>
+    <div class="inner-pet-container">
+      <div class="pet-card">
+        <mat-card class="example-card" *ngFor="let pet of pets">
+          <div class="img-container">
+            <img mat-card-image [src]="pet.profile || 'assets/defaultvax.png'" alt="Photo of a pet">
+          </div>
+          <mat-card-content>
+            <div class="pet-content">
+              <div class="pet-details">
+                <h1 class="pet-name"><strong>{{ pet.petName }}</strong></h1>
+                <h3 class="pet-breed">{{ pet.petBreed }}</h3>
+              </div>
+              <div class="see-more">
+                <button mat-raised-button color="primary" [routerLink]="['/profiles/pet-details', pet.id]">See
+                  more...</button>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+<html>
+  <body>
+    <div class="profile-outer-container">
+      <div class="profile-inner-container">
+        <h1 class="profile-title">User Profile</h1>
+        <div class="container">
+          <div class="profile-container1">
+            <div class="profile-pic">
+              <div class="profile">
+                <div class="profile-pic-container" (mouseenter)="showChooseFile = true" (mouseleave)="showChooseFile = false">
+                  <img src="{{ url || 'assets/defaultprofile.png' }}" alt="assets/defaultprofile.png" />
+                  <div class="file-input-container" *ngIf="showChooseFile">
+                    <mat-icon>edit</mat-icon>
+                    <label for="fileInput"><strong>Change Image</strong></label>
+                    <input type="file" id="fileInput" (change)="onSelectFile($event)" />
+                  </div>
+                </div>
+                <div class="profile-credentials">
+                  <h1>{{ firstname }} {{ lastname }}</h1>
+                  <h2>Dog Owner</h2>
+                </div>
+              </div>
+            </div>
+            <!-- <h1 class="profile-title1">Account Settings</h1>
+                        <mat-divider></mat-divider> -->
+            <form class="user-form">
+              <mat-form-field appearance="outline">
+                <mat-label>Firstname</mat-label>
+                <input
+                  matInput
+                  placeholder="Ex. Juan"
+                  [(ngModel)]="firstname"
+                  name="firstname"
+                  [readonly]="!isEmailEditable"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Lastname</mat-label>
+                <input
+                  matInput
+                  placeholder="Ex. Dela Cruz"
+                  [(ngModel)]="lastname"
+                  name="lastname"
+                  [readonly]="!isEmailEditable"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Phone number</mat-label>
+                <input
+                  matInput
+                  placeholder="Ex. 09104189272"
+                  [(ngModel)]="phoneNumber"
+                  name="phoneNumber"
+                />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input
+                  matInput
+                  placeholder="Ex. test@gmail.com"
+                  [(ngModel)]="email"
+                  name="email"
+                  [readonly]="!isEmailEditable"
+                />
+              </mat-form-field>
+            </form>
+            <mat-divider></mat-divider>
+            <div class="interests-container">
+              <h1 class="interest-title">Your likes</h1>
+              <mat-divider></mat-divider>
+              <div class="chips-container">
+                <div class="service-chip">
+                  <mat-chip-listbox>
+                    <mat-chip
+                      *ngFor="let service of services"
+                      (click)="toggleSelectService(service)"
+                      [ngClass]="{
+                        selected: selectedServices.includes(service),
+                        blue: selectedServices.includes(service)
+                      }"
+                      [style.color]="selectedServices.includes(service) ? '#ffff' : ''"
+                    >
+                      {{ service }}
+                    </mat-chip>
+                  </mat-chip-listbox>
+                </div>
+
+                <!-- <div class="just-space">
+                  <mat-divider></mat-divider>
+                </div>
+
+                <div class="health-chip">
+                  <mat-chip-listbox>
+                    <mat-chip
+                      *ngFor="let healthcare of healthcares"
+                      (click)="toggleSelectHealthcare(healthcare)"
+                      [ngClass]="{
+                        selected: selectedHealthcares.includes(healthcare),
+                        blue: selectedHealthcares.includes(healthcare)
+                      }"
+                    >
+                      {{ healthcare }}
+                    </mat-chip>
+                  </mat-chip-listbox>
+                </div> -->
+
+                <div class="just-space">
+                  <mat-divider></mat-divider>
+                </div>
+
+                <div class="sched-chip">
+                  <mat-chip-listbox>
+                    <mat-chip
+                      *ngFor="let schedule of schedules"
+                      (click)="toggleSelectSchedule(schedule)"
+                      [ngClass]="{
+                        selected: selectedSchedules.includes(schedule),
+                        blue: selectedSchedules.includes(schedule)
+                      }"
+                    >
+                      {{ schedule }}
+                    </mat-chip>
+                  </mat-chip-listbox>
+                </div>
+              </div>
+              <div class="save-changes-btn">
+                <button
+                  mat-raised-button
+                  (click)="editClinic()"
+                  color="primary"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,192 @@
+<html>
+
+<body>
+    <div class="outer-container">
+        <div class="inner-container">
+        <h1 class="clinics">Clinic Onboarding</h1>
+            <mat-stepper linear #stepper>
+                <mat-step [stepControl]="firstFormGroup">
+                    <form [formGroup]="firstFormGroup">
+                        <ng-template matStepLabel>Details</ng-template>
+                        <div class="clinic-details">
+                            <h2>Clinic Details</h2>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Clinic Name</mat-label>
+                                    <input matInput formControlName="adName" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Address</mat-label>
+                                    <input matInput formControlName="adAddress" required>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Phone Number</mat-label>
+                                    <input matInput formControlName="adNumber" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Email Address</mat-label>
+                                    <input matInput formControlName="adEmail" required>
+                                </mat-form-field>
+                            </div>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Facebook Link</mat-label>
+                                <input matInput formControlName="adLink" required>
+                            </mat-form-field>
+                            <div>
+                            </div>
+                        </div>
+                        <mat-divider></mat-divider>
+                        <div class="space"></div>
+
+                        <div class="clinic-availability">
+                            <h2>Clinic Availability</h2>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Opening Time</mat-label>
+                                    <input type="time" matInput formControlName="adSTime" [step]="900" placeholder="HH:MM am/pm" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Closing Time</mat-label>
+                                    <input type="time" matInput formControlName="adETime" [step]="900" placeholder="HH:MM am/pm" required>
+                                </mat-form-field>
+                            </div>
+
+                            <mat-form-field appearance="outline">
+                                <mat-label>Day Available</mat-label>
+                                <mat-select formControlName="adSchedule" [multiple]="true">
+                                    <mat-option *ngFor="let day of dayList" [value]="day">{{day}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <mat-divider></mat-divider>
+                        <div class="space"></div>
+
+                        <div class="clinic-offers">
+                            <h2>Clinic Offers</h2>
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Services Offered</mat-label>
+                                    <mat-select formControlName="adService" [multiple]="true">
+                                        <mat-option *ngFor="let service of services" [value]="service">{{service}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Grooming Price</mat-label>
+                                    <input matInput formControlName="adGrmPrice" required>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Laboratory Price</mat-label>
+                                    <input matInput formControlName="adLabPrice" required>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Surgery Price</mat-label>
+                                    <input matInput formControlName="adSrgPrice" required>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                        <div>
+                            <button mat-raised-button color="primary" matStepperNext (click)="submitForm1()">Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="secondFormGroup">
+                    <form [formGroup]="secondFormGroup">
+                        <ng-template matStepLabel>Uploads</ng-template>
+                        <h2>Upload Documents</h2>
+                        <div class="uploadCerts">
+                            <h3>Business Permit</h3>
+                            <!-- <label>Business Permit</label> -->
+                            <div class="input-field" appearance="outline">
+                                <!-- <mat-label for="input-file">Business Permit</mat-label> -->
+                                <input type="file" id="input-file" (change)="businessPermitSelected($event)" accept="image/*" style="display: none" #inputBS formControlName="businessPermit" required>
+                                <button mat-icon-button (click)="inputBS.click()" matSuffix>
+                                    <img src="assets/inputUpload.png" alt="">
+                                </button>
+                                <span *ngIf="selectedBP">{{ selectedBP.name }}</span>
+                                <!-- <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image"> -->
+                            </div>
+                        
+                        </div>
+
+                        <div class="uploadCerts">
+                            <h3>Health and Safety Certifications</h3>
+                            <div class="input-field" appearance="outline">
+                                <!-- <mat-label for="input-file">Business Permit</mat-label> -->
+                                <input type="file" id="input-file" (change)="healthSafetySelected($event)" accept="image/*" style="display: none" #inputHS formControlName="healthSafety" required>
+                                <button mat-icon-button (click)="inputHS.click()" matSuffix>
+                                    <img src="assets/inputUpload.png" alt="">
+                                </button>
+                                <span *ngIf="selectedHS">{{ selectedHS.name }}</span>
+                                <!-- <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image"> -->
+                            </div>
+                        </div>
+
+                        <div class="uploadCerts">
+                            <h3>Veterinary Practice Certifications</h3>
+                            <div class="input-field" appearance="outline">
+                                <!-- <mat-label for="input-file">Business Permit</mat-label> -->
+                                <input type="file" id="input-file" (change)="vetPracticeSelected($event)" accept="image/*" style="display: none" #inputVP formControlName="vetPractice" required>
+                                <button mat-icon-button (click)="inputVP.click()" matSuffix>
+                                    <img src="assets/inputUpload.png" alt="">
+                                </button>
+                                <span *ngIf="selectedVP">{{ selectedVP.name }}</span>
+                                <!-- <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image"> -->
+                            </div>
+                        </div>
+
+                        <div class="uploadCerts">
+                            <h3>Permission Applications</h3>
+                            <div class="input-field" appearance="outline">
+                                <!-- <mat-label for="input-file">Business Permit</mat-label> -->
+                                <input type="file" id="input-file" (change)="permissionApplicationsSelected($event)" accept="image/*" style="display: none" #inputPA formControlName="permApps" required>
+                                <button mat-icon-button (click)="inputPA.click()" matSuffix>
+                                    <img src="assets/inputUpload.png" alt="">
+                                </button>
+                                <span *ngIf="selectedPA">{{ selectedPA.name }}</span>
+                                <!-- <img *ngIf="imageUrl" [src]="imageUrl" alt="Uploaded Image"> -->
+                            </div>
+                        </div>
+
+                        <div class="btns">
+                            <button mat-raised-button color="primary" (click)="stepper.previous()" matStepperPrevious>Back</button>
+                            <button mat-raised-button color="primary" matStepperNext (click)="submitForm2()">Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step>
+                    <ng-template matStepLabel>Done</ng-template>
+                    <div class="done-container">
+                        <div class="text">
+                            <h1>Welcome Aboard, Raniel!</h1>
+                            <h2>Thank you for joining us. We're excited to have you<br> as part of our community.</h2>
+                            <h3>Your application are being reviewed. This process typically<br> takes 1 to 3 working days.</h3>
+                        </div>
+                        <div class="done">
+                            <img src="assets/highfive.svg" alt="">
+                        </div>
+                        <div class="btns">
+                            <button mat-raised-button color="primary" type="submit" (click)="addClinic()">Finished</button>
+                        </div>
+                    </div>
+                </mat-step>
+            </mat-stepper>
+        </div>
+    </div>
+
+</body>
+
+</html>

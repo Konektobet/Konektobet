@@ -1,0 +1,630 @@
+body, html {
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: #ffff;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.mat-horizontal-stepper-header-container ng-tns-c3676410898-3{
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  margin-left: 25%;
+  width: 50%;
+}
+
+.find-clinic{
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.found-clinic{
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.outer-box-container{
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  
+  .selected {
+    color: #ffff !important; 
+    --mdc-chip-label-text-color: #ffff;
+  }
+
+  // Adjust the background color for the selected chips with the 'pink' class
+  .pink {
+    background-color: #ff4081; // Change this color to your preference
+  }
+
+  // Adjust the background color for the selected chips with the 'blue' class
+  .blue {
+    background-color: #3f51b5; // Change this color to your preference
+  }
+
+  // Adjust the background color for the selected chips with the 'orange' class
+  .orange {
+    background-color: #ff9800; // Change this color to your preference
+  }
+  mat-chip {
+    width: auto;
+    min-width: 130px;
+    max-width: 500px;
+  }
+}
+mat-step {
+  overflow: hidden;
+  padding: 0 0 24px 0;
+}
+
+.inner-box-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.find-container {
+  width: 100%; /* Set to 100% to make it responsive */
+  max-width: 800px; /* Set a maximum width if necessary */
+  height: auto;
+  background-color: #3f51b5;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 30px 30px 10px;
+  font-family: "Josefin Sans", sans-serif;
+  display: flex;
+  flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
+  justify-content: space-between; /* Align cards with space-between */
+  position: relative;
+}
+
+@media screen and (max-width: 769px) {
+  .find-container{
+    display: flex;
+    width: 400px;
+  }
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.8); /* Use the desired background color and opacity */
+  z-index: 1000; /* Use a high z-index to make sure it covers other elements */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-container {
+  width: calc(50% - 20px); /* Set width for columns (50% with margin) */
+  box-sizing: border-box;
+  min-height: 100px;
+  display: flex;
+  flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
+  justify-content: space-between; /* Align cards with space-between */    
+  align-items: center;
+  flex-direction: column;
+}
+
+.card-container mat-card{
+  min-height: 200px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+mat-card-content{
+    padding: 0 16px;
+    display: flex;
+    width: auto;
+    flex-wrap: nowrap;
+    align-items: baseline;
+    flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .box-container{
+    height: 100%;
+    padding: auto;
+  }
+  .card-container {
+    width: 100%; /* Set width to 100% for rows on smaller screens */
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .stepper {
+    overflow: hidden;
+    padding: 0;
+  }
+}
+
+.chips-container{
+  // margin: 0 auto;
+  // display: flex;
+  // justify-content: center;
+  // align-items: center;
+  // flex-wrap: wrap;
+  // flex-direction: column;
+  margin-left: 20px;
+  .service-chip, .sched-chip{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  --mdc-chip-elevated-container-color: #ffff;
+  --mdc-chip-label-text-color: #ffff;
+
+  .selected {
+    color: #ffff !important; 
+    --mdc-chip-label-text-color: #ffff;
+    }
+  
+    // Adjust the background color for the selected chips with the 'pink' class
+    .pink {
+      background-color: #ff4081; // Change this color to your preference
+    }
+  
+    // Adjust the background color for the selected chips with the 'blue' class
+    .blue {
+      background-color: #3f51b5;; // Change this color to your preference
+    }
+  
+    // Adjust the background color for the selected chips with the 'orange' class
+    .orange {
+      background-color: #ff9800; // Change this color to your preference
+    }
+  
+    mat-chip {
+      width: auto;
+      min-width: 130px;
+      max-width: 500px;
+    }
+
+}
+
+.bot-part-container {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: row;
+  background-color: rgb(255, 255, 255);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: relative;
+  /* padding: 3px; */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+  background-color: #3f51b5;
+}
+
+.InputContainer {
+  height: 40px;
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: row;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  overflow: relative;
+  padding-left: 15px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+  background-color: #ffff;
+}
+
+.input {
+  width: 170px;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 0.9em;
+  caret-color: rgb(255, 81, 0);
+}
+
+.labelforsearch {
+  cursor: text;
+  padding: 0px 5px;
+}
+
+.labelforsearch mat-icon{
+  margin: 0;
+}
+
+.searchIcon path {
+  fill: rgb(114, 114, 114);
+}
+
+.micIcon path {
+  fill: rgb(255, 81, 0);
+}
+
+.button-container {
+  width: 100%;
+  margin-bottom: auto;
+  display: flex;
+  justify-content: center; /* Align the button to the center horizontally */
+  align-items: flex-end;
+}
+
+button {
+  margin: 10px 0 10px 0;
+}
+
+@media screen and (max-width: 600px) {
+  .button-container{
+    margin: -20px 0 40px 0;
+  }
+  .next{
+    margin: -10px 0 40px 0;
+  }
+}
+
+.inner-foundc-container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.foundc-container{
+  width: 100%; /* Set to 100% to make it responsive */
+  max-width: 1100px; /* Set a maximum width if necessary */
+  height: auto;
+  // background-color: #3f51b5;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 20px 30px 10px;
+  font-family: "Josefin Sans", sans-serif;
+  display: flex;
+  flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
+  justify-content: space-between; /* Align cards with space-between */
+  position: relative;
+}
+
+@media screen and (max-width: 769px) {
+  .found-clinic{
+    margin: 0;
+  }
+  .foundc-container{
+    display: flex;
+    width: 400px;
+    margin: 0;
+  }
+
+  .recommended-container{
+    display: flex;
+    width: 100%;
+    left: 30px;
+
+  }
+
+  .recommended-title{
+    margin-top: 300%;
+    margin-right: 50px
+  }
+  .recommemded-clinics{
+    // margin-right: -100px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .clinic-cards{
+    width: 350px;
+    height: 100%;
+    margin-bottom: 20px;
+    overflow: absolute;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  .clinic-cards mat-card-content{
+    display: flex;
+    width: 350px;
+  }
+
+  .clinic-txt h1{
+    font-size: 16px;
+  }
+
+  .clinic-txt h2{
+    font-size: 15px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  mat-horizontal-stepper{
+    padding: 0;
+  }
+}
+
+.back-container{
+  display: flex;
+  width: 100%;
+  height: auto;
+  background-color: transparent;
+}
+
+.back{
+  cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  outline: none; /* Remove the outline */
+  border: none; /* Remove border for better consistency */
+  background-color: #ffff; /* Remove background color */
+}
+
+.clinic-card{
+  width: 500px;
+  height: 100%;
+  margin-bottom: 20px;
+  overflow: absolute;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.clinic-card mat-card-content{
+  padding: 0;
+  display: flex;
+  width: auto;
+  flex-wrap: nowrap;
+  align-items: baseline;
+  flex-direction: column;
+}
+
+.clinic-cards{
+  width: 500px;
+  height: 100%;
+  margin-bottom: 20px;
+  overflow: absolute;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.clinic-cards mat-card-content{
+  padding: 0;
+  display: flex;
+  width: auto;
+  flex-wrap: wrap;
+  align-items: baseline;
+  flex-direction: column;
+}
+
+.clinic-logo img{
+  width: 100px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 20px;
+}
+
+.clinic-logo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.clinic-txt{
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 20px 0 0 0;
+  color: #ffff;
+}
+
+.clinic-txt1{
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin: 20px 0 0 0;
+  color: #ffff;
+}
+
+.clinic-txt h1{
+  width: 100%;
+}
+
+.clinic-txt h2{
+  font-size: 1rem;
+  width: 100%;
+}
+
+.clinic-txt1 h1{
+  font-size: 16px;
+}
+
+.clinic-txt1 h2{
+  font-size: 15px;
+}
+
+.see-more{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-end;
+  overflow: relative;
+  margin-right: 20px;
+}
+
+/* Move the icon to the right side */
+.see-more mat-icon {
+  order: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 5px;
+}
+
+.see-more1{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Reset the order for the button text */
+.see-more mat-raised-button {
+  order: 1;
+  width: auto;
+}
+
+// recommended clinics
+
+.recommended-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  flex-direction: row;
+  // flex-direction: column;
+  // position: absolute;
+  // overflow-y: scroll;
+  // right: 100px;
+  // top: 72px;
+  // max-height: 700px;
+}
+
+.recommended-title{
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  font-size: 30px;
+  font-weight: bold;
+  position: relative;
+  width: 100%;
+}
+
+.recommemded-clinics{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+
+// .recommend-container{
+//   // display: flex;
+//   // flex-direction: column;
+//   // width: 100%;
+//   // position: absolute;
+//   // right: 0;
+//   // top: 80px;
+//   display: flex;
+//   flex-direction: column; 
+//   justify-content: flex-end;
+// }
+
+// stepper
+.stepper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+::ng-deep .mat-horizontal-stepper-content[aria-expanded="false"] {
+  width: 50% !important;
+}
+
+// next btn
+.next{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+// paginator
+.paginator {
+  background-color: #3f51b5;
+  color: #ffff;
+  border: 1px solid #ffff;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.9em;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.paginator .mat-paginator-page-size {
+  color: #ffff;
+}
+
+.paginator .mat-paginator-range-label {
+  color: #ffff;
+}
+
+.paginator .mat-paginator-next,
+.paginator .mat-paginator-previous {
+  color: #ffff;
+}
+
+.selected {
+  color: white;
+}
+
+.pink {
+  background-color: #ff4081;
+}
+
+.blue {
+  background-color: #3f51b5;
+}
+
+.orange {
+  background-color: #f44336;
+}
+
+// done
+
+.done{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.just-space{
+  margin: 20px;
+}
+
+.rank{
+  color: #ffff;
+  width: 100%;
+}
+
+.rank h2{
+  margin: 0 0 0 20px;
+}
+
+.extend{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}

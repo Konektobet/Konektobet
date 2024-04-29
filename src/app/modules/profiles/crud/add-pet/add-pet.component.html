@@ -1,0 +1,94 @@
+<div class="outer-container">
+  <form [formGroup]="petForm" (ngSubmit)="addPet()" class="form-container">
+    <div class="inner-container">
+      <div class="title">
+        <h1 mat-dialog-title class="add-title">Pet Registration</h1>
+        <button class="close-icon" mat-icon-button (click)="onClose()"><mat-icon>close</mat-icon></button>
+      </div>
+      <div mat-dialog-content class="details-container">
+        <div class="row1">
+          <div class="name">
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="petName">
+            </mat-form-field>
+          </div>
+
+          <div class="bday">
+            <mat-form-field appearance="outline">
+              <mat-label>Birthdate</mat-label>
+              <input type="date" matInput formControlName="petBday">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row1">
+          <div class="age">
+            <mat-form-field appearance="outline">
+              <mat-label>Age</mat-label>
+              <input matInput formControlName="petAge" [readonly]="!isEmailEditable">
+            </mat-form-field>
+          </div>
+
+          <div class="sex">
+            <mat-form-field appearance="outline">
+              <mat-label>Sex</mat-label>
+              <mat-select disableRipple formControlName="petSex">
+                <mat-option value="Male">Male</mat-option>
+                <mat-option value="Female">Female</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div class="row1">
+          <div class="breed">
+            <mat-form-field appearance="outline">
+              <mat-label>Breed</mat-label>
+              <input matInput formControlName="petBreed">
+            </mat-form-field>
+          </div>
+
+          <div class="type">
+            <mat-form-field appearance="outline">
+              <mat-label>Type</mat-label>
+              <mat-select disableRipple formControlName="petType">
+                <mat-option value="Dog">Dog</mat-option>
+                <mat-option value="Cat">Cat</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row1">
+          <div class="weight">
+            <mat-form-field appearance="outline">
+              <mat-label>Weight(kg)</mat-label>
+              <input matInput formControlName="petWeight" type="number">
+              <mat-error *ngIf="petForm.get('petWeight')?.invalid">
+                Please enter a valid weight.
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="height">
+            <mat-form-field appearance="outline">
+              <mat-label>Height(m)</mat-label>
+              <input matInput formControlName="petHeight" type="number">
+              <mat-error *ngIf="petForm.get('petHeight')?.invalid">
+                Please enter a valid height.
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="add-pet-btn">
+          <button mat-raised-button type="submit" color="primary" class="submit">Submit</button>
+          <button mat-raised-button color="primary" (click)="onClose()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>

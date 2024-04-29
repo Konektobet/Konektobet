@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+</head>
+<body>
+    <div class="form-container">
+      <div class="logo-place">
+        <img class='logo' src="assets/logo.png" alt="konektobetlogo">
+      </div>
+        <p class="title">Create an account</p>
+        <form [formGroup]="signupForm" class="form">
+
+            <div class="form-col1">
+              <div class="input">
+                <input formControlName="firstname" matInput type="text" placeholder="Firstname">
+              </div>
+
+              <div class="input">
+                <input formControlName="lastname" matInput type="text" placeholder="Lastname">
+              </div>
+  
+              
+            </div>
+            
+            <div class="form-col2">
+
+              <div class="input">
+                <input formControlName="phoneNumber" matInput type="text" placeholder="Phone Number">
+              </div>
+
+              <div class="input">
+                <input formControlName="email" matInput type="text" placeholder="Email">
+              </div>
+            </div>
+
+            <div class="form-col3">
+              
+              <div class="input-pass">
+                <input formControlName="password" matInput [type]="hide ? 'password' : 'text'" placeholder="Password">
+                <mat-icon (click)="togglePasswordVisibility()" matSuffix>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </div>
+    
+              <div class="input-pass">
+                <input formControlName="confirmPassword" matInput [type]="confirmHide ? 'password' : 'text'" placeholder="Confirm Password">
+                <mat-icon (click)="toggleConfirmPasswordVisibility()" matSuffix>{{confirmHide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </div>
+            </div>
+          
+          <button (click)="signup()" [disabled]="signupForm.invalid || signupForm.get('password')?.value != signupForm.get('confirmPassword')?.value" class="form-btn">Create account</button>
+        </form>
+
+        <p class="sign-up-label">
+          Already have an account? <span class="sign-up-link" (click)="redirectToLogin()">Log in</span>
+        </p>
+      </div>
+</body>
+</html>
