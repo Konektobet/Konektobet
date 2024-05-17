@@ -44,6 +44,11 @@
     align-items: center;
     flex-direction: column;
     margin: 20px 0 0 0;
+
+    h1{
+      font-size: 40px;
+      font-weight: 600;
+    }
   }
   
   .how-container{
@@ -111,6 +116,11 @@
   }
   
   @media screen and (max-width: 600px) {
+    .get-started h1{
+      font-size: 30px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
     .how-title{
       font-size: 1.5rem;
     }
@@ -502,8 +512,7 @@
   @media screen and (max-width: 600px) {
     .clinic-title1{
       font-size: 1rem;
-      margin-left: 40px;
-      // margin-right: 40px;
+      text-align: center;
     }
 
     .clinic-cards mat-card-content{

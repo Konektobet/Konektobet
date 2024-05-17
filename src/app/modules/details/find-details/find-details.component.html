@@ -1,0 +1,135 @@
+<div mat-dialog-content>
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <html>
+
+  <body>
+    <div class="details-outer-container">
+      <div class="details-inner-container">
+        <div class="container">
+          <div class="details-container1">
+            <div class="details-pic">
+              <div class="details-cover">
+                <img src="assets/bg.png" alt="">
+              </div>
+              <div class="details">
+                <div class="details-pic-container">
+                  <img [src]="clinic.profile || 'assets/logoo.png'" alt="Profile Image">
+                </div>
+                <div class="details-credentials">
+                  <h1><strong>{{ clinic?.cName }}</strong></h1>
+                  <div class="btns">
+                    <div class="favorites" *ngIf="!isFavorite">
+                      <button mat-raised-button color="primary">
+                        <mat-icon>favorites</mat-icon>Add to favorites
+                      </button>
+                    </div>
+                    <div class="appointment">
+                      <button mat-raised-button color="primary">
+                        <mat-icon>location_city</mat-icon>Make Appointment
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="col-container">
+              <form [formGroup]="clinicForm">
+                <div class="column">
+                  <div class="col1">
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Address</mat-label>
+                        <input matInput [value]="clinic?.cAddress" [readonly]="!isEditable" />
+                      </mat-form-field>
+                    </div>
+    
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Number</mat-label>
+                        <input matInput [value]="clinic?.cNumber" [readonly]="!isEditable" />
+                      </mat-form-field>
+                    </div>
+
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Facebook Link</mat-label>
+                        <a [href]="clinic?.cLink" target="_blank"><input matInput [value]="clinic?.cLink" [readonly]="!isEditable" /></a>
+                      </mat-form-field>
+                    </div>
+                           
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Grooming Price</mat-label>
+                        <input matInput [value]="clinic?.cGrmPrice" [readonly]="!isEditable" />
+                      </mat-form-field>
+                    </div>
+
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Surgery Price</mat-label>
+                        <input matInput [value]="clinic?.cSrgPrice" [readonly]="!isEditable" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+    
+                  <div class="col2">
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput [value]="clinic?.cEmail" [readonly]="!isEditable" />
+                      </mat-form-field>
+                    </div>
+    
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Time</mat-label>
+                        <input matInput [value]="clinic?.cTime" [readonly]="!isEditable" />
+                      </mat-form-field>
+                    </div>
+
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Distance</mat-label>
+                        <input matInput [value]="formatDistance(clinic?.distance)" [readonly]="!isEditable" />
+                      </mat-form-field>
+                    </div>
+
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Laboratory Price</mat-label>
+                        <input matInput [value]="clinic?.cLabPrice" [readonly]="!isEditable" />
+                      </mat-form-field>
+                    </div>
+        
+                    <div class="icons">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Schedule</mat-label>
+                        <input matInput [value]="clinic?.cSchedule" [readonly]="!isEditable" />
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                                  
+                <div class="row">
+                  <div class="icons">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Service</mat-label>
+                      <textarea matInput [value]="clinic?.cService" [cdkTextareaAutosize]="true" [readonly]="!isEditable"></textarea>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  </html>
+
+</div>

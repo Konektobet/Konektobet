@@ -37,3 +37,50 @@
     </div>
   </div>
 </body> -->
+<div>
+  <h2>My Location</h2>
+  <p *ngIf="latitude && longitude">
+    Latitude: {{ latitude }}<br>
+    Longitude: {{ longitude }}
+  </p>
+  <p *ngIf="errorMessage">Error: {{ errorMessage }}</p>
+  <h2>Destination Location</h2>
+  <p>
+    Latitude: {{ latitudeDest }}<br>
+    Longitude: {{ longitudeDest }}
+  </p>
+  <h2>Distance</h2>
+  <p *ngIf="latitude && longitude && latitudeDest && longitudeDest">
+    Distance between current location and destination: {{ calculateDistance() }} km
+  </p>
+</div>
+<!-- <div>
+  <h2>Extracted Coordinates</h2>
+  <p *ngIf="extractedCoordinates">
+    Coordinates: {{ extractedCoordinates }}
+  </p>
+  <p *ngIf="!extractedCoordinates">Coordinates not available</p>
+</div> -->
+<!-- <form class="example-form">
+  <mat-form-field class="example-full-width" appearance="outline">
+    <mat-label>Embed Map Location</mat-label>
+    <textarea matInput [(ngModel)]="embedMapCode" [ngModelOptions]="{ standalone: true }" rows="5" placeholder="Paste the embedded map code here"></textarea>
+  </mat-form-field>
+  <button mat-button type="submit" color="primary">Submit</button>
+</form>
+<div *ngIf="submitted">
+  <h2>Extracted Latitude and Longitude</h2>
+  <p *ngIf="extractedLatitude && extractedLongitude">
+    Latitude: {{ extractedLatitude }}<br>
+    Longitude: {{ extractedLongitude }}
+  </p>
+</div> -->
+<!-- <div>
+  Latitude: {{ latitude }}
+</div>
+<div>
+  Longitude: {{ longitude }}
+</div>
+<div>
+  Map URL: {{ mapUrl }}
+</div> -->

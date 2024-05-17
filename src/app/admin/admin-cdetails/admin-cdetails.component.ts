@@ -125,6 +125,9 @@ export class AdminCdetailsComponent implements OnInit{
       adTime: ['', Validators.required],
       adService: ['', Validators.required],
       adSchedule: ['', Validators.required],
+      adCoordinates: ['', Validators.required],
+      adLongitude: ['', Validators.required],
+      adLatitude: ['', Validators.required],
     });
 
     this.getBusinessPermit();
@@ -173,20 +176,22 @@ export class AdminCdetailsComponent implements OnInit{
   
             // Extract necessary clinic details
             const clinicDetails = {
+              // cUsers_id: this.clinic.adUsers_id,
+              // cService: clinicData[0].adService,
+              // cSchedule: clinicData[0].adSchedule,
+              // cName: clinicData[0].adName,
+              // cAddress: clinicData[0].adAddress,
+              // cNumber: clinicData[0].adNumber,
+              // cEmail: clinicData[0].adEmail,
+              // cLink: clinicData[0].adLink,
+              // cGrmPrice: clinicData[0].adGrmPrice,
+              // cLabPrice: clinicData[0].adLabPrice,
+              // cSrgPrice: clinicData[0].adSrgPrice,
+              // cTime: clinicData[0].adTime,
+              // cSTime: clinicData[0].adSTime,
+              // cETime: clinicData[0].adETime,
+              ...this.clinic.clinicForm.value,
               cUsers_id: this.clinic.adUsers_id,
-              cService: clinicData[0].adService,
-              cSchedule: clinicData[0].adSchedule,
-              cName: clinicData[0].adName,
-              cAddress: clinicData[0].adAddress,
-              cNumber: clinicData[0].adNumber,
-              cEmail: clinicData[0].adEmail,
-              cLink: clinicData[0].adLink,
-              cGrmPrice: clinicData[0].adGrmPrice,
-              cLabPrice: clinicData[0].adLabPrice,
-              cSrgPrice: clinicData[0].adSrgPrice,
-              cTime: clinicData[0].adTime,
-              cSTime: clinicData[0].adSTime,
-              cETime: clinicData[0].adETime,
             };
   
             // Insert data into 'clinic_tbl' table
@@ -230,6 +235,9 @@ export class AdminCdetailsComponent implements OnInit{
                   acTime: insertNewData[0].adTime,
                   acSTime: insertNewData[0].adSTime,
                   acETime: insertNewData[0].adETime,
+                  acCoordinates: insertNewData[0].adCoordinates,
+                  acLongitude: insertNewData[0].adLongitude,
+                  acLatitude: insertNewData[0].adLatitude,
                 };
 
               // Insert the clinic details into 'admin_accepted_tbl'
@@ -339,6 +347,7 @@ export class AdminCdetailsComponent implements OnInit{
                 arLink: clinicData[0].adLink,
                 arPrice: clinicData[0].adPrice,
                 arTime: clinicData[0].adTime,
+                arCoordinates: clinicData[0].adCoordinates,
                 arStatus: 'Clinic Rejected',
               };
 
@@ -476,6 +485,9 @@ export class AdminCdetailsComponent implements OnInit{
           adTime: this.clinic.adTime || '',
           adService: this.clinic.adService || '',
           adSchedule: this.clinic.adSchedule || '',
+          adCoordinates: this.clinic.adCoordinates || '',
+          adLongitude: this.clinic.adLongitude || '',
+          adLatitude: this.clinic.adLatitude || '',
         });
       }
     } catch (error) {

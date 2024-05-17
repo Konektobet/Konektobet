@@ -22,6 +22,8 @@ export class AppointmentComponent implements OnInit {
   uniqueDays: string[] = [];
   uniqueYears: string[] = [];
 
+  loading: boolean = false;
+
   constructor(
     private supabaseService: SupabaseService,
     private dialog: MatDialog,
@@ -34,6 +36,7 @@ export class AppointmentComponent implements OnInit {
   }
 
   async fetchAppointments() {
+    this.loading = true;
     try {
       const currentUser = this.supabaseService.getAuthStateSnapshot();
       
@@ -74,6 +77,8 @@ export class AppointmentComponent implements OnInit {
       }
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      this.loading = false;
     }
   }
 
@@ -188,7 +193,7 @@ export class AppointmentComponent implements OnInit {
         showCancelButton: true,
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3f51b5',
-        confirmButtonText: 'Yes, delete it!'
+        confirmButtonText: 'Yes, cancel it!'
       });
   
       if (isConfirmed.isConfirmed) {
@@ -198,7 +203,7 @@ export class AppointmentComponent implements OnInit {
       console.error('Error deleting appointment:', error);
       Swal.fire(
         'Error!',
-        'An error occurred while deleting the appointment.',
+        'An error occurred while canceling the appointment.',
         'error'
       );
     }
@@ -223,8 +228,8 @@ export class AppointmentComponent implements OnInit {
   
       Swal.fire({
         icon: 'success',
-        title: 'Appointment Deleted Successfully',
-        text: 'Your appointment has been deleted.',
+        title: 'Appointment Cancelled Successfully',
+        text: 'Your appointment has been cancelled.',
       }).then(() => {
         console.log(appointmentId);
       });

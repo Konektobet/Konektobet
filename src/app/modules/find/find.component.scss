@@ -85,7 +85,6 @@ mat-step {
   border-radius: 10px;
   box-sizing: border-box;
   padding: 30px 30px 10px;
-  font-family: "Josefin Sans", sans-serif;
   display: flex;
   flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
   justify-content: space-between; /* Align cards with space-between */
@@ -99,17 +98,17 @@ mat-step {
   }
 }
 
-.loading-overlay {
+.loader-overlay {
   position: absolute;
   top: 0;
   left: 0;
-  width: 20px;
-  height: auto;
-  background-color: rgba(255, 255, 255, 0.8); /* Use the desired background color and opacity */
-  z-index: 1000; /* Use a high z-index to make sure it covers other elements */
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
 }
 
 .card-container {
@@ -121,10 +120,14 @@ mat-step {
   justify-content: space-between; /* Align cards with space-between */    
   align-items: center;
   flex-direction: column;
+
+  .location-card{
+    height: 140px;
+  }
 }
 
 .card-container mat-card{
-  min-height: 200px;
+  min-height: 100px;
   margin-bottom: 20px;
   width: 100%;
 }
@@ -134,7 +137,7 @@ mat-card-content{
     display: flex;
     width: auto;
     flex-wrap: nowrap;
-    align-items: baseline;
+    align-items: center;
     flex-direction: column;
 }
 
@@ -198,6 +201,20 @@ mat-card-content{
       max-width: 500px;
     }
 
+}
+
+.location-container{
+  display: flex;
+
+  .location-chip button{
+    justify-content: center;
+    align-items: center;
+  }
+
+  mat-card-content{
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .bot-part-container {
@@ -284,8 +301,8 @@ button {
 
 .foundc-container{
   width: 100%; /* Set to 100% to make it responsive */
-  max-width: 1100px; /* Set a maximum width if necessary */
-  height: auto;
+  max-width: 900px; /* Set a maximum width if necessary */
+  height: 570px;
   // background-color: #3f51b5;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 10px;
@@ -296,6 +313,7 @@ button {
   flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
   justify-content: space-between; /* Align cards with space-between */
   position: relative;
+  overflow-y: scroll;
 }
 
 @media screen and (max-width: 769px) {
@@ -360,6 +378,7 @@ button {
   width: 100%;
   height: auto;
   background-color: transparent;
+  // position: sticky;
 }
 
 .back{
@@ -373,9 +392,9 @@ button {
 }
 
 .clinic-card{
-  width: 500px;
-  height: 100%;
-  margin-bottom: 20px;
+  width: 400px;
+  height: 210px;
+  margin-bottom: 30px;
   overflow: absolute;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -390,39 +409,27 @@ button {
   flex-direction: column;
 }
 
-.clinic-cards{
-  width: 500px;
-  height: 100%;
-  margin-bottom: 20px;
-  overflow: absolute;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.clinic-cards mat-card-content{
-  padding: 0;
-  display: flex;
-  width: auto;
-  flex-wrap: wrap;
-  align-items: baseline;
-  flex-direction: column;
-}
-
-.clinic-logo img{
-  width: 100px;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 20px;
-}
+// .clinic-logo img{
+//   width: 100px;
+//   height: auto;
+//   display: flex;
+//   align-items: center;
+//   justify-content: flex-start;
+//   padding: 20px;
+// }
 
 .clinic-logo{
   display: flex;
-  align-items: center;
   justify-content: center;
-  flex-direction: row;
-  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+
+  img{
+    width: 100px;
+    height: auto;
+    padding: 20px;
+    border-radius: 50%;
+  }
 }
 
 .clinic-txt{
@@ -462,15 +469,62 @@ button {
   font-size: 15px;
 }
 
+.clinic-txt{
+  // display: flex;
+  // align-items: flex-start;
+  // justify-content: flex-start;
+  // flex-direction: column;
+  // flex-wrap: wrap;
+  // margin: 20px 10px 0 0;
+  // color: #ffff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  flex-wrap: wrap;
+  // margin: 20px 10px 0 0;
+  color: #ffff;
+  text-align: center;
+}
+
+// .clinic-txt h1{
+//   width: 100%;
+// }
+
+// .clinic-txt h2{
+//   font-size: 1rem;
+//   width: 100%;
+// }
+.clinic-txt h1{
+  width: 100%;
+  font-size: 1rem;
+}
+
+.clinic-txt h2{
+  font-size: 1rem;
+  width: 100%;
+}
+
 .see-more{
   width: 100%;
   height: auto;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   overflow: relative;
-  margin-right: 20px;
+  /* margin-right: 20px; */
+  color: white;
+  flex-direction: column;
 }
 
+.see-more h1, h2{
+  width: 100%;
+  font-size: 1rem;
+  /* text-align: center; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
 /* Move the icon to the right side */
 .see-more mat-icon {
   order: 2;
@@ -480,16 +534,56 @@ button {
   margin-left: 5px;
 }
 
+.see-more1 mat-icon{
+  // display: none;
+  font-size: 24px;
+  color: black;
+}
+
 .see-more1{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8); // Adjust the background color and opacity as needed
+  opacity: 0; // Initially invisible
+  transition: opacity 0.3s ease;
+
+  label {
+    cursor: pointer; // Show pointer cursor when hovering
+    margin-bottom: 8px; // Adjust spacing between label and input
+    color: black;
+  }
+}
+
+.clinic-card:hover .see-more1 {
+  opacity: 1;
 }
 
 /* Reset the order for the button text */
 .see-more mat-raised-button {
   order: 1;
   width: auto;
+}
+
+.bot-part-container {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: row;
+  background-color: rgb(255, 255, 255);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: relative;
+  /* padding: 3px; */
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.075);
+  background-color: #3f51b5;
 }
 
 // recommended clinics
@@ -608,6 +702,18 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+
+  h1 {
+    font-weight: 700;
+    text-align: center;
+  }
+
+  img{
+    width: 400px;
+    height: auto;
+    margin-top: 50px;
+  }
 }
 
 .just-space{
@@ -625,6 +731,29 @@ button {
 
 .extend{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   width: 100%;
+  position: sticky;
+  top: 0; /* Add top position */
+  background: white; /* Add background to prevent overlap issues */
+  z-index: 100;
+  
+  button{
+    justify-content: center;
+  }
+}
+
+.loader-overlay {
+  position: absolute;
+  // top: 0;
+  // left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffffb7;
+  z-index: 1000;
+  margin-top: 0;
+  padding: 0;
 }

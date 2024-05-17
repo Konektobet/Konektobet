@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { MakeAppointmentComponent } from '../../make-appointment/make-appointment.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { InitialRecommendService } from 'src/app/service/initial-recommend.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface UserPreferences {
   fvService: string;
@@ -70,8 +71,14 @@ export class ClinicDetailsComponent implements OnInit{
   addedToFavorites: boolean = false;
   isFavorite: boolean = false;
 
+  isEditable: boolean = false;
+
   service!: string;
   schedule!: string;
+
+  clinicForm!: FormGroup;
+  initialFormValues: any;
+
   constructor(
     public dialogRef: MatDialogRef<ClinicDetailsComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -80,6 +87,7 @@ export class ClinicDetailsComponent implements OnInit{
     private router: Router,
     private initialRecommendService: InitialRecommendService,
     private cdr: ChangeDetectorRef,
+    private formBuilder: FormBuilder,
   ) {
     this.clinic = data.clinic;
     this.recommendedClinics = data.recommendedClinics || [];
@@ -94,7 +102,22 @@ export class ClinicDetailsComponent implements OnInit{
 
     if (this.addedToFavorites) {
       this.isFavorite = true;
-    }
+    };
+
+    this.clinicForm =  this.formBuilder.group({
+      cName: ['', Validators.required],
+      cAddress: ['', Validators.required],
+      cEmail: ['', Validators.required],
+      cNumber: ['', Validators.required],
+      cTime: ['', Validators.required],
+      cSchedule: ['', Validators.required],
+      cService: ['', Validators.required],
+      cGrmPrice: ['', Validators.required],
+      cLabPrice: ['', Validators.required],
+      cSrgPrice: ['', Validators.required],
+      cLink: ['', Validators.required],
+      distance: ['', Validators.required],
+    });
   }
 
   onClose(): void {
@@ -129,6 +152,11 @@ export class ClinicDetailsComponent implements OnInit{
       } else {
         // Merge the additional details with the existing clinic data
         this.clinic = { ...this.clinic, ...additionalDetails };
+
+        this.clinicForm.patchValue({
+          cName: this.clinic[0]?.cName || '',
+          cAddress: this.clinic[0]?.cAddress || '',
+        });
       }
     } catch (error) {
       console.error('Error:', error);

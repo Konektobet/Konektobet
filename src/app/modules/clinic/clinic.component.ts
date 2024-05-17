@@ -38,7 +38,7 @@ export class ClinicComponent implements OnInit {
   selectedPriceSort: 'highest' | 'lowest' = 'highest';
 
   isHovered: boolean = false;
-
+  loading: boolean = false;
   constructor(
     private supabaseService: SupabaseService,
     private dialog: MatDialog,
@@ -50,7 +50,7 @@ export class ClinicComponent implements OnInit {
   ngOnInit(): void {
     this.loadClinics();
     this.loadReviews();
-    this.fetchClinicLogo();
+    this.fetchAllClinicLogos();
 
     this.initialRecommendService.matchedClinics$.subscribe((matchedClinics) => {
       this.clinics = matchedClinics.map((clinic) => ({
@@ -72,27 +72,31 @@ export class ClinicComponent implements OnInit {
   }
 
   loadClinics() {
+    this.loading = true; // Start loading
     this.supabaseService
       .getSupabase()
       .from('clinic_tbl')
       .select('*')
       .then(({ data, error }) => {
+        this.loading = false; // Stop loading
         if (error) {
           console.error('Error fetching clinics:', error);
         } else {
           this.clinics = data;
           this.sortClinics(); // Sort clinics initially
-          this.fetchClinicLogo();
+          this.fetchAllClinicLogos();
         }
       });
   }
 
   loadReviews() {
+    this.loading = true; // Start loading
     this.supabaseService
       .getSupabase()
       .from('ratesReviews_tbl')
       .select('*')
       .then(({ data, error }) => {
+        this.loading = false; // Stop loading
         if (error) {
           console.error('Error fetching reviews:', error);
         } else {
@@ -164,27 +168,26 @@ export class ClinicComponent implements OnInit {
     this.router.navigate(['/new-details', clinic.id]);
   }
 
-  async fetchClinicLogo() {
-    for (const clinic of this.clinics) {
+
+  async fetchAllClinicLogos() {
+    const fetchPromises = this.clinics.map(async (clinic) => {
       const filename = `${clinic.cName}_clinicLogo`;
       try {
         const { data, error } = await this.supabaseService.getSupabase().storage
           .from('clinicLogo')
           .download(filename);
-        // console.log(filename)
 
         if (error) {
-          // console.error('Error fetching profile picture:', error);
-          // Fallback to default image
-          clinic.profile = 'assets/logo.png';
+          clinic.profile = 'assets/logoo.png';
         } else {
           clinic.profile = URL.createObjectURL(data);
         }
       } catch (error) {
-        // console.error('Error fetching profile picture:', error);
-        // Fallback to default image
-        clinic.profile = 'assets/logo.png';
+        clinic.profile = 'assets/logoo.png';
       }
-    }
+    });
+
+    await Promise.all(fetchPromises);
+    this.cdr.detectChanges(); // Ensure Angular detects the changes
   }
 }

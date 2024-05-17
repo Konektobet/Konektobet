@@ -10,6 +10,7 @@ import { AdminAcdetailsComponent } from './admin/admin-acdetails/admin-acdetails
 import { ClinicDetailsComponent } from './clinic-side/details/clinic-details/clinic-details.component';
 import { RclinicDetailsComponent } from './clinic-side/details/rclinic-details/rclinic-details.component';
 import { PetDetailsComponent } from './modules/profiles/pet-details/pet-details.component';
+import { FindDetailsComponent } from './modules/details/find-details/find-details.component';
 
 const routes: Routes = [
 
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: 'ratings', loadChildren: () => import('./modules/ratings/ratings.module').then(m => m.RatingsModule) },
   { path: 'appointment-update', loadChildren: () => import('./modules/appointment-update/appointment-update.module').then(m => m.AppointmentUpdateModule) },
   { path: 'user-selection', loadChildren: () => import('./clinic-side/user-selection/user-selection.module').then(m => m.UserSelectionModule) },
+  { path: 'find-details', loadChildren: () => import('./modules/details/find-details/find-details.module').then(m => m.FindDetailsModule) },
 
   // pet
   { path: 'pet-profile', loadChildren: () => import('./modules/profiles/pet-profile/pet-profile.module').then(m => m.PetProfileModule) },
@@ -52,9 +54,11 @@ const routes: Routes = [
   { path: 'clinic/update-appointment', loadChildren: () => import('./clinic-side/update-appointment/update-appointment.module').then(m => m.UpdateAppointmentModule) },
   { path: 'clinic/clinic-details', loadChildren: () => import('./clinic-side/details/clinic-details/clinic-details.module').then(m => m.ClinicDetailsModule) },
   { path: 'clinic/rclinic-details', loadChildren: () => import('./clinic-side/details/rclinic-details/rclinic-details.module').then(m => m.RclinicDetailsModule) },
+  { path: 'clinic/onboarding', loadChildren: () => import('./clinic-side/onboarding/onboarding.module').then(m => m.OnboardingModule) },
 
   // details
   { path: 'new-details/:id', component: NewDetailsComponent },
+  { path: 'find-details/:id', component: FindDetailsComponent },
   { path: 'favorite-details/:id', component: FavoriteDetailsComponent },
   { path: 'fav-details/:id', component: FavDetailsComponent },
   { path: 'matched-details/:id', component: MatchedDetailsComponent },
@@ -63,7 +67,6 @@ const routes: Routes = [
   { path: 'clinic/clinic-details/:id', component: ClinicDetailsComponent },
   { path: 'clinic/rclinic-details/:id', component: RclinicDetailsComponent },
   { path: 'profiles/pet-details/:id', component: PetDetailsComponent },
-  { path: 'clinic/onboarding', loadChildren: () => import('./clinic-side/onboarding/onboarding.module').then(m => m.OnboardingModule) },
 
   // admin side
   { path: 'admin/admin-login', loadChildren: () => import('./admin/admin-login/admin-login.module').then(m => m.AdminLoginModule) },
@@ -91,6 +94,7 @@ const routes: Routes = [
   { path: 'upload-cover', loadChildren: () => import('./modules/profiles/crud/upload-cover/upload-cover.module').then(m => m.UploadCoverModule) },
 
   { path: 'concluded', loadChildren: () => import('./modules/concluded/concluded.module').then(m => m.ConcludedModule) },
+
 
 
 ];

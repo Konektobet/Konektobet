@@ -72,6 +72,7 @@ export class OnboardingComponent implements OnInit{
       adSrgPrice: ['', Validators.required],
       adSchedule: ['', Validators.required],
       adService: ['', Validators.required],
+      adCoordinates: ['', Validators.required],
     });
     this.secondFormGroup = this.formBuilder.group({
       // secondCtrl: ['', Validators.required],
@@ -152,18 +153,6 @@ export class OnboardingComponent implements OnInit{
     console.log(formData);
   }
 
-  // async submitForm1(){
-  //   try{
-  //     const currentUser = this.supabaseService.getClinicAuthStateSnapshot();
-
-  //     if(currentUser){
-
-  //     }
-  //   } catch(error){
-  //     console.log(error)
-  //   }
-  // }
-
   async submitForm2() {
     const formData2 = {
       ...this.secondFormGroup.value,
@@ -175,14 +164,14 @@ export class OnboardingComponent implements OnInit{
   async addClinic() {
     try {
       const currentUser = this.supabaseService.getClinicAuthStateSnapshot();
-
+  
       if (currentUser) {
         const { data: userData, error: userError } = await this.supabaseService
           .getSupabase()
           .from('clinic_users_tbl')
           .select('id')
           .eq('email', currentUser.email);
-
+  
         if (userError) {
           console.error('Error fetching user data:', userError);
         } else {
@@ -191,38 +180,45 @@ export class OnboardingComponent implements OnInit{
             const startMinute = this.firstFormGroup.value.adSTime.split(':')[1];
             const endHour = parseInt(this.firstFormGroup.value.adETime.split(':')[0]);
             const endMinute = this.firstFormGroup.value.adETime.split(':')[1];
-
+  
             // Format start and end times into 12-hour format
             const combinedTime = `${this.formatHour(startHour)}:${startMinute} ${startHour >= 12 ? 'pm' : 'am'} to ${this.formatHour(endHour)}:${endMinute} ${endHour >= 12 ? 'pm' : 'am'}`;
-            
+  
             // Check if userData[0] exists before accessing its properties
             if (userData[0]) {
+              // Extract latitude and longitude from adCoordinates
+              const coordinates = this.firstFormGroup.value.adCoordinates.split(',');
+              const adLatitude = coordinates[0].trim();
+              const adLongitude = coordinates[1].trim();
+  
               const clinicData = {
                 ...this.firstFormGroup.value,
                 adUsers_id: userData[0].id,
                 adTime: combinedTime,
                 adSchedule: this.dayList.join(', '),
                 adService: this.services.join(', '),
+                adLatitude: adLatitude,
+                adLongitude: adLongitude,
               }
-
+  
               const { data: insertData, error: insertError } = await this.supabaseService
                 .getSupabase()
                 .from('admin_clinic_tbl')
                 .insert([clinicData])
-
+  
               if (insertError) {
                 Swal.fire({
                   icon: 'error',
                   title: 'Error',
                   text: 'An error occurred while adding the clinic. Please try again.',
                 });
-
+  
                 console.error('Error inserting clinic:', insertError);
                 // Handle error appropriately
               } else {
                 console.log('Clinic added successfully:', insertData);
                  this.router.navigate(['/clinic/clinic-home']); 
-
+  
                 Swal.fire({
                   icon: 'success',
                   title: 'Onboarding Done!',
@@ -244,56 +240,6 @@ export class OnboardingComponent implements OnInit{
       });
     }
   }
-
-  // async addClinic() {
-  //   try {
-  //     const startHour = parseInt(this.firstFormGroup.value.adSTime.split(':')[0]);
-  //     const startMinute = this.firstFormGroup.value.adSTime.split(':')[1];
-  //     const endHour = parseInt(this.firstFormGroup.value.adETime.split(':')[0]);
-  //     const endMinute = this.firstFormGroup.value.adETime.split(':')[1];
-
-  //     // Format start and end times into 12-hour format
-  //     const combinedTime = `${this.formatHour(startHour)}:${startMinute} ${startHour >= 12 ? 'pm' : 'am'} to ${this.formatHour(endHour)}:${endMinute} ${endHour >= 12 ? 'pm' : 'am'}`;
-
-  //     // Check if userData[0] exists before accessing its properties
-  //     const clinicData = {
-  //       ...this.firstFormGroup.value,
-  //       adTime: combinedTime,
-  //       adSchedule: this.selectedSchedules.join(', '),
-  //     }
-
-  //     const { data: insertData, error: insertError } = await this.supabaseService
-  //       .getSupabase()
-  //       .from('admin_clinic_tbl')
-  //       .insert([clinicData])
-
-  //     if (insertError) {
-  //       Swal.fire({
-  //         icon: 'error',
-  //         title: 'Error',
-  //         text: 'An error occurred while adding the clinic. Please try again.',
-  //       });
-
-  //       console.error('Error inserting clinic:', insertError);
-  //       // Handle error appropriately
-  //     } else {
-  //       console.log('Clinic added successfully:', insertData);
-
-  //       Swal.fire({
-  //         icon: 'success',
-  //         title: 'Clinic Added!',
-  //         text: 'Kindly wait for the verification and approval of your clinic.',
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error('Error:', error);
-  //     Swal.fire({
-  //       icon: 'error',
-  //       title: 'Error',
-  //       text: 'An error occurred while adding the clinic. Please try again.',
-  //     });
-  //   }
-  // }
 
   async addDocs(e: any){
     if(e.target.files) {

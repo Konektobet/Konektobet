@@ -174,6 +174,9 @@ export class ClinicDetailsComponent {
       cLabPrice: ['', Validators.required],
       cSrgPrice: ['', Validators.required],
       cLink: ['', Validators.required],
+      cCoordinates: ['', Validators.required],
+      cLongitude: ['', Validators.required],
+      cLatitude: ['', Validators.required],
     });
 
     // Subscribe to form value changes
@@ -238,6 +241,7 @@ export class ClinicDetailsComponent {
           cSrgPrice: clinicData.cSrgPrice || '',
           cSTime: clinicData.cSTime || '',
           cETime: clinicData.cETime || '',
+          cCoordinates: clinicData.cCoordinates || '',
           cSchedule: cScheduleArray.map((day: string) => day.trim()) || [], // Ensure it's an array
           cService: cServiceArray.map((service: string) => service.trim()) || [],
         });
@@ -300,10 +304,16 @@ export class ClinicDetailsComponent {
         // Format start and end times into 12-hour format
         const combinedTime = `${this.formatHour(startHour)}:${startMinute} ${startHour >= 12 ? 'pm' : 'am'} to ${this.formatHour(endHour)}:${endMinute} ${endHour >= 12 ? 'pm' : 'am'}`;
 
+        const coordinates = this.clinicForm.value.cCoordinates.split(',');
+        const cLatitude = coordinates[0].trim();
+        const cLongitude = coordinates[1].trim();
+
         // Update the clinic object with the form values
         this.clinic = {
           ...this.clinicForm.value,
           cTime: combinedTime,
+          cLongitude: cLongitude,
+          cLatitude: cLatitude,
           cSchedule: this.clinicForm.value.cSchedule.join(', '),
           cService: this.clinicForm.value.cService.join(', '),
         };

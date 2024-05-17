@@ -18,22 +18,31 @@ import { MatStepper } from '@angular/material/stepper';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { InitialRecommendService } from 'src/app/service/initial-recommend.service';
+import { GeolocationService } from 'src/app/service/geolocation.service';
+import { FindDetailsComponent } from '../details/find-details/find-details.component';
 // ring.register();
 
 interface UserPreferences {
   fService: string;
   // fHealthcare: string;
   fSchedule: string;
+  fCoordinates: string;
   // Add other properties as needed
 }
 
 interface Clinic {
+  distance: number;
   matchCount: any;
   cService: string;
   // cHealthcare: string;
   cSchedule: string;
   similarity?: number;
   rank?: number;
+  cLatitude: number;
+  cLongitude: number;
+  cName: string;
+  cAddress: string;
+  profile: any;
   // Add other properties as needed
 }
 
@@ -45,11 +54,12 @@ interface Clinic {
 export class FindComponent implements OnInit {
   @ViewChild('stepper') stepper!: MatStepper;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  
+
   clinics: any[] = [];
   clinicFeatures: Clinic[] = [];
   lastTwoClinics: any[] = [];
   displayedClinics: any[] = [];
+  recommendedClinics: any[] = [];
 
   serviceControl = new FormControl('');
   scheduleControl = new FormControl('');
@@ -80,7 +90,7 @@ export class FindComponent implements OnInit {
   ];
   filteredServices!: Observable<string[]>;
   selectedServices: string[] = [];
-  
+
   // healthcares: string[] = [
   //   'CBC',
   //   'Blood Chemistry',
@@ -115,8 +125,20 @@ export class FindComponent implements OnInit {
 
   loading = false;
   clinicsFound = false;
+  isHovered: boolean = false;
 
   dataSource = new MatTableDataSource<any>();
+
+  // get location
+  latitude!: number;
+  longitude!: number;
+  errorMessage!: string;
+  latitudeDest: number = 14.824725461338147;
+  longitudeDest: number = 120.29720868309234;
+  locationFetched = false;
+
+  clinicForm!: FormGroup;
+  isEditable: boolean = false;
 
   constructor(
     private router: Router,
@@ -125,12 +147,13 @@ export class FindComponent implements OnInit {
     private supabaseService: SupabaseService,
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
-    private initialRecommendService: InitialRecommendService,
+    private geolocationService: GeolocationService
   ) {}
 
   ngOnInit() {
     this.loadClinics();
     this.loadClinicFeatures();
+    // this.fetchAllClinicLogos();
     this.filteredServices = this.serviceControl.valueChanges.pipe(
       startWith(''),
       map((value) => this.filterService(value || ''))
@@ -165,6 +188,91 @@ export class FindComponent implements OnInit {
     this.secondFormGroup = this.formBuilder.group({
       secondCtrl: ['', Validators.required],
     });
+
+    this.clinicForm = this.formBuilder.group({
+      cName: ['', Validators.required],
+      cAddress: ['', Validators.required],
+      cEmail: ['', Validators.required],
+      cNumber: ['', Validators.required],
+      cTime: ['', Validators.required],
+      cSchedule: ['', Validators.required],
+      cService: ['', Validators.required],
+      cGrmPrice: ['', Validators.required],
+      cLabPrice: ['', Validators.required],
+      cSrgPrice: ['', Validators.required],
+      cLink: ['', Validators.required],
+      distance: ['', Validators.required],
+    });
+
+    // geolocation
+    // this.geolocationService.getCurrentPosition()
+    // .subscribe((position) => {
+    //   this.latitude = position.coords.latitude;
+    //   this.longitude = position.coords.longitude;
+    // }, (error) => {
+    //   this.errorMessage = error.message;
+    // });
+  }
+
+  onMouseEnter(clinic: any) {
+    // this.isHovered = true;
+
+    const dialogRef = this.dialog.open(ClinicDetailsComponent, {
+      width: '50%',
+      height: 'auto',
+      data: { clinic: clinic },
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      // Handle any actions after the dialog is closed, if needed
+    });
+  }
+
+  onMouseLeave() {
+    this.isHovered = false;
+  }
+
+  calculateDistanceBetweenCoordinates(
+    lat1: number,
+    lon1: number,
+    lat2: number,
+    lon2: number
+  ): number {
+    const earthRadiusKm = 6371;
+    const dLat = this.degreesToRadians(lat2 - lat1);
+    const dLon = this.degreesToRadians(lon2 - lon1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.degreesToRadians(lat1)) *
+        Math.cos(this.degreesToRadians(lat2)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = earthRadiusKm * c;
+    // Round the distance to two decimal places
+    const roundedDistance = parseFloat(distance.toFixed(2));
+
+    return roundedDistance;
+  }
+
+  degreesToRadians(degrees: number): number {
+    return (degrees * Math.PI) / 180;
+  }
+
+  fetchLocation() {
+    this.geolocationService.getCurrentPosition().subscribe(
+      (position) => {
+        this.latitude = position.coords.latitude;
+        this.longitude = position.coords.longitude;
+        this.locationFetched = true;
+        console.log('Latitude:', this.latitude);
+        console.log('Longitude:', this.longitude);
+      },
+      (error) => {
+        this.errorMessage = error.message;
+        console.error('Error getting location:', this.errorMessage);
+      }
+    );
   }
 
   calculateSimilarity(
@@ -186,7 +294,7 @@ export class FindComponent implements OnInit {
 
     const serviceWeight = 2;
     // const healthcareWeight = 2;
-    const scheduleWeight =1;
+    const scheduleWeight = 1;
     const rankWeight = 3; // Adjust the weight for ranking
 
     // Check for undefined values before using them in calculations
@@ -194,7 +302,7 @@ export class FindComponent implements OnInit {
     const clinicSimilarity =
       clinic.similarity !== undefined ? clinic.similarity : 0;
 
-      const weightedSimilarity =
+    const weightedSimilarity =
       (serviceIntersection * serviceWeight +
         scheduleIntersection * scheduleWeight +
         // healthcareIntersection * healthcareWeight +
@@ -202,7 +310,7 @@ export class FindComponent implements OnInit {
       (serviceWeight + scheduleWeight + rankWeight);
 
     return weightedSimilarity;
-}
+  }
 
   calculateIntersection(str1: string, str2: string): number {
     const set1 = new Set(str1.split(', '));
@@ -215,13 +323,13 @@ export class FindComponent implements OnInit {
 
   countMatches(clinic: Clinic, userPreferences: UserPreferences): number {
     let matchCount = 0;
-  
+
     // Ensure values are defined before splitting
     const services = clinic.cService.split(', ');
     // const healthcares = clinic.cHealthcare.split(', ');
     const schedules = clinic.cSchedule.split(', ');
-  
-     // Count matches for services
+
+    // Count matches for services
     // matchCount += this.selectedServices.some(service => services.includes(service)) ? 1 : 0;
 
     // Count matches for schedules
@@ -230,7 +338,7 @@ export class FindComponent implements OnInit {
     // Count matches for schedules
     // matchCount += this.selectedSchedules.some(schedule => schedules.includes(schedule)) ? 1 : 0;
 
-      // Count matches for services
+    // Count matches for services
     matchCount += services.filter((service) =>
       userPreferences.fService.includes(service)
     ).length;
@@ -264,6 +372,7 @@ export class FindComponent implements OnInit {
               fService: this.selectedServices.join(', '),
               // fHealthcare: this.selectedHealthcares.join(', '),
               fSchedule: this.selectedSchedules.join(', '),
+              fCoordinates: `${this.latitude}, ${this.longitude}`,
             };
 
             console.log('User Preferences:', userPreferences);
@@ -309,16 +418,34 @@ export class FindComponent implements OnInit {
               } else {
                 const matchedClinics =
                   this.matchClinicsContentBased(userPreferences);
-                  // this.initialRecommendService.setMatchedClinics(matchedClinics);
 
-                // Sort clinics based on the similarity score in descending order
-                matchedClinics.sort(
-                  (a, b) =>
-                    (b.similarity !== undefined ? b.similarity : 0) -
-                    (a.similarity !== undefined ? a.similarity : 0)
-                );
+                // Calculate distance and match count for each clinic
+                matchedClinics.forEach((clinic) => {
+                  clinic.distance = this.calculateDistanceBetweenCoordinates(
+                    this.latitude,
+                    this.longitude,
+                    clinic.cLatitude,
+                    clinic.cLongitude
+                  );
+                  clinic.matchCount = this.countMatches(
+                    clinic,
+                    userPreferences
+                  );
+                });
 
-                // Assign final ranks based on the sorted order
+                // Sort clinics based on match count in descending order
+                // and then by distance in ascending order
+                matchedClinics.sort((a, b) => {
+                  // Sort by match count in descending order
+                  if (a.matchCount !== b.matchCount) {
+                    return b.matchCount - a.matchCount; // Higher match count first
+                  } else {
+                    // If match counts are equal, sort by distance in ascending order
+                    return a.distance - b.distance; // Lower distance first
+                  }
+                });
+
+                // Assign ranks based on the sorted order
                 matchedClinics.forEach((clinic, index) => {
                   clinic.rank = index + 1;
                 });
@@ -342,7 +469,7 @@ export class FindComponent implements OnInit {
 
                 this.loading = false;
                 this.clinicsFound = matchedClinics.length > 0;
-
+                this.fetchAllClinicLogos();
                 this.cdr.detectChanges();
 
                 // Move to the next step programmatically
@@ -356,7 +483,7 @@ export class FindComponent implements OnInit {
       } else {
         this.router.navigate(['/login']);
         console.error(
-          'No logged-in user found. Redirecting to the login page.'
+          'No logged-in user found or location not fetched. Redirecting to the login page.'
         );
       }
     } catch (error) {
@@ -365,24 +492,48 @@ export class FindComponent implements OnInit {
     }
   }
 
+  // fet clinic logo
+  async fetchAllClinicLogos() {
+    const fetchPromises = this.clinics.map(async (clinic) => {
+      const filename = `${clinic.cName}_clinicLogo`;
+      try {
+        const { data, error } = await this.supabaseService
+          .getSupabase()
+          .storage.from('clinicLogo')
+          .download(filename);
+
+        if (error) {
+          clinic.profile = 'assets/logoo.png';
+        } else {
+          clinic.profile = URL.createObjectURL(data);
+        }
+      } catch (error) {
+        clinic.profile = 'assets/logoo.png';
+      }
+    });
+
+    await Promise.all(fetchPromises);
+    this.cdr.detectChanges(); // Ensure Angular detects the changes
+  }
+
   matchClinicsContentBased(userPreferences: UserPreferences): Clinic[] {
     const matchedClinics: Clinic[] = [];
-  
+
     this.clinicFeatures.forEach((clinic, index) => {
       const matchCount = this.countMatches(clinic, userPreferences);
       if (matchCount > 0) {
         matchedClinics.push({ ...clinic, matchCount, rank: index + 1 });
       }
     });
-  
+
     // Sort clinics based on the number of matches in descending order
     matchedClinics.sort((a, b) => b.matchCount - a.matchCount);
-  
+
     // Assign ranks based on the sorted order
     matchedClinics.forEach((clinic, index) => {
       clinic.rank = index + 1;
     });
-  
+
     return matchedClinics;
   }
 
@@ -391,7 +542,7 @@ export class FindComponent implements OnInit {
       .filter(
         (clinic) =>
           !matchedClinics.some(
-            (matchedClinic) => matchedClinic.cService === clinic.cService 
+            (matchedClinic) => matchedClinic.cService === clinic.cService
             // && matchedClinic.cHealthcare === clinic.cHealthcare
           )
       )
@@ -409,15 +560,6 @@ export class FindComponent implements OnInit {
     this.resetControl(this.serviceControl);
   }
 
-  // onSelectHealthcares(healthcare: string): void {
-  //   if (!this.selectedHealthcares.includes(healthcare)) {
-  //     this.selectedHealthcares.push(healthcare);
-  //     console.log('Selected Healthcares:', this.selectedHealthcares);
-  //   }
-
-  //   this.resetControl(this.serviceControl);
-  // }
-
   onSelectSchedules(schedule: string): void {
     if (!this.selectedSchedules.includes(schedule)) {
       this.selectedSchedules.push(schedule);
@@ -433,13 +575,6 @@ export class FindComponent implements OnInit {
       this.selectedServices.splice(index, 1);
     }
   }
-
-  // removeHealthcares(healthcare: string): void {
-  //   const index = this.selectedHealthcares.indexOf(healthcare);
-  //   if (index !== -1) {
-  //     this.selectedHealthcares.splice(index, 1);
-  //   }
-  // }
 
   removeSchedules(schedule: string): void {
     const index = this.selectedSchedules.indexOf(schedule);
@@ -470,20 +605,6 @@ export class FindComponent implements OnInit {
     }
   }
 
-  // toggleSelectHealthcare(healthcare: string): void {
-  //   const index = this.selectedHealthcares.indexOf(healthcare);
-  
-  //   if (index !== -1) {
-  //     // If the Healthcare is already selected, unselect it
-  //     this.selectedHealthcares.splice(index, 1);
-  //     console.log(`Healthcare "${healthcare}" is unselected`);
-  //   } else {
-  //     // If the Healthcare is not selected, select it
-  //     this.selectedHealthcares.push(healthcare);
-  //     console.log(`Healthcare "${healthcare}" is selected`);
-  //   }
-  // }
-
   toggleSelectSchedule(schedule: string): void {
     const index = this.selectedSchedules.indexOf(schedule);
 
@@ -509,13 +630,6 @@ export class FindComponent implements OnInit {
     );
   }
 
-  // private filterHealthcare(value: string): string[] {
-  //   const filterValueHealthcare = this.normalizeValue(value);
-  //   return this.healthcares.filter((healthcare) =>
-  //     this.normalizeValue(healthcare).includes(filterValueHealthcare)
-  //   );
-  // }
-
   private filterSchedule(value: string): string[] {
     const filterValueSchedule = this.normalizeValue(value);
     return this.schedules.filter((schedule) =>
@@ -536,7 +650,7 @@ export class FindComponent implements OnInit {
   // for pop up of check-details
   openCheckDetails(): void {
     this.dialog.open(ClinicDetailsComponent, {
-      width: '60%',
+      width: '100%',
       height: 'auto',
     });
   }
@@ -585,8 +699,8 @@ export class FindComponent implements OnInit {
   }
 
   popSeeMoreDetails(clinic: any): void {
-    const dialogRef = this.dialog.open(ClinicDetailsComponent, {
-      width: '50%',
+    const dialogRef = this.dialog.open(FindDetailsComponent, {
+      width: 'auto',
       height: 'auto',
       data: { clinic: clinic },
     });
@@ -600,5 +714,9 @@ export class FindComponent implements OnInit {
 
   clearSearch() {
     this.searchTerm = '';
+  }
+  
+  async goBackHome(){
+    this.router.navigate(['/']);
   }
 }

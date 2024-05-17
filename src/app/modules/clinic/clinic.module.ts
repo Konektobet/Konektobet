@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { ClinicDetailsComponent } from '../details/clinic-details/clinic-details.component';
 import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatButtonModule,
     MatDividerModule,
     MatSelectModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class ClinicModule { }
