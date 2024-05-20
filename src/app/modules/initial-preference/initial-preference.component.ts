@@ -61,6 +61,8 @@ export class InitialPreferenceComponent implements OnInit {
     'Lab Tests',
     'Ultrasound',
     'Digital Xray',
+    'Kapon',
+    'Spay',
   ];
   filteredServices!: Observable<string[]>;
   selectedServices: string[] = [];

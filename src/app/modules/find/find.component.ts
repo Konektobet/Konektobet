@@ -20,6 +20,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { InitialRecommendService } from 'src/app/service/initial-recommend.service';
 import { GeolocationService } from 'src/app/service/geolocation.service';
 import { FindDetailsComponent } from '../details/find-details/find-details.component';
+import { FindFreeService } from 'src/app/service/find-free.service';
+import { FindPremiumService } from 'src/app/service/find-premium.service';
 // ring.register();
 
 interface UserPreferences {
@@ -87,6 +89,8 @@ export class FindComponent implements OnInit {
     'Lab Tests',
     'Ultrasound',
     'Digital Xray',
+    'Kapon',
+    'Spay',
   ];
   filteredServices!: Observable<string[]>;
   selectedServices: string[] = [];
@@ -140,6 +144,8 @@ export class FindComponent implements OnInit {
   clinicForm!: FormGroup;
   isEditable: boolean = false;
 
+  isPaid: boolean = false;
+
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -147,12 +153,16 @@ export class FindComponent implements OnInit {
     private supabaseService: SupabaseService,
     private http: HttpClient,
     private cdr: ChangeDetectorRef,
-    private geolocationService: GeolocationService
+    private geolocationService: GeolocationService,
+    private findFreeService: FindFreeService,
+    private findPremiumService: FindPremiumService
   ) {}
 
   ngOnInit() {
+    this.getSubsInfo();
     this.loadClinics();
     this.loadClinicFeatures();
+    this.freeLoadClinicFeatures();
     // this.fetchAllClinicLogos();
     this.filteredServices = this.serviceControl.valueChanges.pipe(
       startWith(''),
@@ -232,31 +242,44 @@ export class FindComponent implements OnInit {
     this.isHovered = false;
   }
 
-  calculateDistanceBetweenCoordinates(
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number
-  ): number {
-    const earthRadiusKm = 6371;
-    const dLat = this.degreesToRadians(lat2 - lat1);
-    const dLon = this.degreesToRadians(lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.degreesToRadians(lat1)) *
-        Math.cos(this.degreesToRadians(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = earthRadiusKm * c;
-    // Round the distance to two decimal places
-    const roundedDistance = parseFloat(distance.toFixed(2));
+  async getSubsInfo() {
+    const currentUser = this.supabaseService.getAuthStateSnapshot();
 
-    return roundedDistance;
-  }
+    if (currentUser) {
+      const { data: userData, error: userError } = await this.supabaseService
+        .getSupabase()
+        .from('users_tbl')
+        .select('id')
+        .eq('email', currentUser.email);
 
-  degreesToRadians(degrees: number): number {
-    return (degrees * Math.PI) / 180;
+      if (userError) {
+        console.error('Error fetching user data:', userError);
+        return;
+      }
+
+      if (userData && userData.length > 0) {
+        const userId = userData[0].id;
+        const { data: subsData, error: subsError } = await this.supabaseService
+          .getSupabase()
+          .from('subscribers_tbl')
+          .select('subscribed')
+          .eq('subsUsers_id', userId);
+
+        if (subsError) {
+          console.error('Error fetching subscription data:', subsError);
+          return;
+        }
+
+        if (subsData && subsData.length > 0) {
+          // If user is subscribed, set isPaid to true
+          this.isPaid = subsData[0].subscribed === true;
+          this.cdr.detectChanges();
+        } else {
+          // If no subscription data is found, set isPaid to false
+          this.isPaid = false;
+        }
+      }
+    }
   }
 
   fetchLocation() {
@@ -273,82 +296,6 @@ export class FindComponent implements OnInit {
         console.error('Error getting location:', this.errorMessage);
       }
     );
-  }
-
-  calculateSimilarity(
-    clinic: Clinic,
-    userPreferences: UserPreferences
-  ): number {
-    const serviceIntersection = this.calculateIntersection(
-      clinic.cService,
-      userPreferences.fService
-    );
-    // const healthcareIntersection = this.calculateIntersection(
-    //   clinic.cHealthcare,
-    //   userPreferences.fHealthcare
-    // );
-    const scheduleIntersection = this.calculateIntersection(
-      clinic.cSchedule,
-      userPreferences.fSchedule
-    );
-
-    const serviceWeight = 2;
-    // const healthcareWeight = 2;
-    const scheduleWeight = 1;
-    const rankWeight = 3; // Adjust the weight for ranking
-
-    // Check for undefined values before using them in calculations
-    const clinicRank = clinic.rank !== undefined ? clinic.rank : 0;
-    const clinicSimilarity =
-      clinic.similarity !== undefined ? clinic.similarity : 0;
-
-    const weightedSimilarity =
-      (serviceIntersection * serviceWeight +
-        scheduleIntersection * scheduleWeight +
-        // healthcareIntersection * healthcareWeight +
-        clinicRank * rankWeight) /
-      (serviceWeight + scheduleWeight + rankWeight);
-
-    return weightedSimilarity;
-  }
-
-  calculateIntersection(str1: string, str2: string): number {
-    const set1 = new Set(str1.split(', '));
-    const set2 = new Set(str2.split(', '));
-
-    const intersection = new Set([...set1].filter((value) => set2.has(value)));
-
-    return intersection.size;
-  }
-
-  countMatches(clinic: Clinic, userPreferences: UserPreferences): number {
-    let matchCount = 0;
-
-    // Ensure values are defined before splitting
-    const services = clinic.cService.split(', ');
-    // const healthcares = clinic.cHealthcare.split(', ');
-    const schedules = clinic.cSchedule.split(', ');
-
-    // Count matches for services
-    // matchCount += this.selectedServices.some(service => services.includes(service)) ? 1 : 0;
-
-    // Count matches for schedules
-    // matchCount += healthcares.some(healthcare => userPreferences.fHealthcare.includes(healthcare)) ? 1 : 0;
-
-    // Count matches for schedules
-    // matchCount += this.selectedSchedules.some(schedule => schedules.includes(schedule)) ? 1 : 0;
-
-    // Count matches for services
-    matchCount += services.filter((service) =>
-      userPreferences.fService.includes(service)
-    ).length;
-
-    // Count matches for schedules
-    matchCount += schedules.filter((schedule) =>
-      userPreferences.fSchedule.includes(schedule)
-    ).length;
-
-    return matchCount;
   }
 
   async findClinic() {
@@ -417,17 +364,20 @@ export class FindComponent implements OnInit {
                 );
               } else {
                 const matchedClinics =
-                  this.matchClinicsContentBased(userPreferences);
+                  this.findPremiumService.matchClinicsContentBased(
+                    userPreferences
+                  );
 
                 // Calculate distance and match count for each clinic
                 matchedClinics.forEach((clinic) => {
-                  clinic.distance = this.calculateDistanceBetweenCoordinates(
-                    this.latitude,
-                    this.longitude,
-                    clinic.cLatitude,
-                    clinic.cLongitude
-                  );
-                  clinic.matchCount = this.countMatches(
+                  clinic.distance =
+                    this.findPremiumService.calculateDistanceBetweenCoordinates(
+                      this.latitude,
+                      this.longitude,
+                      clinic.cLatitude,
+                      clinic.cLongitude
+                    );
+                  clinic.matchCount = this.findPremiumService.countMatches(
                     clinic,
                     userPreferences
                   );
@@ -451,7 +401,7 @@ export class FindComponent implements OnInit {
                 });
 
                 const recommendedClinics =
-                  this.recommendClinics(matchedClinics);
+                  this.findPremiumService.recommendClinics(matchedClinics);
 
                 console.log('Matched Clinics:', matchedClinics);
                 console.log('Recommended Clinics:', recommendedClinics);
@@ -492,7 +442,119 @@ export class FindComponent implements OnInit {
     }
   }
 
-  // fet clinic logo
+  async freeFindClinic() {
+    try {
+      const currentUser = this.supabaseService.getAuthStateSnapshot();
+      this.loading = true;
+
+      if (currentUser) {
+        const { data: userData, error: userError } = await this.supabaseService
+          .getSupabase()
+          .from('users_tbl')
+          .select('id')
+          .eq('email', currentUser.email);
+
+        if (userError) {
+          console.error('Error fetching user data:', userError);
+        } else {
+          if (userData && userData.length > 0) {
+            const userPreferences = {
+              fUser_id: userData[0].id,
+              fService: this.selectedServices.join(', '),
+              // fHealthcare: this.selectedHealthcares.join(', '),
+              fSchedule: this.selectedSchedules.join(', '),
+            };
+
+            console.log('User Preferences:', userPreferences);
+
+            // Save user preferences to the database
+            const { data: insertData, error: insertError } =
+              await this.supabaseService
+                .getSupabase()
+                .from('find_clinic_tbl')
+                .insert([userPreferences]);
+
+            if (insertError) {
+              console.error('Error inserting user preferences:', insertError);
+            } else {
+              console.log('User preferences added successfully:', insertData);
+
+              // Now you can use userPreferences in the matching algorithm
+              // Update: Fetch user preferences before matching
+              const { data: userPrefsData, error: userPrefsError } =
+                await this.supabaseService
+                  .getSupabase()
+                  .from('find_clinic_tbl')
+                  .select('*')
+                  .eq('fUser_id', userPreferences.fUser_id)
+                  .order('created_at', { ascending: false })
+                  .limit(1);
+
+              if (userPrefsError) {
+                console.error(
+                  'Error fetching user preferences:',
+                  userPrefsError
+                );
+              } else {
+                const matchedClinics =
+                  this.findFreeService.matchClinicsContentBased(userPreferences);
+                  // this.initialRecommendService.setMatchedClinics(matchedClinics);
+
+                // Sort clinics based on the similarity score in descending order
+                matchedClinics.sort(
+                  (a, b) =>
+                    (b.similarity !== undefined ? b.similarity : 0) -
+                    (a.similarity !== undefined ? a.similarity : 0)
+                );
+
+                // Assign final ranks based on the sorted order
+                matchedClinics.forEach((clinic, index) => {
+                  clinic.rank = index + 1;
+                });
+
+                const recommendedClinics =
+                  this.findFreeService.recommendClinics(matchedClinics);
+
+                console.log('Matched Clinics:', matchedClinics);
+                console.log('Recommended Clinics:', recommendedClinics);
+
+                this.clinics = matchedClinics.map((clinic) => ({
+                  ...clinic,
+                  similarity: undefined,
+                }));
+                this.clinicsFound = matchedClinics.length > 0;
+
+                this.lastTwoClinics = recommendedClinics.map((clinic) => ({
+                  ...clinic,
+                  similarity: undefined,
+                }));
+
+                this.loading = false;
+                this.clinicsFound = matchedClinics.length > 0;
+                this.fetchAllClinicLogos();
+                this.cdr.detectChanges();
+
+                // Move to the next step programmatically
+                this.stepper.next();
+              }
+            }
+          } else {
+            console.error('No user data found for the logged-in user.');
+          }
+        }
+      } else {
+        this.router.navigate(['/login']);
+        console.error(
+          'No logged-in user found. Redirecting to the login page.'
+        );
+      }
+    } catch (error) {
+      this.loading = false;
+      console.error('Error:', error);
+    }
+  }
+
+  // pet clinic logo
   async fetchAllClinicLogos() {
     const fetchPromises = this.clinics.map(async (clinic) => {
       const filename = `${clinic.cName}_clinicLogo`;
@@ -514,41 +576,6 @@ export class FindComponent implements OnInit {
 
     await Promise.all(fetchPromises);
     this.cdr.detectChanges(); // Ensure Angular detects the changes
-  }
-
-  matchClinicsContentBased(userPreferences: UserPreferences): Clinic[] {
-    const matchedClinics: Clinic[] = [];
-
-    this.clinicFeatures.forEach((clinic, index) => {
-      const matchCount = this.countMatches(clinic, userPreferences);
-      if (matchCount > 0) {
-        matchedClinics.push({ ...clinic, matchCount, rank: index + 1 });
-      }
-    });
-
-    // Sort clinics based on the number of matches in descending order
-    matchedClinics.sort((a, b) => b.matchCount - a.matchCount);
-
-    // Assign ranks based on the sorted order
-    matchedClinics.forEach((clinic, index) => {
-      clinic.rank = index + 1;
-    });
-
-    return matchedClinics;
-  }
-
-  recommendClinics(matchedClinics: Clinic[]): Clinic[] {
-    const recommendedClinics = this.clinicFeatures
-      .filter(
-        (clinic) =>
-          !matchedClinics.some(
-            (matchedClinic) => matchedClinic.cService === clinic.cService
-            // && matchedClinic.cHealthcare === clinic.cHealthcare
-          )
-      )
-      .slice(0, 2); // Limit the recommended clinics to at most three
-
-    return recommendedClinics;
   }
 
   onSelectServices(service: string): void {
@@ -670,6 +697,21 @@ export class FindComponent implements OnInit {
       });
   }
 
+  freeLoadClinics() {
+    this.supabaseService
+      .getSupabase()
+      .from('clinic_tbl')
+      .select('*')
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('Error fetching clinics:', error);
+        } else {
+          this.clinics = data;
+          this.displayedClinics = data;
+        }
+      });
+  }
+
   async loadClinicFeatures() {
     try {
       const clinicsData = await this.supabaseService
@@ -678,7 +720,24 @@ export class FindComponent implements OnInit {
         .select('*');
 
       if (!clinicsData.error) {
-        this.clinicFeatures = clinicsData.data;
+        this.findPremiumService.clinicFeatures = clinicsData.data;
+      } else {
+        console.error('Error fetching clinic features:', clinicsData.error);
+      }
+    } catch (error) {
+      console.error('Error fetching clinic features:', error);
+    }
+  }
+
+  async freeLoadClinicFeatures() {
+    try {
+      const clinicsData = await this.supabaseService
+        .getSupabase()
+        .from('clinic_tbl')
+        .select('*');
+
+      if (!clinicsData.error) {
+        this.findFreeService.clinicFeatures = clinicsData.data;
       } else {
         console.error('Error fetching clinic features:', clinicsData.error);
       }
@@ -715,8 +774,12 @@ export class FindComponent implements OnInit {
   clearSearch() {
     this.searchTerm = '';
   }
-  
-  async goBackHome(){
+
+  async goBackHome() {
     this.router.navigate(['/']);
+  }
+
+  navigateToSubscriptionPage(){
+    this.router.navigate(['/pricing']);
   }
 }

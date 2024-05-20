@@ -39,6 +39,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { InitialPreferenceComponent } from './modules/initial-preference/initial-preference.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { AdminMenubarComponent } from './admin/admin-menubar/admin-menubar.component';
+import { PaymentService } from './service/payment.service';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,7 @@ import { AdminMenubarComponent } from './admin/admin-menubar/admin-menubar.compo
     MatDividerModule,
     MatNativeDateModule,
   ],
-  providers: [DatePipe, {provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [PaymentService, DatePipe, {provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

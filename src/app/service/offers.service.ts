@@ -7,14 +7,13 @@ export class OffersService {
 
   constructor() { }
 
-  services: string[] = [
+  private services: string[] = [
     'Confinement',
     'Boarding',
     'Grooming',
     'Pet Supply',
     'Home Service',
     'Deworming',
-
     'CBC',
     'Blood Chemistry',
     'PCR Test',
@@ -27,7 +26,7 @@ export class OffersService {
     'Digital Xray',
   ];
 
-  schedules: string[] = [
+  private schedules: string[] = [
     'Monday',
     'Tuesday',
     'Wednesday',
@@ -36,4 +35,12 @@ export class OffersService {
     'Saturday',
     'Sunday',
   ];
+
+  getServices(): string[] {
+    return this.services;
+  }
+
+  getSchedules(): string[] {
+    return this.schedules;
+  }
 }

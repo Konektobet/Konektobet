@@ -95,6 +95,10 @@ const routes: Routes = [
 
   { path: 'concluded', loadChildren: () => import('./modules/concluded/concluded.module').then(m => m.ConcludedModule) },
 
+  { path: 'pricing', loadChildren: () => import('./modules/pricing/pricing.module').then(m => m.PricingModule) },
+
+  { path: 'subs-confirmation', loadChildren: () => import('./modules/subs-confirmation/subs-confirmation.module').then(m => m.SubsConfirmationModule) },
+
 
 
 ];

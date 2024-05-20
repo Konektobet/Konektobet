@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   // display: flex;
   // justify-content: center;
   // align-items: center;
@@ -9,7 +10,7 @@ body, html {
   font-family: "Josefin Sans", sans-serif;
 }
 
-.mat-horizontal-stepper-header-container ng-tns-c3676410898-3{
+.mat-horizontal-stepper-header-container ng-tns-c3676410898-3 {
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -17,31 +18,31 @@ body, html {
   width: 50%;
 }
 
-.find-clinic{
+.find-clinic {
   display: flex;
-  justify-content: center;  
+  justify-content: center;
   align-items: center;
   font-size: 30px;
   font-weight: bold;
 }
 
-.found-clinic{
+.found-clinic {
   display: flex;
-  justify-content: center;  
+  justify-content: center;
   align-items: center;
   font-size: 30px;
   font-weight: bold;
 }
 
-.outer-box-container{
+.outer-box-container {
   margin: 0 auto;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   flex-direction: column;
-  
+
   .selected {
-    color: #ffff !important; 
+    color: #ffff !important;
     --mdc-chip-label-text-color: #ffff;
   }
 
@@ -59,26 +60,30 @@ body, html {
   .orange {
     background-color: #ff9800; // Change this color to your preference
   }
+
   mat-chip {
     width: auto;
     min-width: 130px;
     max-width: 500px;
   }
 }
+
 mat-step {
   overflow: hidden;
   padding: 0 0 24px 0;
 }
 
-.inner-box-container{
+.inner-box-container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .find-container {
-  width: 100%; /* Set to 100% to make it responsive */
-  max-width: 800px; /* Set a maximum width if necessary */
+  width: 100%;
+  /* Set to 100% to make it responsive */
+  max-width: 800px;
+  /* Set a maximum width if necessary */
   height: auto;
   background-color: #3f51b5;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -86,13 +91,15 @@ mat-step {
   box-sizing: border-box;
   padding: 30px 30px 10px;
   display: flex;
-  flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
-  justify-content: space-between; /* Align cards with space-between */
+  flex-wrap: wrap;
+  /* Enable flex-wrap to handle wrapping of cards */
+  justify-content: space-between;
+  /* Align cards with space-between */
   position: relative;
 }
 
 @media screen and (max-width: 769px) {
-  .find-container{
+  .find-container {
     display: flex;
     width: 400px;
   }
@@ -112,42 +119,106 @@ mat-step {
 }
 
 .card-container {
-  width: calc(50% - 20px); /* Set width for columns (50% with margin) */
+  width: calc(50% - 20px);
+  /* Set width for columns (50% with margin) */
   box-sizing: border-box;
   min-height: 100px;
   display: flex;
-  flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
-  justify-content: space-between; /* Align cards with space-between */    
+  flex-wrap: wrap;
+  /* Enable flex-wrap to handle wrapping of cards */
+  justify-content: space-between;
+  /* Align cards with space-between */
   align-items: center;
   flex-direction: column;
 
-  .location-card{
-    height: 140px;
+  .location-card {
+    height: 170px;
+  }
+
+  .disabled-location-card{
+    height: 170px;
+    // -webkit-backdrop-filter: blur(5px);
+    // filter: blur(5px);
   }
 }
 
-.card-container mat-card{
+.location-container {
+  display: flex;
+  margin-top: 20px;
+
+  .button-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1; /* Ensure the button content is above the blurred background */
+  }
+
+  mat-card-content {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.disabled-location-container {
+  display: flex;
+  margin-top: 20px;
+
+  .button-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1; /* Ensure the button content is above the blurred background */
+  }
+
+  .icon {
+    margin-right: 8px;
+    margin-bottom: -4px;
+  }
+
+  .icon1 {
+    margin-left: 8px;
+    margin-bottom: -4px;
+  }
+
+  .disabled-location-chip button {
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Ensure the button is positioned relative to the container */
+    z-index: 2; /* Ensure the button is above the blurred background */
+  }
+
+  mat-card-content {
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.card-container mat-card {
   min-height: 100px;
   margin-bottom: 20px;
   width: 100%;
 }
 
-mat-card-content{
-    padding: 0 16px;
-    display: flex;
-    width: auto;
-    flex-wrap: nowrap;
-    align-items: center;
-    flex-direction: column;
+mat-card-content {
+  padding: 0 16px;
+  display: flex;
+  width: auto;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-direction: column;
 }
 
 @media (max-width: 768px) {
-  .box-container{
+  .box-container {
     height: 100%;
     padding: auto;
   }
+
   .card-container {
-    width: 100%; /* Set width to 100% for rows on smaller screens */
+    width: 100%;
+    /* Set width to 100% for rows on smaller screens */
     height: auto;
     margin-bottom: 20px;
   }
@@ -158,7 +229,7 @@ mat-card-content{
   }
 }
 
-.chips-container{
+.chips-container {
   // margin: 0 auto;
   // display: flex;
   // justify-content: center;
@@ -166,55 +237,44 @@ mat-card-content{
   // flex-wrap: wrap;
   // flex-direction: column;
   margin-left: 20px;
-  .service-chip, .sched-chip{
-      display: flex;
-      align-items: center;
-      justify-content: center;
+
+  .service-chip,
+  .sched-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   --mdc-chip-elevated-container-color: #ffff;
   --mdc-chip-label-text-color: #ffff;
 
   .selected {
-    color: #ffff !important; 
+    color: #ffff !important;
     --mdc-chip-label-text-color: #ffff;
-    }
-  
-    // Adjust the background color for the selected chips with the 'pink' class
-    .pink {
-      background-color: #ff4081; // Change this color to your preference
-    }
-  
-    // Adjust the background color for the selected chips with the 'blue' class
-    .blue {
-      background-color: #3f51b5;; // Change this color to your preference
-    }
-  
-    // Adjust the background color for the selected chips with the 'orange' class
-    .orange {
-      background-color: #ff9800; // Change this color to your preference
-    }
-  
-    mat-chip {
-      width: auto;
-      min-width: 130px;
-      max-width: 500px;
-    }
-
-}
-
-.location-container{
-  display: flex;
-
-  .location-chip button{
-    justify-content: center;
-    align-items: center;
   }
 
-  mat-card-content{
-    justify-content: center;
-    align-items: center;
+  // Adjust the background color for the selected chips with the 'pink' class
+  .pink {
+    background-color: #ff4081; // Change this color to your preference
   }
+
+  // Adjust the background color for the selected chips with the 'blue' class
+  .blue {
+    background-color: #3f51b5;
+    ; // Change this color to your preference
+  }
+
+  // Adjust the background color for the selected chips with the 'orange' class
+  .orange {
+    background-color: #ff9800; // Change this color to your preference
+  }
+
+  mat-chip {
+    width: auto;
+    min-width: 130px;
+    max-width: 500px;
+  }
+
 }
 
 .bot-part-container {
@@ -260,7 +320,7 @@ mat-card-content{
   padding: 0px 5px;
 }
 
-.labelforsearch mat-icon{
+.labelforsearch mat-icon {
   margin: 0;
 }
 
@@ -276,7 +336,8 @@ mat-card-content{
   width: 100%;
   margin-bottom: auto;
   display: flex;
-  justify-content: center; /* Align the button to the center horizontally */
+  justify-content: center;
+  /* Align the button to the center horizontally */
   align-items: flex-end;
 }
 
@@ -285,23 +346,26 @@ button {
 }
 
 @media screen and (max-width: 600px) {
-  .button-container{
+  .button-container {
     margin: -20px 0 40px 0;
   }
-  .next{
+
+  .next {
     margin: -10px 0 40px 0;
   }
 }
 
-.inner-foundc-container{
+.inner-foundc-container {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.foundc-container{
-  width: 100%; /* Set to 100% to make it responsive */
-  max-width: 900px; /* Set a maximum width if necessary */
+.foundc-container {
+  width: 100%;
+  /* Set to 100% to make it responsive */
+  max-width: 900px;
+  /* Set a maximum width if necessary */
   height: 570px;
   // background-color: #3f51b5;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -310,41 +374,45 @@ button {
   padding: 20px 30px 10px;
   font-family: "Josefin Sans", sans-serif;
   display: flex;
-  flex-wrap: wrap; /* Enable flex-wrap to handle wrapping of cards */
-  justify-content: space-between; /* Align cards with space-between */
+  flex-wrap: wrap;
+  /* Enable flex-wrap to handle wrapping of cards */
+  justify-content: space-between;
+  /* Align cards with space-between */
   position: relative;
   overflow-y: scroll;
 }
 
 @media screen and (max-width: 769px) {
-  .found-clinic{
+  .found-clinic {
     margin: 0;
   }
-  .foundc-container{
+
+  .foundc-container {
     display: flex;
     width: 400px;
     margin: 0;
   }
 
-  .recommended-container{
+  .recommended-container {
     display: flex;
     width: 100%;
     left: 30px;
 
   }
 
-  .recommended-title{
+  .recommended-title {
     margin-top: 300%;
     margin-right: 50px
   }
-  .recommemded-clinics{
+
+  .recommemded-clinics {
     // margin-right: -100px;
     display: flex;
     justify-content: center;
     width: 100%;
   }
 
-  .clinic-cards{
+  .clinic-cards {
     width: 350px;
     height: 100%;
     margin-bottom: 20px;
@@ -353,27 +421,27 @@ button {
     border-top-right-radius: 10px;
   }
 
-  .clinic-cards mat-card-content{
+  .clinic-cards mat-card-content {
     display: flex;
     width: 350px;
   }
 
-  .clinic-txt h1{
+  .clinic-txt h1 {
     font-size: 16px;
   }
 
-  .clinic-txt h2{
+  .clinic-txt h2 {
     font-size: 15px;
   }
 }
 
 @media screen and (max-width: 600px) {
-  mat-horizontal-stepper{
+  mat-horizontal-stepper {
     padding: 0;
   }
 }
 
-.back-container{
+.back-container {
   display: flex;
   width: 100%;
   height: auto;
@@ -381,17 +449,20 @@ button {
   // position: sticky;
 }
 
-.back{
+.back {
   cursor: pointer;
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  outline: none; /* Remove the outline */
-  border: none; /* Remove border for better consistency */
-  background-color: #ffff; /* Remove background color */
+  outline: none;
+  /* Remove the outline */
+  border: none;
+  /* Remove border for better consistency */
+  background-color: #ffff;
+  /* Remove background color */
 }
 
-.clinic-card{
+.clinic-card {
   width: 400px;
   height: 210px;
   margin-bottom: 30px;
@@ -400,7 +471,7 @@ button {
   border-top-right-radius: 10px;
 }
 
-.clinic-card mat-card-content{
+.clinic-card mat-card-content {
   padding: 0;
   display: flex;
   width: auto;
@@ -418,13 +489,13 @@ button {
 //   padding: 20px;
 // }
 
-.clinic-logo{
+.clinic-logo {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 
-  img{
+  img {
     width: 100px;
     height: auto;
     padding: 20px;
@@ -432,7 +503,7 @@ button {
   }
 }
 
-.clinic-txt{
+.clinic-txt {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -442,7 +513,7 @@ button {
   color: #ffff;
 }
 
-.clinic-txt1{
+.clinic-txt1 {
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -452,24 +523,24 @@ button {
   color: #ffff;
 }
 
-.clinic-txt h1{
+.clinic-txt h1 {
   width: 100%;
 }
 
-.clinic-txt h2{
+.clinic-txt h2 {
   font-size: 1rem;
   width: 100%;
 }
 
-.clinic-txt1 h1{
+.clinic-txt1 h1 {
   font-size: 16px;
 }
 
-.clinic-txt1 h2{
+.clinic-txt1 h2 {
   font-size: 15px;
 }
 
-.clinic-txt{
+.clinic-txt {
   // display: flex;
   // align-items: flex-start;
   // justify-content: flex-start;
@@ -495,17 +566,17 @@ button {
 //   font-size: 1rem;
 //   width: 100%;
 // }
-.clinic-txt h1{
+.clinic-txt h1 {
   width: 100%;
   font-size: 1rem;
 }
 
-.clinic-txt h2{
+.clinic-txt h2 {
   font-size: 1rem;
   width: 100%;
 }
 
-.see-more{
+.see-more {
   width: 100%;
   height: auto;
   display: flex;
@@ -516,7 +587,8 @@ button {
   flex-direction: column;
 }
 
-.see-more h1, h2{
+.see-more h1,
+h2 {
   width: 100%;
   font-size: 1rem;
   /* text-align: center; */
@@ -525,6 +597,7 @@ button {
   align-items: center;
   margin: 0;
 }
+
 /* Move the icon to the right side */
 .see-more mat-icon {
   order: 2;
@@ -534,13 +607,13 @@ button {
   margin-left: 5px;
 }
 
-.see-more1 mat-icon{
+.see-more1 mat-icon {
   // display: none;
   font-size: 24px;
   color: black;
 }
 
-.see-more1{
+.see-more1 {
   position: absolute;
   top: 0;
   left: 0;
@@ -602,9 +675,9 @@ button {
   // max-height: 700px;
 }
 
-.recommended-title{
+.recommended-title {
   display: flex;
-  justify-content: center;  
+  justify-content: center;
   align-items: center;
   font-size: 30px;
   font-weight: bold;
@@ -612,7 +685,7 @@ button {
   width: 100%;
 }
 
-.recommemded-clinics{
+.recommemded-clinics {
   display: flex;
   justify-content: center;
   flex-direction: row;
@@ -631,7 +704,7 @@ button {
 // }
 
 // stepper
-.stepper{
+.stepper {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -644,7 +717,7 @@ button {
 }
 
 // next btn
-.next{
+.next {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -698,7 +771,7 @@ button {
 
 // done
 
-.done{
+.done {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -709,36 +782,38 @@ button {
     text-align: center;
   }
 
-  img{
+  img {
     width: 400px;
     height: auto;
     margin-top: 50px;
   }
 }
 
-.just-space{
+.just-space {
   margin: 20px;
 }
 
-.rank{
+.rank {
   color: #ffff;
   width: 100%;
 }
 
-.rank h2{
+.rank h2 {
   margin: 0 0 0 20px;
 }
 
-.extend{
+.extend {
   display: flex;
   justify-content: space-between;
   width: 100%;
   position: sticky;
-  top: 0; /* Add top position */
-  background: white; /* Add background to prevent overlap issues */
+  top: 0;
+  /* Add top position */
+  background: white;
+  /* Add background to prevent overlap issues */
   z-index: 100;
-  
-  button{
+
+  button {
     justify-content: center;
   }
 }

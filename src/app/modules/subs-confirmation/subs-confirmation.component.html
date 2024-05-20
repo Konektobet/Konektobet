@@ -1,0 +1,51 @@
+<html>
+
+<body>
+    <div class="inner-pricing-container">
+        <div class="pricing-title">
+            <h1>Konektobet's Premium Plan Confirmation</h1>
+        </div>
+        <div class="pricing-container">
+            <div class="subscription">
+                <div class="title">
+                    <h2>Confirm your Premium Plan</h2>
+                </div>
+                <div class="price">
+                    <h1>₱250.00</h1>
+                    <h3>/month</h3>
+                </div>
+                <div class="description">
+                    <h3>
+                        Upgrade to our Premium Plan for advanced features that enhance
+                        your experience and streamline your healthcare journey. With this plan, you'll enjoy:
+                    </h3>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div class="perks">
+                    <div class="perks-content">
+                        <mat-icon>check</mat-icon>Location-Based Recommendations
+                    </div>
+                    <div class="perks-content">
+                        <mat-icon>check</mat-icon>Clinic Coupons
+                    </div>
+                    <div class="perks-content">
+                        <mat-icon>check</mat-icon>Personalized Recommendations
+                    </div>
+                    <div class="perks-content">
+                        <mat-icon>check</mat-icon>Appointment Schedules
+                    </div>
+                    <div class="perks-content">
+                        <mat-icon>check</mat-icon>Rate clinics
+                    </div>
+                </div>
+
+                <button mat-raised-button color="primary" (click)="proceedToPayment()" [disabled]="loading">Proceed to
+                    Payment</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

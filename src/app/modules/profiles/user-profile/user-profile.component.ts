@@ -83,6 +83,8 @@ services: string[] = [
   'Lab Tests',
   'Ultrasound',
   'Digital Xray',
+  'Kapon',
+  'Spay',
 ];
 filteredServices!: Observable<string[]>;
 selectedServices: string[] = [];
