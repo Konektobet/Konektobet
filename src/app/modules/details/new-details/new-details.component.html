@@ -2,223 +2,247 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <html>
-  <body>
-    <div class="details-outer-container">
-      <button mat-raised-button color="primary" (click)="backToClinics()">Back</button>
-      <div class="details-inner-container">
-        <h1 class="details-title"></h1>
-        <div class="container">
-          <div class="details-container1">
-            <div class="details-pic">
-                <div class="details-cover">
-                    <img src="assets/bg.png" alt="">
-                </div>
-              <div class="details">
-                <div class="details-pic-container">
-                  <img src="{{  'assets/defaultprofile.png' }}" alt="assets/defaultprofile.png" />
-                </div>
-                <div class="details-credentials">
-                  <h1><strong>{{ clinic?.cName }}</strong></h1>
-                  <div class="btns">
-                    <div class="favorites" *ngIf="!isFavorite">
-                      <button mat-raised-button color="primary" (click)="addToFavorites()">
-                        <mat-icon>favorites</mat-icon>Add to favorites
-                      </button>
-                    </div>
-                    <div class="appointment">
-                      <button mat-raised-button color="primary" (click)="makeAppointment()">
-                        <mat-icon>location_city</mat-icon>Make Appointment
-                      </button>
-                    </div>
-                    <!-- <div class="rate">
+
+<body>
+  <div class="details-outer-container">
+    <button mat-raised-button color="primary" (click)="backToClinics()">Back</button>
+    <div class="details-inner-container">
+      <h1 class="details-title"></h1>
+      <div class="container">
+        <div class="details-container1">
+          <div class="details-pic">
+            <div class="details-cover">
+              <img src="assets/bg.png" alt="">
+            </div>
+            <div class="details">
+              <div class="details-pic-container">
+                <img src="{{  'assets/defaultprofile.png' }}" alt="assets/defaultprofile.png" />
+              </div>
+              <div class="details-credentials">
+                <h1><strong>{{ clinic?.cName }}</strong></h1>
+                <div class="btns">
+                  <div class="clinic-coupons">
+                    <button mat-raised-button color="primary" (click)="addCoupons()">
+                      <mat-icon>local_offer</mat-icon>Coupons
+                    </button>
+                  </div>
+                  <div class="favorites" *ngIf="!isFavorite">
+                    <button mat-raised-button color="primary" (click)="addToFavorites()">
+                      <mat-icon>favorites</mat-icon>Add to favorites
+                    </button>
+                  </div>
+                  <div class="appointment">
+                    <button mat-raised-button color="primary" (click)="makeAppointment()">
+                      <mat-icon>location_city</mat-icon>Make Appointment
+                    </button>
+                  </div>
+                  <!-- <div class="rate">
                       <button mat-raised-button color="primary" (click)="rateClinic(clinic)">
                         <mat-icon>star</mat-icon>Rate
                       </button>
                     </div> -->
-                  </div>
                 </div>
               </div>
             </div>
-            <mat-divider></mat-divider>
-            <div class="column" >
-              <div class="col1">
-                <!-- <div class="icons">
+          </div>
+          <mat-divider></mat-divider>
+          <div class="column">
+            <div class="col1">
+              <!-- <div class="icons">
                   <mat-icon>location_on</mat-icon>
                   <h2>{{ clinic?.cAddress }}</h2>
                 </div> -->
-                <mat-form-field appearance="outline">
-                  <mat-label>Address</mat-label>
-                  <input matInput [value]="clinic.cAddress">
-                </mat-form-field>
-    
-                <div class="icons">
-                  <mat-icon>local_phone</mat-icon>
-                  <h2>{{ clinic?.cNumber }}</h2>
-                </div>
-    
-                <div class="icons">
-                  <mat-icon> email</mat-icon>
-                  <h2>{{ clinic?.cEmail }}</h2>
-                </div>
-    
-                <div class="icons">
-                  <mat-icon>date_range</mat-icon>
-                  <h2>{{ clinic?.cSchedule }}</h2>
-                </div>
-    
-                <div class="icons">
-                  <mat-icon>schedule</mat-icon>
-                  <h2>{{ clinic?.cTime }}</h2>
-                </div>
+              <mat-form-field appearance="outline">
+                <mat-label>Address</mat-label>
+                <input matInput [value]="clinic.cAddress">
+              </mat-form-field>
+
+              <div class="icons">
+                <mat-icon>local_phone</mat-icon>
+                <h2>{{ clinic?.cNumber }}</h2>
               </div>
-  
-              <div class="col2">
-                <div class="icons">
-                  <mat-icon>sentiment_satisfied_alt</mat-icon>
-                  <h2>{{ clinic?.cService }}</h2>
-                </div>
-    
-                <div class="icons">
-                  <mat-icon>money</mat-icon>
-                  <h2>Grooming Services - ₱{{ clinic?.cPrice }}</h2>
-                </div>
-    
-                <div class="icons">
-                  <mat-icon>money</mat-icon>
-                  <h2>Laboratory Services - ₱{{ clinic?.cPrice }}</h2>
-                </div>
-    
-                <div class="icons">
-                  <mat-icon>money</mat-icon>
-                  <h2>Surgery - ₱{{ clinic?.cPrice }}</h2>
-                </div>
-    
-                <div class="icons">
-                  <mat-icon>link</mat-icon>
-                  <h2> <a [href]="clinic?.cLink" target="_blank">{{ clinic?.cLink }}</a></h2>
-                </div>
+
+              <div class="icons">
+                <mat-icon> email</mat-icon>
+                <h2>{{ clinic?.cEmail }}</h2>
+              </div>
+
+              <div class="icons">
+                <mat-icon>date_range</mat-icon>
+                <h2>{{ clinic?.cSchedule }}</h2>
+              </div>
+
+              <div class="icons">
+                <mat-icon>schedule</mat-icon>
+                <h2>{{ clinic?.cTime }}</h2>
               </div>
             </div>
-            
-            <div class="reviews-container">
-              
-              <div class="overall-rating-container">
-                <!-- <h2>Overall Ratings:</h2> -->
-                <div class="rating-section">
-                  <div class="rating-section-txt">
-                    <h3 class="rating-title">Service:</h3>
-                    <h3>{{ overallServiceRating + '/5' }}</h3>   
-                  </div>
-                  <div class="overall-rating">
-                    <ng-container *ngIf="overallServiceRating !== undefined && overallServiceRating !== null">
-                      <ng-container *ngFor="let star of getStarArray(5); let i = index">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
-                          [class.filled]="i < overallServiceRating" [style.fill]="i < overallServiceRating ? '#ffc73a' : 'none'">
-                          <path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
-                        </svg>
-                      </ng-container>
-                    </ng-container>
-                  </div>
+
+            <div class="col2">
+              <div class="icons">
+                <mat-icon>sentiment_satisfied_alt</mat-icon>
+                <h2>{{ clinic?.cService }}</h2>
+              </div>
+
+              <div class="icons">
+                <mat-icon>money</mat-icon>
+                <h2>Grooming Services - ₱{{ clinic?.cPrice }}</h2>
+              </div>
+
+              <div class="icons">
+                <mat-icon>money</mat-icon>
+                <h2>Laboratory Services - ₱{{ clinic?.cPrice }}</h2>
+              </div>
+
+              <div class="icons">
+                <mat-icon>money</mat-icon>
+                <h2>Surgery - ₱{{ clinic?.cPrice }}</h2>
+              </div>
+
+              <div class="icons">
+                <mat-icon>link</mat-icon>
+                <h2> <a [href]="clinic?.cLink" target="_blank">{{ clinic?.cLink }}</a></h2>
+              </div>
+            </div>
+          </div>
+
+          <div class="reviews-container">
+
+            <div class="overall-rating-container">
+              <!-- <h2>Overall Ratings:</h2> -->
+              <div class="rating-section">
+                <div class="rating-section-txt">
+                  <h3 class="rating-title">Service:</h3>
+                  <h3>{{ overallServiceRating + '/5' }}</h3>
                 </div>
-                
-                <div class="rating-section">
-                  <div class="rating-section-txt">
-                    <h3 class="rating-title">Facility:</h3>
-                    <h3>{{ overallFacilityRating + '/5' }}</h3> 
-                  </div>
-                  <div class="overall-rating">
-                    <ng-container *ngIf="overallFacilityRating !== undefined && overallFacilityRating !== null">
-                      <ng-container *ngFor="let star of getStarArray(5); let i = index">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
-                          [class.filled]="i < overallFacilityRating" [style.fill]="i < overallFacilityRating ? '#ffc73a' : 'none'">
-                          <path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
-                        </svg>
-                      </ng-container>
+                <div class="overall-rating">
+                  <ng-container *ngIf="overallServiceRating !== undefined && overallServiceRating !== null">
+                    <ng-container *ngFor="let star of getStarArray(5); let i = index">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
+                        [class.filled]="i < overallServiceRating"
+                        [style.fill]="i < overallServiceRating ? '#ffc73a' : 'none'">
+                        <path pathLength="360"
+                          d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z">
+                        </path>
+                      </svg>
                     </ng-container>
-                  </div>
-                </div>
-                
-                <div class="rating-section">
-                  <div class="rating-section-txt">
-                    <h3 class="rating-title">Price:</h3>
-                    <h3>{{ overallPriceRating + '/5' }}</h3>  
-                  </div>
-                  <div class="overall-rating">
-                    <ng-container *ngIf="overallPriceRating !== undefined && overallPriceRating !== null">
-                      <ng-container *ngFor="let star of getStarArray(5); let i = index">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
-                          [class.filled]="i < overallPriceRating" [style.fill]="i < overallPriceRating ? '#ffc73a' : 'none'">
-                          <path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
-                        </svg>
-                      </ng-container>
-                    </ng-container>
-                  </div>
+                  </ng-container>
                 </div>
               </div>
 
-              <div class="review-title">
-                <h1><strong>Clinic Reviews</strong></h1>
-                <h3>{{ reviews.length }} Reviews</h3>
+              <div class="rating-section">
+                <div class="rating-section-txt">
+                  <h3 class="rating-title">Facility:</h3>
+                  <h3>{{ overallFacilityRating + '/5' }}</h3>
+                </div>
+                <div class="overall-rating">
+                  <ng-container *ngIf="overallFacilityRating !== undefined && overallFacilityRating !== null">
+                    <ng-container *ngFor="let star of getStarArray(5); let i = index">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
+                        [class.filled]="i < overallFacilityRating"
+                        [style.fill]="i < overallFacilityRating ? '#ffc73a' : 'none'">
+                        <path pathLength="360"
+                          d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z">
+                        </path>
+                      </svg>
+                    </ng-container>
+                  </ng-container>
+                </div>
               </div>
-              <mat-divider></mat-divider>
-              <div class="just-space"></div>
-              
-              <div class="user-comments" *ngFor="let review of reviews; let i = index">
-                <div class="user-pic">
-                  <img src="{{ 'assets/defaultprofile.png' }}" alt="Default Profile" />
-                  <div class="com-details">
-                    <h3>{{ review.user }}</h3>
-                    <div class="date">
-                      <p>{{ review.timestamp }}</p>
+
+              <div class="rating-section">
+                <div class="rating-section-txt">
+                  <h3 class="rating-title">Price:</h3>
+                  <h3>{{ overallPriceRating + '/5' }}</h3>
+                </div>
+                <div class="overall-rating">
+                  <ng-container *ngIf="overallPriceRating !== undefined && overallPriceRating !== null">
+                    <ng-container *ngFor="let star of getStarArray(5); let i = index">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
+                        [class.filled]="i < overallPriceRating"
+                        [style.fill]="i < overallPriceRating ? '#ffc73a' : 'none'">
+                        <path pathLength="360"
+                          d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z">
+                        </path>
+                      </svg>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+
+            <div class="review-title">
+              <h1><strong>Clinic Reviews</strong></h1>
+              <h3>{{ reviews.length }} Reviews</h3>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="just-space"></div>
+
+            <div class="user-comments" *ngFor="let review of reviews; let i = index">
+              <div class="user-pic">
+                <img src="{{ 'assets/defaultprofile.png' }}" alt="Default Profile" />
+                <div class="com-details">
+                  <h3>{{ review.user }}</h3>
+                  <div class="date">
+                    <p>{{ review.timestamp }}</p>
+                  </div>
+                  <div class="rate-container">
+                    <div class="name-rate">
+                      <p>Service</p>
+                      <p>Facility</p>
+                      <p>Price</p>
                     </div>
-                    <div class="rate-container">
-                      <div class="name-rate">
-                        <p>Service</p>
-                        <p>Facility</p>
-                        <p>Price</p>
+                    <div class="star-rate">
+                      <div class="rating">
+                        <ng-container *ngIf="review.serviceRating !== undefined && review.serviceRating !== null">
+                          <ng-container *ngFor="let star of getStarArray(5); let i = index">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
+                              [class.filled]="i < review.serviceRating"
+                              [style.fill]="i < review.serviceRating ? '#ffc73a' : 'none'">
+                              <path pathLength="360"
+                                d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z">
+                              </path>
+                            </svg>
+                          </ng-container>
+                        </ng-container>
                       </div>
-                      <div class="star-rate">
-                        <div class="rating">
-                          <ng-container *ngIf="review.serviceRating !== undefined && review.serviceRating !== null">
-                            <ng-container *ngFor="let star of getStarArray(5); let i = index">
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
-                                [class.filled]="i < review.serviceRating" [style.fill]="i < review.serviceRating ? '#ffc73a' : 'none'">
-                                <path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
-                              </svg>
-                            </ng-container>
+                      <div class="rating">
+                        <ng-container *ngIf="review.facilityRating !== undefined && review.facilityRating !== null">
+                          <ng-container *ngFor="let star of getStarArray(5); let i = index">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
+                              [class.filled]="i < review.facilityRating"
+                              [style.fill]="i < review.facilityRating ? '#ffc73a' : 'none'">
+                              <path pathLength="360"
+                                d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z">
+                              </path>
+                            </svg>
                           </ng-container>
-                        </div>
-                        <div class="rating">
-                          <ng-container *ngIf="review.facilityRating !== undefined && review.facilityRating !== null">
-                            <ng-container *ngFor="let star of getStarArray(5); let i = index">
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
-                                [class.filled]="i < review.facilityRating" [style.fill]="i < review.facilityRating ? '#ffc73a' : 'none'">
-                                <path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
-                              </svg>
-                            </ng-container>
-                          </ng-container>
-                        </div>
-                        <div class="rating">
-                          <ng-container *ngIf="review.priceRating !== undefined && review.priceRating !== null">
-                            <ng-container *ngFor="let star of getStarArray(5); let i = index">
-                              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
-                                [class.filled]="i < review.priceRating" [style.fill]="i < review.priceRating ? '#ffc73a' : 'none'">
-                                <path pathLength="360" d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"></path>
-                              </svg>
-                            </ng-container>
-                          </ng-container>
-                        </div>
+                        </ng-container>
                       </div>
-                    </div>
-                    <div class="content">
-                      <p>{{ review.content }}</p>
+                      <div class="rating">
+                        <ng-container *ngIf="review.priceRating !== undefined && review.priceRating !== null">
+                          <ng-container *ngFor="let star of getStarArray(5); let i = index">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="star"
+                              [class.filled]="i < review.priceRating"
+                              [style.fill]="i < review.priceRating ? '#ffc73a' : 'none'">
+                              <path pathLength="360"
+                                d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z">
+                              </path>
+                            </svg>
+                          </ng-container>
+                        </ng-container>
+                      </div>
                     </div>
                   </div>
+                  <div class="content">
+                    <p>{{ review.content }}</p>
+                  </div>
                 </div>
-                <mat-divider *ngIf="!last"></mat-divider>
-                <div class="just-space-up"></div>
               </div>
-              <!-- <div class="show">
+              <mat-divider *ngIf="!last"></mat-divider>
+              <div class="just-space-up"></div>
+            </div>
+            <!-- <div class="show">
                 <button mat-raised-button color="primary" *ngIf="reviews.length > 5" (click)="showAllReviews = !showAllReviews">
                   {{ showAllReviews ? 'Show Less' : 'Show More' }}
                 </button>
@@ -280,11 +304,11 @@
                   <div class="just-space-up"></div>
                 </div>
               </div> -->
-            </div>
-
           </div>
 
-          <!-- <div class="recommended-container">
+        </div>
+
+        <!-- <div class="recommended-container">
             <div class="recommended-title">
               <h1><strong>YOU MAY ALSO LIKE</strong></h1>
             </div>
@@ -306,8 +330,9 @@
             </div>
           </div> -->
 
-          </div>
-        </div>
       </div>
-  </body>
+    </div>
+  </div>
+</body>
+
 </html>

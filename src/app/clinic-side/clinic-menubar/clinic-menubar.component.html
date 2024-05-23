@@ -5,7 +5,7 @@
         <mat-icon>menu</mat-icon>
       </button>
       <div class="nav-logo">
-          <img src="assets/logo.png" alt="konektobetlogo" class="navlogo" routerLink="/clinic/clinic-home">
+          <img src="assets/logoo.png" alt="konektobetlogo" class="navlogo" routerLink="/clinic/clinic-home">
       </div>
       <div class="nav-links">
           <a class="a-link" routerLink="/clinic/clinic-home" mat-button>Home</a>
@@ -13,6 +13,7 @@
           <!-- <a class="a-link" routerLink="/clinic-appointment" mat-button>Appointments</a> -->
           <a class="a-link" routerLink="/clinic/clinic-find" mat-button>Appointments</a>
           <a class="a-link" routerLink="/clinic/status" mat-button>Status</a>
+          <a class="a-link" routerLink="/clinic/clinic-coupons" mat-button>Coupons</a>
           <span class="menu-spacer"></span>
       </div>
       <div class="flex-container"></div>
@@ -109,6 +110,17 @@
                 <mat-icon [style.color]="isActiveLink('/clinic/status') ? '#ffffff' : ''">check_circle_outline</mat-icon>
               </div>
               <span [style.color]="isActiveLink('/clinic/status') ? '#ffffff' : ''">Status</span>                
+            </div>
+          </a>
+        </div>
+
+        <div class="list" [class.active]="isActiveLink('/clinic/clinic-coupons')">
+          <a routerLink="/clinic/clinic-coupons" mat-list-item>
+            <div class="list-item">
+              <div class="list-circle">
+                <mat-icon [style.color]="isActiveLink('/clinic/clinic-coupons') ? '#ffffff' : ''">check_circle_outline</mat-icon>
+              </div>
+              <span [style.color]="isActiveLink('/clinic/clinic-coupons') ? '#ffffff' : ''">Status</span>                
             </div>
           </a>
         </div>

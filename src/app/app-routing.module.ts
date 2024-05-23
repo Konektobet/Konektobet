@@ -36,13 +36,21 @@ const routes: Routes = [
   { path: 'appointment-update', loadChildren: () => import('./modules/appointment-update/appointment-update.module').then(m => m.AppointmentUpdateModule) },
   { path: 'user-selection', loadChildren: () => import('./clinic-side/user-selection/user-selection.module').then(m => m.UserSelectionModule) },
   { path: 'find-details', loadChildren: () => import('./modules/details/find-details/find-details.module').then(m => m.FindDetailsModule) },
+  { path: 'upload-image', loadChildren: () => import('./modules/profiles/crud/upload-image/upload-image.module').then(m => m.UploadImageModule) },
+  { path: 'cover-preview', loadChildren: () => import('./modules/profiles/preview/cover-preview/cover-preview.module').then(m => m.CoverPreviewModule) },
+  { path: 'concluded', loadChildren: () => import('./modules/concluded/concluded.module').then(m => m.ConcludedModule) },
+  { path: 'pricing', loadChildren: () => import('./modules/pricing/pricing.module').then(m => m.PricingModule) },
+  { path: 'subs-confirmation', loadChildren: () => import('./modules/subs-confirmation/subs-confirmation.module').then(m => m.SubsConfirmationModule) },
+  { path: 'coupons', loadChildren: () => import('./modules/coupons/coupons.module').then(m => m.CouponsModule) },
 
   // pet
   { path: 'pet-profile', loadChildren: () => import('./modules/profiles/pet-profile/pet-profile.module').then(m => m.PetProfileModule) },
   { path: 'add-pet', loadChildren: () => import('./modules/profiles/crud/add-pet/add-pet.module').then(m => m.AddPetModule) },
   { path: 'edit-pet', loadChildren: () => import('./modules/profiles/crud/edit-pet/edit-pet.module').then(m => m.EditPetModule) },
   { path: 'pet-details', loadChildren: () => import('./modules/profiles/pet-details/pet-details.module').then(m => m.PetDetailsModule) },
-
+  { path: 'profile-preview', loadChildren: () => import('./modules/profiles/preview/profile-preview/profile-preview.module').then(m => m.ProfilePreviewModule) },
+  { path: 'upload-profile', loadChildren: () => import('./modules/profiles/crud/upload-profile/upload-profile.module').then(m => m.UploadProfileModule) },
+  { path: 'upload-cover', loadChildren: () => import('./modules/profiles/crud/upload-cover/upload-cover.module').then(m => m.UploadCoverModule) },
   // clinic side
   { path: 'clinic/clinic-login', loadChildren: () => import('./clinic-side/clinic-login/clinic-login.module').then(m => m.ClinicLoginModule) },
   { path: 'clinic/clinic-home', loadChildren: () => import('./clinic-side/clinic-home/clinic-home.module').then(m => m.ClinicHomeModule) },
@@ -55,6 +63,7 @@ const routes: Routes = [
   { path: 'clinic/clinic-details', loadChildren: () => import('./clinic-side/details/clinic-details/clinic-details.module').then(m => m.ClinicDetailsModule) },
   { path: 'clinic/rclinic-details', loadChildren: () => import('./clinic-side/details/rclinic-details/rclinic-details.module').then(m => m.RclinicDetailsModule) },
   { path: 'clinic/onboarding', loadChildren: () => import('./clinic-side/onboarding/onboarding.module').then(m => m.OnboardingModule) },
+  { path: 'clinic/clinic-coupons', loadChildren: () => import('./clinic-side/clinic-coupons/clinic-coupons.module').then(m => m.ClinicCouponsModule) },
 
   // details
   { path: 'new-details/:id', component: NewDetailsComponent },
@@ -83,21 +92,12 @@ const routes: Routes = [
   },
   { path: 'trial', loadChildren: () => import('./modules/trial/trial.module').then(m => m.TrialModule) },
 
-  { path: 'upload-image', loadChildren: () => import('./modules/profiles/crud/upload-image/upload-image.module').then(m => m.UploadImageModule) },
+  { path: 'add-coupons', loadChildren: () => import('./clinic-side/add-coupons/add-coupons.module').then(m => m.AddCouponsModule) },
 
-  { path: 'cover-preview', loadChildren: () => import('./modules/profiles/preview/cover-preview/cover-preview.module').then(m => m.CoverPreviewModule) },
+  { path: 'update-coupons', loadChildren: () => import('./clinic-side/update-coupons/update-coupons.module').then(m => m.UpdateCouponsModule) },
 
-  { path: 'profile-preview', loadChildren: () => import('./modules/profiles/preview/profile-preview/profile-preview.module').then(m => m.ProfilePreviewModule) },
+  
 
-  { path: 'upload-profile', loadChildren: () => import('./modules/profiles/crud/upload-profile/upload-profile.module').then(m => m.UploadProfileModule) },
-
-  { path: 'upload-cover', loadChildren: () => import('./modules/profiles/crud/upload-cover/upload-cover.module').then(m => m.UploadCoverModule) },
-
-  { path: 'concluded', loadChildren: () => import('./modules/concluded/concluded.module').then(m => m.ConcludedModule) },
-
-  { path: 'pricing', loadChildren: () => import('./modules/pricing/pricing.module').then(m => m.PricingModule) },
-
-  { path: 'subs-confirmation', loadChildren: () => import('./modules/subs-confirmation/subs-confirmation.module').then(m => m.SubsConfirmationModule) },
 
 
 

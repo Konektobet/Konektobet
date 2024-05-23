@@ -1,0 +1,31 @@
+<html>
+
+<body>
+    <div class="update-coupon-container">
+        <h2>Update Coupon</h2>
+        <form (ngSubmit)="updateCoupon()">
+          <div class="form-group">
+            <label for="clinicSelect">Select Clinic:</label>
+            <mat-form-field appearance="fill">
+              <mat-label>Clinic</mat-label>
+              <mat-select [(ngModel)]="selectedClinic" name="clinic" required>
+                <mat-option *ngFor="let clinic of clinics" [value]="clinic.cName">
+                  {{ clinic.cName }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <label for="couponDetails">Coupon Details:</label>
+            <mat-form-field appearance="fill">
+              <textarea matInput id="couponDetails" name="details" [(ngModel)]="couponDetails" rows="5" required></textarea>
+            </mat-form-field>
+          </div>
+          <div class="form-group">
+            <button mat-raised-button class="update-btn" color="primary" type="submit">Update</button>
+          </div>
+        </form>
+      </div>
+</body>
+
+</html>

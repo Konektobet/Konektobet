@@ -15,8 +15,9 @@
             <a class="a-link" routerLink="/" mat-button>Home</a>
             <a class="a-link" routerLink="/clinic" mat-button>Clinics</a>
             <a class="a-link" routerLink="/find" mat-button>Find Clinic</a>
-            <a class="a-link" routerLink="/appointment" mat-button>Appointments</a>
-            <a class="a-link" routerLink="/concluded" mat-button>Concluded</a>
+            <a class="a-link" *ngIf="user" routerLink="/appointment" mat-button>Appointments</a>
+            <a class="a-link" *ngIf="user" routerLink="/concluded" mat-button>Concluded</a>
+            <a class="a-link" *ngIf="user" routerLink="/coupons" mat-button>Coupons</a>
             <a class="a-link" routerLink="/pricing" mat-button>Pricing</a>
             <span class="menu-spacer"></span>
         </div>
@@ -134,6 +135,17 @@
                   <mat-icon [style.color]="isActiveLink('/concluded') ? '#ffffff' : ''">event</mat-icon>
                 </div>
                 <span [style.color]="isActiveLink('/concluded') ? '#ffffff' : ''">Concluded</span>                
+              </div>
+            </a>
+          </div>
+
+          <div class="list" [class.active]="isActiveLink('/coupons')">
+            <a routerLink="/coupons" mat-list-item>
+              <div class="list-item">
+                <div class="list-circle">
+                  <mat-icon [style.color]="isActiveLink('/coupons') ? '#ffffff' : ''">money</mat-icon>
+                </div>
+                <span [style.color]="isActiveLink('/coupons') ? '#ffffff' : ''">Coupons</span>                
               </div>
             </a>
           </div>

@@ -1,0 +1,34 @@
+<html>
+
+<body>
+    <!-- add-coupon.component.html -->
+    <div class="add-coupon-container">
+        <h2>Add a New Coupon</h2>
+        <form (ngSubmit)="addCoupon()">
+            <div class="form-group">
+                <label for="clinicSelect">Select Clinic:</label>
+                <mat-form-field appearance="fill">
+                    <mat-label>Clinic</mat-label>
+                    <mat-select [(ngModel)]="selectedClinic" name="clinic" required>
+                        <mat-option *ngFor="let clinic of clinics" [value]="clinic.cName">
+                            {{ clinic.cName }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="form-group">
+                <label for="couponDetails">Coupon Details:</label>
+                <mat-form-field appearance="fill">
+                    <textarea matInput id="couponDetails" name="details" [(ngModel)]="couponDetails" rows="5"
+                        required></textarea>
+                </mat-form-field>
+            </div>
+            <div class="form-group add-button">
+                <button mat-raised-button color="primary" type="submit">Add</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+
+</html>
