@@ -45,7 +45,7 @@ export class ClinicListComponent implements OnInit {
     this.loadClinics();
     this.loadAcceptedClinic();
     this.loadRejectedClinics();
-    this.fetchClinicLogo();
+    this.fetchAllClinicLogos();
   }
 
   onMouseEnter() {
@@ -90,7 +90,7 @@ export class ClinicListComponent implements OnInit {
               console.error('Error fetching clinics:', clinicsError);
             } else {
               this.clinics = clinicsData || [];
-              this.fetchClinicLogo();
+              this.fetchAllClinicLogos();
             }
           } else {
             console.error('No user data found for the logged-in user.');
@@ -264,27 +264,26 @@ export class ClinicListComponent implements OnInit {
     this.router.navigate(['/new-details', clinic.id]);
   }
 
-  async fetchClinicLogo() {
-    for (const clinic of this.clinics) {
+
+  async fetchAllClinicLogos() {
+    const fetchPromises = this.clinics.map(async (clinic) => {
       const filename = `${clinic.cName}_clinicLogo`;
       try {
         const { data, error } = await this.supabaseService.getSupabase().storage
           .from('clinicLogo')
           .download(filename);
-        // console.log(filename)
 
         if (error) {
-          // console.error('Error fetching profile picture:', error);
-          // Fallback to default image
-          clinic.profile = 'assets/logo.png';
+          clinic.profile = 'assets/logoo.png';
         } else {
           clinic.profile = URL.createObjectURL(data);
         }
       } catch (error) {
-        // console.error('Error fetching profile picture:', error);
-        // Fallback to default image
-        clinic.profile = 'assets/logo.png';
+        clinic.profile = 'assets/logoo.png';
       }
-    }
+    });
+
+    await Promise.all(fetchPromises);
+    this.cdr.detectChanges(); // Ensure Angular detects the changes
   }
 }

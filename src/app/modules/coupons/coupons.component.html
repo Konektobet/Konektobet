@@ -1,0 +1,55 @@
+<html>
+    <body>
+        <div class="loader-overlay" *ngIf="loading">
+            <mat-progress-spinner diameter="100" mode="indeterminate" color="primary"></mat-progress-spinner>
+          </div>
+        <div class="outer-coupon-container">
+            <div class="pricing-title">
+                <h1>Coupons</h1>
+            </div>
+            <div class="inner-coupon-container">
+              <div *ngIf="coupons && coupons.length > 0; else noData">
+                <mat-card *ngFor="let coupon of coupons" class="coupon-card">
+                  <mat-card-header class="custom-header">
+                    <mat-card-title>{{ coupon.cClinic_name }} Coupon</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content class="coupon-details" [style.backgroundImage]="'url(assets/bg.png)'">
+                    <!-- Coupon details -->
+                    <div class="details-container">
+                      <!-- Details logo container -->
+                      <div class="details-logo-container">
+                        <img src="assets/logoo.png" alt="logo.png">
+                      </div>
+                      <!-- Details text container -->
+                      <div class="details-txt-container">
+                        <!-- Details -->
+                        <div class="icons">
+                          <mat-icon>info</mat-icon>
+                          <h2>{{ coupon.cDetails }}</h2>
+                        </div>
+                        <!-- Claim button -->
+                        <div class="claim-button-container">
+                          <button mat-raised-button class="claim-btn" (click)="claimCoupon(coupon)">
+                            Claim
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+              <ng-template #noData>
+                <!-- No coupons message -->
+                <div class="no-data">
+                  <img src="assets/add clinic.svg" alt="">
+                </div>
+                <div class="no-data-txt">
+                  <h1>No coupons found</h1>
+                  <h2>Please check back later.</h2>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          
+    </body>
+</html>

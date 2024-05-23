@@ -1,0 +1,229 @@
+/* General Styles */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* Outer Coupons Container */
+.outer-coupons-container {
+  text-align: center;
+  padding-top: 20px;
+}
+
+/* Coupons Title */
+.coupons {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+/* Button Container */
+.btn {
+  margin-top: 20px;
+}
+
+/* Inner Coupons Container */
+.inner-coupons-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Button Styles */
+.btn button {
+  background-color: #3f51b5;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  outline: none;
+  margin: 0 auto;
+}
+
+.btn button:hover {
+  background-color: #3f51b5;
+}
+
+/* Outer Coupon Container */
+.outer-coupon-container {
+  text-align: center;
+  padding: 20px;
+}
+
+/* Coupons Title */
+.coupons {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+/* Inner Coupon Container */
+.inner-coupon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* Custom Header */
+.custom-header {
+  background-color: rgb(63, 81, 181);
+  color: #fff;
+}
+
+/* Coupon Card */
+.coupon-card {
+  margin-bottom: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+/* Coupon Details */
+.coupon-details {
+  padding: 1rem 8rem 1rem 8rem;
+}
+
+/* No Data Container */
+.no-data {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* No Data Image */
+.no-data img {
+  width: 40%;
+  height: auto;
+}
+
+/* No Data Text Container */
+.no-data-txt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Details Container */
+.details-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 12px;
+  flex-direction: column;
+}
+
+/* Details Logo Container Image */
+.details-logo-container img {
+  width: 100px;
+  height: auto;
+}
+
+/* Details Text Container */
+.details-txt-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+/* Icons Container */
+.icons {
+  display: flex;
+  align-items: center;
+  color: white;
+}
+
+/* Icons Material Icon */
+.icons mat-icon {
+  margin-right: 10px;
+}
+
+/* Icons Text */
+.icons h2 {
+  margin: 0;
+}
+
+.buttons {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.update-btn{
+  background-color: #31447a;
+  color: white;
+  border: none; /* Remove border */
+  outline: none; /* Remove outline */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add transition for smoother hover effect */
+}
+
+.delete-btn {
+  background-color: #ad2e2e;
+  color: white;
+  border: none; /* Remove border */
+  outline: none; /* Remove outline */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add transition for smoother hover effect */
+}
+
+.update-btn:hover {
+  background-color: #31447a; /* Darken the color on hover */
+}
+
+.delete-btn:hover {
+  background-color: #ad2e2e; /* Darken the color on hover */
+}
+
+
+.details-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.validity {
+  margin-top: 10px;
+}
+
+.validity p {
+  margin: 0;
+}
+
+
+
+/* Media Query for Smaller Screens */
+@media screen and (max-width: 769px) {
+  mat-card-title {
+    font-size: 17px;
+  }
+  mat-card-content {
+    width: auto;
+    height: auto;
+  }
+  .icons h1 {
+    font-size: 20px;
+  }
+  .icons h2 {
+    font-size: 18px;
+  }
+
+  .no-data img {
+    width: 90%;
+    height: auto;
+  }
+  .no-data-txt h1 {
+    font-size: 20px;
+  }
+  .no-data-txt h2 {
+    font-size: 14px;
+  }
+}

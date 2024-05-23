@@ -1,9 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { InitialRecommendService } from 'src/app/service/initial-recommend.service';
+import { Component, OnInit } from '@angular/core';
+import { Chart } from 'chart.js/auto'
 import { SupabaseService } from 'src/app/service/supabase.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-clinic-home',
@@ -11,82 +8,191 @@ import Swal from 'sweetalert2';
   styleUrls: ['./clinic-home.component.scss']
 })
 export class ClinicHomeComponent implements OnInit{
-  redirectionPerformed: boolean = false;
+  pendingAppointmentsCount: number = 0;
+  acceptedAppointmentsCount: number = 0;
+  rejectedAppointmentsCount: number = 0;
+  concludedAppointmentsCount: number = 0;
+  appointmentDates: string[] = [];
+  appointmentCounts: number[] = [];
+  years: number[] = [];
+  selectedYear: number = new Date().getFullYear();
+  totalAppointmentsPerMonth: { name: string; count: number }[] = [];
 
-  constructor(
-    private supabaseService: SupabaseService,
-    private dialog: MatDialog,
-    private cdr: ChangeDetectorRef,
-    private initialRecommendService: InitialRecommendService,
-    private router: Router,
-  ) {}
+  constructor(private supabaseService: SupabaseService) {}
 
-  ngOnInit(): void {
-    this.loadAcceptedClinic();
+  ngOnInit() {
+    this.populateYears();
+    this.fetchAppointmentCounts();
   }
 
-  async loadAcceptedClinic() {
+  populateYears() {
+    const startYear = 2023;
+    const endYear = 2050;
+    for (let year = startYear; year <= endYear; year++) {
+      this.years.push(year);
+    }
+  }
+
+  async fetchAppointmentCounts() {
     try {
-      if (!this.redirectionPerformed) {
-        const currentUser = this.supabaseService.getClinicAuthStateSnapshot();
-    
-        if (currentUser) {
-          const { data: userData, error: userError } = await this.supabaseService
+      const clinicUser = this.supabaseService.getClinicAuthStateSnapshot();
+
+      if (clinicUser) {
+        const { data: clinicUserData, error: clinicUserError } =
+          await this.supabaseService
             .getSupabase()
             .from('clinic_users_tbl')
-            .select('*')
-            .eq('email', currentUser.email);
-    
-          if (userError) {
-            console.error('Error fetching user data:', userError);
-          } else {
-            if (userData && userData.length > 0) {
-              const acUsers_id = userData[0].id;
-      
-              const { data: adminClinicData, error: adminClinicError } =
-                await this.supabaseService
-                  .getSupabase()
-                  .from('admin_clinic_tbl')
-                  .select('*')
-                  .eq('adUsers_id', acUsers_id);
-      
-              const { data: clinicData, error: clinicError } =
-                await this.supabaseService
-                  .getSupabase()
-                  .from('clinic_tbl')
-                  .select('*')
-                  .eq('cUsers_id', acUsers_id);
-      
-              if (!adminClinicError && adminClinicData && adminClinicData.length === 0 &&
-                  !clinicError && clinicData && clinicData.length === 0) {
-                // No record found in admin_clinic_tbl and clinic_tbl, redirect to onboarding page
-                this.router.navigate(['/clinic/onboarding']);
-                console.log('Clinic data found:', clinicData)
-                console.log('Admin data found:', adminClinicData)
-              } else {
-                // Redirect to clinic-home page
-                // this.router.navigate(['/clinic/clinic-home']);
-                console.log('Clinic data found:', clinicData)
-                console.log('Admin data found:', adminClinicData)
-              }
-    
-              // Set the redirection flag to true to prevent further redirections
-              this.redirectionPerformed = true;
+            .select('id')
+            .eq('email', clinicUser.email);
+
+        if (clinicUserError) {
+          console.error('Error fetching clinic user data:', clinicUserError);
+          return;
+        } else if (clinicUserData && clinicUserData.length > 0) {
+          const clinicUserId = clinicUserData[0].id;
+
+          const { data: clinicsData, error: clinicsError } =
+            await this.supabaseService
+              .getSupabase()
+              .from('clinic_tbl')
+              .select('id')
+              .eq('cUsers_id', clinicUserId);
+
+          if (clinicsError) {
+            console.error('Error fetching clinics data:', clinicsError);
+            return;
+          } else if (clinicsData && clinicsData.length > 0) {
+            const clinicIds = clinicsData.map(clinic => clinic.id);
+
+            const { data: appointmentsData, error: appointmentsError } =
+              await this.supabaseService
+                .getSupabase()
+                .from('appointment_tbl')
+                .select('status, aDate')
+                .in('aClinic_id', clinicIds);
+
+            if (appointmentsError) {
+              console.error('Error fetching appointments data:', appointmentsError);
+              return;
             } else {
-              console.error('No user data found for the logged-in user.');
+              for (const appointment of appointmentsData || []) {
+                switch (appointment.status) {
+                  case 'Your appointment status is pending':
+                    this.pendingAppointmentsCount++;
+                    break;
+                  case 'Your Appointment has been Approved':
+                    this.acceptedAppointmentsCount++;
+                    break;
+                  case 'Your appointment has been Rejected':
+                    this.rejectedAppointmentsCount++;
+                    break;
+                  case 'Appointment is Concluded':
+                    this.concludedAppointmentsCount++;
+                    break;
+                  default:
+                    break;
+                }
+                // Extract dates for line chart
+                this.appointmentDates.push(appointment.aDate);
+                // Increment count for the respective month
+                // You may need to modify this based on how you want to group appointments by month
+                this.appointmentCounts.push(1); // Increment by 1 for each appointment, modify this based on your data
+              }
+
+              this.filterAppointmentsByYear({ target: { value: this.selectedYear } });
+              this.renderCharts();
             }
+          } else {
+            console.warn('No clinics found associated with the logged-in clinic user.');
           }
         } else {
-          console.error('No logged-in user found.');
+          console.error('No clinic user data found for the logged-in clinic user.');
         }
+      } else {
+        console.warn('No logged-in clinic user found.');
       }
     } catch (error) {
       console.error('Error:', error);
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'An error occurred while loading the clinic. Please try again.',
-      });
+      // Handle error appropriately, display user-friendly message if needed
     }
   }
+
+  getTotalAppointmentsCount(): number {
+    return (
+      this.pendingAppointmentsCount +
+      this.acceptedAppointmentsCount +
+      this.rejectedAppointmentsCount +
+      this.concludedAppointmentsCount
+    );
+  }
+
+  calculatePercentage(count: number): number {
+    const total = this.getTotalAppointmentsCount();
+    return total === 0 ? 0 : Math.round((count / total) * 100);
+  }
+
+  renderCharts() {
+    this.renderPieChart();
+  }
+
+  renderPieChart() {
+    const pieChartCanvas = document.getElementById('appointmentPieChart') as HTMLCanvasElement | null;
+    
+    if (pieChartCanvas) {
+      const ctx = pieChartCanvas.getContext('2d');
+      if (ctx) {
+        new Chart(ctx, {
+          type: 'pie',
+          data: {
+            labels: ['Pending', 'Accepted', 'Rejected', 'Concluded'],
+            datasets: [{
+              label: 'Appointment Status',
+              data: [
+                this.pendingAppointmentsCount,
+                this.acceptedAppointmentsCount,
+                this.rejectedAppointmentsCount,
+                this.concludedAppointmentsCount
+              ],
+              backgroundColor: ['orange', 'blue', 'red', 'green'],
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true
+          }
+        });
+      } else {
+        console.error('Canvas context is null');
+      }
+    } else {
+      console.error('Canvas element not found');
+    }
+  }
+
+  filterAppointmentsByYear(event: any) {
+    const selectedYear = event.value;
+    const appointmentsInSelectedYear = this.appointmentDates.filter(date => new Date(date).getFullYear() === parseInt(selectedYear));
+    const months = [
+      { name: 'January', count: 0 },
+      { name: 'February', count: 0 },
+      { name: 'March', count: 0 },
+      { name: 'April', count: 0 },
+      { name: 'May', count: 0 },
+      { name: 'June', count: 0 },
+      { name: 'July', count: 0 },
+      { name: 'August', count: 0 },
+      { name: 'September', count: 0 },
+      { name: 'October', count: 0 },
+      { name: 'November', count: 0 },
+      { name: 'December', count: 0 }
+    ];
+  
+    for (const date of appointmentsInSelectedYear) {
+      const month = new Date(date).getMonth();
+      months[month].count++;
+    }
+  
+    this.totalAppointmentsPerMonth = months;
+  }
+  
 }

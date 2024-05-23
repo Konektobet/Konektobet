@@ -1,78 +1,105 @@
-<section class="hero">
-    <div class="hero-inner">
-        <h2 id='head1' class='header'>Explore Amazing Dog Care Services</h2>
-        <h2 id='head2' class='header'>Create Your Dog Clinic</h2>
-        <h2 id='head3' class='header'>Connect with Dog Owners</h2>
-        <h1 id='head4' class='header'>Welcome to Konektobet</h1>
-      <!-- <h1>Welcome to Konektobet</h1>
-      <h2>Create and Explore amazing dog care services and connect with dog owners!</h2> -->
-      <a routerLink="/clinic-list" class="btn">Get Started</a>
+<html>
+  <body>
+    <div class="clinic-home">
+      <div class="container">
+        <!-- Pending Appointments -->
+        <div class="column pending bottom-border-orange">
+          <div class="label">Pending appointments</div>
+          <div class="content">
+            <mat-icon class="icon">schedule</mat-icon>
+            <span class="number">{{ pendingAppointmentsCount }}</span>
+            <svg class="donut-chart" viewBox="0 0 32 32">
+              <circle class="donut-ring" cx="16" cy="16" r="14" fill="transparent" stroke="#ccc" stroke-width="4"></circle>
+              <circle class="donut-segment" cx="16" cy="16" r="14" fill="transparent" stroke="#FFA500" stroke-width="4"
+                [attr.stroke-dasharray]="(pendingAppointmentsCount / getTotalAppointmentsCount() * 88) + ' 88'"></circle>
+              <text class="donut-text" x="50%" y="50%" fill="#FFA500" text-anchor="middle"
+                alignment-baseline="middle">{{ (pendingAppointmentsCount / getTotalAppointmentsCount() * 100) | number:'1.0-0' }}%</text>
+            </svg>
+          </div>
+        </div>
+    
+        <!-- Accepted Appointments -->
+        <div class="column accepted bottom-border-blue">
+          <div class="label">Accepted appointments</div>
+          <div class="content">
+            <mat-icon class="icon">check_circle</mat-icon>
+            <span class="number">{{ acceptedAppointmentsCount }}</span>
+            <svg class="donut-chart" viewBox="0 0 32 32">
+              <circle class="donut-ring" cx="16" cy="16" r="14" fill="transparent" stroke="#ccc" stroke-width="4"></circle>
+              <circle class="donut-segment" cx="16" cy="16" r="14" fill="transparent" stroke="#007bff" stroke-width="4"
+                [attr.stroke-dasharray]="(acceptedAppointmentsCount / getTotalAppointmentsCount() * 88) + ' 88'"></circle>
+              <text class="donut-text" x="50%" y="50%" fill="#007bff" text-anchor="middle"
+                alignment-baseline="middle">{{ (acceptedAppointmentsCount / getTotalAppointmentsCount() * 100) | number:'1.0-0' }}%</text>
+            </svg>
+          </div>
+        </div>
+    
+        <!-- Rejected Appointments -->
+        <div class="column rejected bottom-border-red">
+          <div class="label">Rejected appointments</div>
+          <div class="content">
+            <mat-icon class="icon">cancel</mat-icon>
+            <span class="number">{{ rejectedAppointmentsCount }}</span>
+            <svg class="donut-chart" viewBox="0 0 32 32">
+              <circle class="donut-ring" cx="16" cy="16" r="14" fill="transparent" stroke="#ccc" stroke-width="4"></circle>
+              <circle class="donut-segment" cx="16" cy="16" r="14" fill="transparent" stroke="#dc3545" stroke-width="4"
+                [attr.stroke-dasharray]="(rejectedAppointmentsCount / getTotalAppointmentsCount() * 88) + ' 88'"></circle>
+              <text class="donut-text" x="50%" y="50%" fill="#dc3545" text-anchor="middle"
+                alignment-baseline="middle">{{ (rejectedAppointmentsCount / getTotalAppointmentsCount() * 100) | number:'1.0-0' }}%</text>
+            </svg>
+          </div>
+        </div>
+    
+        <!-- Concluded Appointments -->
+        <div class="column concluded bottom-border-green">
+          <div class="label">Concluded appointments</div>
+          <div class="content">
+            <mat-icon class="icon">done_all</mat-icon>
+            <span class="number">{{ concludedAppointmentsCount }}</span>
+            <svg class="donut-chart" viewBox="0 0 32 32">
+              <circle class="donut-ring" cx="16" cy="16" r="14" fill="transparent" stroke="#ccc" stroke-width="4"></circle>
+              <circle class="donut-segment" cx="16" cy="16" r="14" fill="transparent" stroke="#28a745" stroke-width="4"
+                [attr.stroke-dasharray]="(concludedAppointmentsCount / getTotalAppointmentsCount() * 88) + ' 88'"></circle>
+              <text class="donut-text" x="50%" y="50%" fill="#28a745" text-anchor="middle"
+                alignment-baseline="middle">{{ (concludedAppointmentsCount / getTotalAppointmentsCount() * 100) | number:'1.0-0' }}%</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    
+      <div class="summary-container">
+        <div class="pie-container">
+          <h1><b>Appointments</b></h1>
+          <div class="pie-chart">
+            <canvas id="appointmentPieChart" width="200" height="200"></canvas>
+          </div>
+        </div>
+    
+        <div class="total-container">
+          <h2>Total Appointments per Month</h2>
+          <label for="yearFilter">Filter by Year: </label>
+          <mat-form-field appearance="outline" class="year-select">
+            <mat-label>Year</mat-label>
+            <mat-select [(value)]="selectedYear" (selectionChange)="filterAppointmentsByYear($event)">
+              <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <table>
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Total Appointments</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let month of totalAppointmentsPerMonth">
+                <td>{{ month.name }}</td>
+                <td>{{ month.count }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-  </section>
-    <main>
-        <h1 class="how-title"><span class="how-title-2">OUR FEATURED</span> SERVICES</h1>
-        <div class="box">
-            <div class="card">
-              <div class="imgBx">
-                <img src="assets/create.png" alt="images">
-              </div>
-              <div class="details">
-                <h2>Add<br><span>Add your Clinic</span></h2>
-              </div>
-            </div>
-            <div class="card">
-                <div class="imgBx">
-                  <img src="assets/analysis.png" alt="images">
-                </div>
-                <div class="details">
-                  <h2>Analyze<br><span>Analyze User Preference</span></h2>
-                </div>
-              </div>
-              <div class="card">
-                <div class="imgBx">
-                  <img src="assets/rating.png" alt="images">
-                </div>
-                <div class="details">
-                  <h2>Reviews<br><span>Recieve Feedbacks from Users</span></h2>
-                </div>
-              </div>
-            <!-- Add other cards here -->
-          
-          </div>
-          <div class="divider">
-            <span class="line"></span>
-            <img src="assets/shiba.png" alt="Dog Image" class="dog-image">
-            <span class="line"></span>
-          </div>
-
-          <div class="clinic-container">
-            <h1 class="clinic-title">Fast. Accurate. Satisfying.</h1>
-            <div class="check-mark">
-              <div class="fast">
-                <img src="assets/check-mark.png" alt="check.png">
-                <div class="check-txt">
-                  <h2>Fast Recommendations</h2>
-                  <p>Very fast dog clinic recommendations through the use of different algorithms.</p>
-                </div>
-              </div>
-              <div class="accurate">
-                <img src="assets/check-mark.png" alt="check.png">
-                <div class="check-txt">
-                  <h2>High-Accuracy Recommendations</h2>
-                  <p>Through your preferences, we generate dog clinic recommendations with high-accuracy.</p>
-                </div>
-              </div>
-              <div class="time-saving">
-                <img src="assets/check-mark.png" alt="check.png">
-                <div class="check-txt">
-                  <h2>Designed for your Preference</h2>
-                  <p>We use algorithms to match your preferences to find the most suited dog clinic.</p>
-                </div>
-              </div>
-              <div class="button-container1">
-                <button mat-raised-button routerLink="/clinic-list" color="primary">GET STARTED</button>
-              </div>
-            </div>
-          </div>
-    </main>
-
+  </body>
+</html>

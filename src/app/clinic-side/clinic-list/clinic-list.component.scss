@@ -1,14 +1,14 @@
 body{
-  background-color: #fafafa;
   height: 100%;
   margin: 0;
+  padding: 0;
 }
 
 .clinics{
   text-align: center;
   font-size: 30px;
   font-weight: bold;
-  margin-top: 30px;
+  padding-top: 30px;
 }
 
 .inner-clinic-container{
@@ -51,6 +51,7 @@ body{
   align-items: center;
   justify-content: flex-start;
   padding: 20px;
+  border-radius: 50%;
 }
 
 .clinic-logo{
