@@ -8,7 +8,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 @Component({
   selector: 'app-make-appointment',
   templateUrl: './make-appointment.component.html',
-  styleUrls: ['./make-appointment.component.scss']
+  styleUrls: ['./make-appointment.component.scss'],
 })
 export class MakeAppointmentComponent {
   clinic: any;
@@ -18,7 +18,7 @@ export class MakeAppointmentComponent {
   existingAppointments: any[] = [];
   timeSlots: string[] = [];
   selectedTimeSlot: string = '';
-  minSelectableDate: Date = new Date(); 
+  minSelectableDate: Date = new Date();
 
   constructor(
     private supabaseService: SupabaseService,
@@ -39,94 +39,99 @@ export class MakeAppointmentComponent {
 
   async onMakeAppointment() {
     try {
-        const currentUser = this.supabaseService.getAuthStateSnapshot();
+      const currentUser = this.supabaseService.getAuthStateSnapshot();
 
-        if (currentUser) {
-            const { data: userData, error: userError } = await this.supabaseService
-                .getSupabase()
-                .from('users_tbl')
-                .select('id')
-                .eq('email', currentUser.email);
+      if (currentUser) {
+        const { data: userData, error: userError } = await this.supabaseService
+          .getSupabase()
+          .from('users_tbl')
+          .select('id')
+          .eq('email', currentUser.email);
 
-            if (userError) {
-                console.error('Error fetching user data:', userError);
-            } else {
-                if (userData && userData.length > 0) {
-                    const { data: clinicData, error: clinicError } =
-                        await this.supabaseService
-                            .getSupabase()
-                            .from('clinic_tbl')
-                            .select('*')
-                            .eq('id', this.clinic.id);
-
-                    if (clinicError) {
-                        console.error('Error fetching clinic details:', clinicError);
-                        return;
-                    }
-
-                    // Check if the selected date is in the clinic schedule
-                    const scheduleDays = this.clinic.cSchedule.split(',').map((day: string) => day.trim().toLowerCase());
-                    const selectedDay = this.getDayName(this.selectedDate.getDay()).toLowerCase();
-
-                    if (!scheduleDays.includes(selectedDay)) {
-                        // If the selected date is not in the clinic schedule, show an error message
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'No Schedule Available',
-                            text: 'There is no schedule available for the selected date.'
-                        });
-                        return; // Exit the function to prevent further execution
-                    }
-
-                    // Appointment details
-                    const appointmentDetails = {
-                        aUsers_id: userData[0].id,
-                        aClinic_id: clinicData[0].id,
-                        aName: clinicData[0].cName,
-                        aService: this.selectedServices.join(', '),
-                        aTime: this.selectedTimeSlot,
-                        aDate: this.selectedDate.toISOString(),
-                        status: 'Your appointment status is pending'
-                    };
-
-                    // Insert the appointment details into the appointment table
-                    const { data: insertData, error: insertError } =
-                        await this.supabaseService
-                            .getSupabase()
-                            .from('appointment_tbl')
-                            .insert([appointmentDetails]);
-
-                    if (insertError) {
-                        console.error('Error inserting appointment:', insertError);
-                    } else {
-                        console.log('Appointment added successfully:', insertData);
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Appointment Success!',
-                            text: 'Kindly wait for 2 to 3 days approval of your appointment.'
-                        });
-                        this.dialogRef.close();
-                    }
-                } else {
-                    console.error('No user data found for the logged-in user.');
-                }
-            }
+        if (userError) {
+          console.error('Error fetching user data:', userError);
         } else {
-            this.router.navigate(['/login']);
-            this.dialogRef.close();
-            console.error('No logged-in user found.');
+          if (userData && userData.length > 0) {
+            const { data: clinicData, error: clinicError } =
+              await this.supabaseService
+                .getSupabase()
+                .from('clinic_tbl')
+                .select('*')
+                .eq('id', this.clinic.id);
+
+            if (clinicError) {
+              console.error('Error fetching clinic details:', clinicError);
+              return;
+            }
+
+            // Check if the selected date is in the clinic schedule
+            const scheduleDays = this.clinic.cSchedule
+              .split(',')
+              .map((day: string) => day.trim().toLowerCase());
+            const selectedDay = this.getDayName(
+              this.selectedDate.getDay()
+            ).toLowerCase();
+
+            if (!scheduleDays.includes(selectedDay)) {
+              // If the selected date is not in the clinic schedule, show an error message
+              Swal.fire({
+                icon: 'error',
+                title: 'No Schedule Available',
+                text: 'There is no schedule available for the selected date.',
+              });
+              return; // Exit the function to prevent further execution
+            }
+
+            // Appointment details
+            const appointmentDetails = {
+              aUsers_id: userData[0].id,
+              aClinic_id: clinicData[0].id,
+              aName: clinicData[0].cName,
+              aAddress: clinicData[0].cAddress,
+              aService: this.selectedServices.join(', '),
+              aTime: this.selectedTimeSlot,
+              aDate: this.selectedDate.toISOString(),
+              status: 'Your appointment status is pending',
+            };
+
+            // Insert the appointment details into the appointment table
+            const { data: insertData, error: insertError } =
+              await this.supabaseService
+                .getSupabase()
+                .from('appointment_tbl')
+                .insert([appointmentDetails]);
+
+            if (insertError) {
+              console.error('Error inserting appointment:', insertError);
+            } else {
+              console.log('Appointment added successfully:', insertData);
+              Swal.fire({
+                icon: 'success',
+                title: 'Appointment Success!',
+                text: 'Kindly wait for 2 to 3 days approval of your appointment.',
+              });
+              this.dialogRef.close();
+            }
+          } else {
+            console.error('No user data found for the logged-in user.');
+          }
         }
+      } else {
+        this.router.navigate(['/login']);
+        this.dialogRef.close();
+        console.error('No logged-in user found.');
+      }
     } catch (error) {
-        console.error('Error:', error);
+      console.error('Error:', error);
     }
-}
-formatDate(date: Date): string {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-  
+  }
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
   toggleSelectService(service: string): void {
     const index = this.selectedServices.indexOf(service);
     if (index !== -1) {
@@ -140,13 +145,13 @@ formatDate(date: Date): string {
     }
     this.updateFormValidity();
   }
-  
+
   generateTimeSlots(): void {
     const startTime = this.clinic.cSTime; // Start time from clinic details
     const endTime = this.clinic.cETime; // End time from clinic details
     const startHour = parseInt(startTime.split(':')[0]);
     const endHour = parseInt(endTime.split(':')[0]);
-  
+
     for (let hour = startHour; hour <= endHour; hour++) {
       const ampm = hour >= 12 ? 'PM' : 'AM'; // Determine if it's AM or PM
       const hour12 = hour % 12 || 12; // Convert 24-hour format to 12-hour format
@@ -154,7 +159,7 @@ formatDate(date: Date): string {
       this.timeSlots.push(timeSlot);
     }
   }
-  
+
   onDateChange(event: MatDatepickerInputEvent<Date>): void {
     // Update the selected date when the user selects a date in the datepicker
     this.selectedDate = event.value || new Date();
@@ -170,7 +175,9 @@ formatDate(date: Date): string {
 
   isDateInSchedule(date: Date): boolean {
     const dayIndex = date.getDay(); // Get the day index (0 for Sunday, 1 for Monday, etc.)
-    const scheduleDays = this.clinic.cSchedule.split(',').map((day: string) => day.trim().toLowerCase());
+    const scheduleDays = this.clinic.cSchedule
+      .split(',')
+      .map((day: string) => day.trim().toLowerCase());
 
     const selectedDay = this.getDayName(dayIndex).toLowerCase();
     return scheduleDays.includes(selectedDay);
@@ -183,8 +190,10 @@ formatDate(date: Date): string {
 
   updateMinSelectableDate(): void {
     const currentDay = this.selectedDate.getDay(); // Get the current day (0 for Sunday, 1 for Monday, ...)
-    const scheduleDays = this.clinic.cSchedule.split(',').map((day: string) => day.trim().toLowerCase());
-  
+    const scheduleDays = this.clinic.cSchedule
+      .split(',')
+      .map((day: string) => day.trim().toLowerCase());
+
     let daysToAdd = 3; // Start with a week ahead
     for (let i = 1; i <= 3; i++) {
       const nextDayIndex = (currentDay + i) % 3;
@@ -194,15 +203,22 @@ formatDate(date: Date): string {
         break;
       }
     }
-  
+
     // Set the minimum selectable date as the current date plus the days to add
     this.minSelectableDate.setDate(this.selectedDate.getDate() + daysToAdd);
   }
-  
 
   getDayName(index: number): string {
     // Get the name of the day based on the index (0 for Sunday, 1 for Monday, ...)
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const days = [
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ];
     return days[index];
   }
 }

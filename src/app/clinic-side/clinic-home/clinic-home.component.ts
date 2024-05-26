@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto'
 import { SupabaseService } from 'src/app/service/supabase.service';
 
@@ -18,7 +18,10 @@ export class ClinicHomeComponent implements OnInit{
   selectedYear: number = new Date().getFullYear();
   totalAppointmentsPerMonth: { name: string; count: number }[] = [];
 
-  constructor(private supabaseService: SupabaseService) {}
+  constructor(
+    private supabaseService: SupabaseService,
+    private cdr: ChangeDetectorRef,
+    ) {}
 
   ngOnInit() {
     this.populateYears();
@@ -193,6 +196,13 @@ export class ClinicHomeComponent implements OnInit{
     }
   
     this.totalAppointmentsPerMonth = months;
+    this.cdr.detectChanges(); // Trigger change detection
+  }
+
+  // Update this method to call filterAppointmentsByYear correctly
+  onYearChange(event: any) {
+    this.selectedYear = event.value;
+    this.filterAppointmentsByYear(this.selectedYear);
   }
   
 }
