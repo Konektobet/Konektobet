@@ -1,5 +1,10 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef,
+} from '@angular/material/dialog';
 import { LoginDialogService } from 'src/app/service/login-dialog.service';
 import { InitialPreferenceComponent } from '../initial-preference/initial-preference.component';
 import { SupabaseService } from 'src/app/service/supabase.service';
@@ -20,7 +25,7 @@ interface UserPreferences {
   // Add other properties as needed
 }
 
-interface UserPrefs{
+interface UserPrefs {
   favService: string;
   favSchedule: string;
 }
@@ -36,12 +41,23 @@ interface Clinic {
   // Add other properties as needed
 }
 
+interface Appointment {
+  apppointments: any[];
+  key: string;
+  aName: string;
+  aAddress: string;
+  count: number;
+  cName: string;
+  profile: any;
+  aClinic_id: number;
+}
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent implements OnInit {
   user: Session | null = null;
   private authSubscription!: Subscription;
 
@@ -50,7 +66,7 @@ export class HomeComponent implements OnInit{
   initialClinics: any[] = [];
   clinicFeatures: Clinic[] = [];
   lastTwoClinics: any[] = [];
-
+  status: Appointment[] =[];
   clinic: any;
 
   addedToFavorites: boolean = false;
@@ -67,7 +83,7 @@ export class HomeComponent implements OnInit{
     private supabaseService: SupabaseService,
     private cdr: ChangeDetectorRef,
     private initialRecommendService: InitialRecommendService,
-    private router: Router,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -75,7 +91,11 @@ export class HomeComponent implements OnInit{
     this.loadDialog();
     this.loadClinicFeatures();
     this.loadMatchedClinics();
-
+    this.loadHighestAppointments();
+    this.fetchAppointmentLogo();
+    this.fetchFavoritesLogo();
+    this.fetchInitialLogo();
+    
     this.authSubscription = this.supabaseService
       .getAuthState()
       .subscribe(async (session: Session | null) => {
@@ -97,7 +117,7 @@ export class HomeComponent implements OnInit{
   async loadClinicFeatures() {
     try {
       const currentUser = await this.supabaseService.getAuthStateSnapshot();
-  
+
       if (currentUser) {
         const { data: userData, error: userError } = await this.supabaseService
           .getSupabase()
@@ -105,28 +125,33 @@ export class HomeComponent implements OnInit{
           .select('*')
           .eq('email', currentUser.email)
           .single();
-  
+
         if (userError) {
           console.error('Error fetching user data:', userError);
         } else {
-          if (userData) {          
+          if (userData) {
             const userId = userData.id;
-  
+
             const clinicsData = await this.supabaseService
-            .getSupabase()
-            .from('matched_clinics_tbl')
-            .select('*')
-            .eq('mUsers_id', userId)
-    
+              .getSupabase()
+              .from('matched_clinics_tbl')
+              .select('*')
+              .eq('mUsers_id', userId);
+
             if (!clinicsData.error) {
               this.clinicFeatures = clinicsData.data;
             } else {
-              console.error('Error fetching clinic features:', clinicsData.error);
+              console.error(
+                'Error fetching clinic features:',
+                clinicsData.error
+              );
             }
           }
         }
       } else {
-        console.error('No logged-in user found. Redirecting to the login page.');
+        console.error(
+          'No logged-in user found. Redirecting to the login page.'
+        );
       }
     } catch (error) {
       console.error('Error fetching clinic features:', error);
@@ -151,7 +176,6 @@ export class HomeComponent implements OnInit{
           if (userData) {
             const userId = userData.id;
   
-            // Fetch clinics from the matched_clinics_tbl based on the user ID
             const { data: clinicsData, error: clinicsError } =
               await this.supabaseService
                 .getSupabase()
@@ -163,6 +187,7 @@ export class HomeComponent implements OnInit{
               console.error('Error fetching matched clinics:', clinicsError);
             } else {
               this.initialClinics = clinicsData.slice(0, 6) || [];
+              await this.fetchInitialLogo(); // Call this after loading clinics
             }
           } else {
             console.error('No user data found for the logged-in user.');
@@ -176,17 +201,65 @@ export class HomeComponent implements OnInit{
     }
   }
 
+  loadHighestAppointments() {
+    this.supabaseService
+      .getSupabase()
+      .from('appointment_tbl')
+      .select('aClinic_id, aName, aAddress, status')
+      .eq('status', 'Your Appointment has been Approved')
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('Error fetching clinic appointments:', error);
+        } else {
+          const clinicCounts = this.groupAndCountClinics(data);
+          this.status = this.sortClinicsByCount(clinicCounts);
+          this.fetchAppointmentLogo();
+        }
+      });
+  }
+
+  private groupAndCountClinics(appointments: any[]): { [key: string]: { aName: string, aAddress: string, count: number } } {
+    const clinicCounts: { [key: string]: { aName: string, aAddress: string, count: number } } = {};
+
+    appointments.forEach(appointment => {
+      const clinicId = appointment.aClinic_id;
+      const clinicName = appointment.aName;
+      const clinicAddress = appointment.aAddress;
+
+      if (!clinicCounts[clinicId]) {
+        clinicCounts[clinicId] = { aName: clinicName, aAddress: clinicAddress, count: 0 };
+      }
+
+      clinicCounts[clinicId].count += 1;
+    });
+
+    return clinicCounts;
+  }
+
+  private sortClinicsByCount(clinicCounts: { [key: string]: { aName: string, aAddress: string, count: number } }): any[] {
+    const sortedClinics = Object.keys(clinicCounts)
+      .map(key => ({
+        aClinic_id: key,
+        aName: clinicCounts[key].aName,
+        aAddress: clinicCounts[key].aAddress,
+        count: clinicCounts[key].count
+      }))
+      .sort((a, b) => b.count - a.count);
+
+    return sortedClinics;
+  }
+
   async loadDialog() {
     try {
       const currentUser = this.supabaseService.getAuthStateSnapshot();
-  
+
       if (currentUser) {
         const { data: userData, error: userError } = await this.supabaseService
           .getSupabase()
           .from('users_tbl')
           .select('id')
           .eq('email', currentUser.email);
-  
+
         if (userError) {
           console.error('Error fetching user data:', userError);
         } else {
@@ -194,14 +267,18 @@ export class HomeComponent implements OnInit{
             const userPreferences = {
               iUsers_id: userData[0].id,
             };
-  
+
             // Check if there is no data in interests_tbl
-            const userDataInInterests = await this.supabaseService.getSupabase()
+            const userDataInInterests = await this.supabaseService
+              .getSupabase()
               .from('interests_tbl')
               .select('id')
               .eq('iUsers_id', userPreferences.iUsers_id);
-  
-            if (!userDataInInterests.data || userDataInInterests.data.length === 0) {
+
+            if (
+              !userDataInInterests.data ||
+              userDataInInterests.data.length === 0
+            ) {
               // Open the dialog only if there is no data in interests_tbl
               if (await this.loginDialog.login()) {
                 this.openDialog();
@@ -220,7 +297,10 @@ export class HomeComponent implements OnInit{
     dialogConfig.width = window.innerWidth > 768 ? '55%' : '90%';
     dialogConfig.height = window.innerHeight > 768 ? 'auto' : '90%';
 
-    const dialogRef = this.dialog.open(InitialPreferenceComponent, dialogConfig);
+    const dialogRef = this.dialog.open(
+      InitialPreferenceComponent,
+      dialogConfig
+    );
     dialogRef.afterClosed().subscribe(() => {
       // Dialog closed
     });
@@ -236,9 +316,9 @@ export class HomeComponent implements OnInit{
     dialogRef.afterClosed().subscribe((result: any) => {
       // Handle any actions after the dialog is closed, if needed
     });
-        // Close the current Clinic Details popup
-        // this.dialogRef.close();
-    }
+    // Close the current Clinic Details popup
+    // this.dialogRef.close();
+  }
 
   popSeeMoreDetails(clinic: any): void {
     const dialogConfig = new MatDialogConfig();
@@ -298,16 +378,22 @@ export class HomeComponent implements OnInit{
                 .eq('fvmUsers_id', userId);
 
             if (clinicsError) {
-              console.error('Error fetching favorite matched clinics:', clinicsError);
+              console.error(
+                'Error fetching favorite matched clinics:',
+                clinicsError
+              );
             } else {
               this.clinics = clinicsData.slice(0, 6) || [];
+              this.fetchFavoritesLogo();
             }
           } else {
             console.error('No user data found for the logged-in user.');
           }
         }
       } else {
-        console.error('No logged-in user found. Redirecting to the login page.');
+        console.error(
+          'No logged-in user found. Redirecting to the login page.'
+        );
       }
     } catch (error) {
       console.error('Error:', error);
@@ -318,7 +404,7 @@ export class HomeComponent implements OnInit{
   async loadMatchedAndFavClinicFeatures() {
     try {
       const currentUser = await this.supabaseService.getAuthStateSnapshot();
-  
+
       if (currentUser) {
         const { data: userData, error: userError } = await this.supabaseService
           .getSupabase()
@@ -326,13 +412,13 @@ export class HomeComponent implements OnInit{
           .select('*')
           .eq('email', currentUser.email)
           .single();
-  
+
         if (userError) {
           console.error('Error fetching user data:', userError);
         } else {
           if (userData) {
             const userId = userData.id;
-  
+
             // Fetch features from the matched_clinics_tbl based on the user ID
             const { data: matchedClinicsData, error: matchedClinicsError } =
               await this.supabaseService
@@ -340,7 +426,7 @@ export class HomeComponent implements OnInit{
                 .from('matched_clinics_tbl')
                 .select('*')
                 .eq('mUsers_id', userId);
-  
+
             if (!matchedClinicsError) {
               // Filter out clinics that are already in favorites
               const filteredMatchedClinics = await Promise.all(
@@ -349,17 +435,22 @@ export class HomeComponent implements OnInit{
                   return isInFavorites ? null : clinic;
                 })
               );
-  
+
               this.clinicFeatures = this.clinicFeatures.concat(
                 filteredMatchedClinics.filter((clinic) => clinic !== null) || []
               );
             } else {
-              console.error('Error fetching matched clinic features:', matchedClinicsError);
+              console.error(
+                'Error fetching matched clinic features:',
+                matchedClinicsError
+              );
             }
           }
         }
       } else {
-        console.error('No logged-in user found. Redirecting to the login page.');
+        console.error(
+          'No logged-in user found. Redirecting to the login page.'
+        );
       }
     } catch (error) {
       console.error('Error fetching clinic features:', error);
@@ -367,174 +458,250 @@ export class HomeComponent implements OnInit{
   }
 
   // add to favorites using fav-details
-    async addToFavorites() {
-      try {
-        const currentUser = this.supabaseService.getAuthStateSnapshot();
-  
-        // Check if a user is logged in
-        if (currentUser) {
-          // Get the user ID based on the logged-in email
-          const { data: userData, error: userError } = await this.supabaseService
-            .getSupabase()
-            .from('users_tbl')
-            .select('id')
-            .eq('email', currentUser.email);
-  
-          if (userError) {
-            console.error('Error fetching user data:', userError);
-          } else {
-            if (userData && userData.length > 0) {
-              // Retrieve all necessary clinic details from the database
-              const { data: clinicData, error: clinicError } =
-                await this.supabaseService
-                  .getSupabase()
-                  .from('favMatched_tbl')
-                  .select('*')
-                  .eq('id', this.clinic.id);
-  
-              if (clinicError) {
-                console.error('Error fetching clinic details:', clinicError);
-                return; // Exit the function if there's an error fetching clinic details
-              }
-  
-              const { data: cData, error: cError } = await this.supabaseService
-              .getSupabase()
-              .from('favMatched_tbl')
-              .select('*')
-              .eq('fvmClinic_id', this.clinic.fvmClinic_id)
-              // .eq('cName', this.clinic.cName);
-              console.log(this.clinic.fvmClinic_id)
-  
-              if(cData && cData.length > 0){
-                const clinicId = this.clinic.fvmClinic_id;
-                // Extract necessary clinic details
-                const clinicDetails = {
-                  fvmUsers_id: userData[0].id,
-                  fvmClinic_id: clinicId,
-                  fvmService: clinicData[0].fvmService,
-                  fvmSchedule: clinicData[0].fvmSchedule,
-                  // fvHealthcare: clinicData[0].cHealthcare,
-                  fvmName: clinicData[0].fvmName,
-                  fvmAddress: clinicData[0].fvmAddress,
-                  fvmNumber: clinicData[0].fvmNumber,
-                  fvmEmail: clinicData[0].fvmEmail,
-                  fvmVet: clinicData[0].fvmVet,
-                  fvmLink: clinicData[0].fvmLink,
-                  fvmPrice: clinicData[0].fvmPrice,
-                  fvmTime: clinicData[0].fvmTime,
-                };
-  
-                // Insert the clinic into the favorites table
-                const { data: insertData, error: insertError } =
-                  await this.supabaseService
-                    .getSupabase()
-                    .from('favorites_tbl')
-                    .insert([clinicDetails]);
-  
-                if (insertError) {
-                  console.error('Error inserting into favorites:', insertError);
-                } else {
-                  console.log('Added to favorites successfully:', insertData);
-                  Swal.fire({
-                    icon: 'success',
-                    title: 'Successfully added to favorites!',
-                    text: 'The clinic has been added as favorite.',
-                  });
-  
-                  this.addedToFavorites = true;
-  
-                  this.disableAddToFavoritesButton();
-                  
-                  this.cdr.detectChanges();
-                }
-              } else{
-                console.error(cError);
-              }
-            } else {
-              console.error('No user data found for the logged-in user.');
-            }
-          }
-        } else {
-          // Handle the case where no user is logged in
-          this.router.navigate(['/login']);
-          console.error('No logged-in user found.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        // Handle the error appropriately
-      }
-    }
-  
-    async isInFavorites(clinic: Clinic) {
-      const currentUser = await this.supabaseService.getAuthStateSnapshot();
-    
+  async addToFavorites() {
+    try {
+      const currentUser = this.supabaseService.getAuthStateSnapshot();
+
+      // Check if a user is logged in
       if (currentUser) {
+        // Get the user ID based on the logged-in email
         const { data: userData, error: userError } = await this.supabaseService
           .getSupabase()
           .from('users_tbl')
           .select('id')
-          .eq('email', currentUser.email)
-          .single();
-    
+          .eq('email', currentUser.email);
+
         if (userError) {
           console.error('Error fetching user data:', userError);
-          return false;
         } else {
-          if (userData) {
-            const userId = userData.id;
-    
-            const { data: favoritesData, error: favoritesError } =
+          if (userData && userData.length > 0) {
+            // Retrieve all necessary clinic details from the database
+            const { data: clinicData, error: clinicError } =
               await this.supabaseService
                 .getSupabase()
-                .from('favorites_tbl')
+                .from('favMatched_tbl')
                 .select('*')
-                .eq('fvUsers_id', userId)
-                .eq('fvClinic_id', clinic.id);
+                .eq('id', this.clinic.id);
 
-            if (favoritesError) {
-              console.error('Error fetching favorites data:', favoritesError);
-              return false;
+            if (clinicError) {
+              console.error('Error fetching clinic details:', clinicError);
+              return; // Exit the function if there's an error fetching clinic details
+            }
+
+            const { data: cData, error: cError } = await this.supabaseService
+              .getSupabase()
+              .from('favMatched_tbl')
+              .select('*')
+              .eq('fvmaClinic_id', this.clinic.fvmClinic_id);
+            // .eq('cName', this.clinic.cName);
+            console.log(this.clinic.fvmClinic_id);
+
+            if (cData && cData.length > 0) {
+              const clinicId = this.clinic.fvmClinic_id;
+              // Extract necessary clinic details
+              const clinicDetails = {
+                fvmUsers_id: userData[0].id,
+                fvmClinic_id: clinicId,
+                fvmService: clinicData[0].fvmService,
+                fvmSchedule: clinicData[0].fvmSchedule,
+                // fvHealthcare: clinicData[0].cHealthcare,
+                fvmName: clinicData[0].fvmName,
+                fvmAddress: clinicData[0].fvmAddress,
+                fvmNumber: clinicData[0].fvmNumber,
+                fvmEmail: clinicData[0].fvmEmail,
+                fvmVet: clinicData[0].fvmVet,
+                fvmLink: clinicData[0].fvmLink,
+                fvmPrice: clinicData[0].fvmPrice,
+                fvmTime: clinicData[0].fvmTime,
+              };
+
+              // Insert the clinic into the favorites table
+              const { data: insertData, error: insertError } =
+                await this.supabaseService
+                  .getSupabase()
+                  .from('favorites_tbl')
+                  .insert([clinicDetails]);
+
+              if (insertError) {
+                console.error('Error inserting into favorites:', insertError);
+              } else {
+                console.log('Added to favorites successfully:', insertData);
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Successfully added to favorites!',
+                  text: 'The clinic has been added as favorite.',
+                });
+
+                this.addedToFavorites = true;
+
+                this.disableAddToFavoritesButton();
+
+                this.cdr.detectChanges();
+              }
             } else {
-              return favoritesData && favoritesData.length > 0;
+              console.error(cError);
             }
           } else {
             console.error('No user data found for the logged-in user.');
-            return false;
           }
         }
       } else {
+        // Handle the case where no user is logged in
+        this.router.navigate(['/login']);
         console.error('No logged-in user found.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle the error appropriately
+    }
+  }
+
+  async isInFavorites(clinic: Clinic) {
+    const currentUser = await this.supabaseService.getAuthStateSnapshot();
+
+    if (currentUser) {
+      const { data: userData, error: userError } = await this.supabaseService
+        .getSupabase()
+        .from('users_tbl')
+        .select('id')
+        .eq('email', currentUser.email)
+        .single();
+
+      if (userError) {
+        console.error('Error fetching user data:', userError);
         return false;
+      } else {
+        if (userData) {
+          const userId = userData.id;
+
+          const { data: favoritesData, error: favoritesError } =
+            await this.supabaseService
+              .getSupabase()
+              .from('favorites_tbl')
+              .select('*')
+              .eq('fvUsers_id', userId)
+              .eq('fvClinic_id', clinic.id);
+
+          if (favoritesError) {
+            console.error('Error fetching favorites data:', favoritesError);
+            return false;
+          } else {
+            return favoritesData && favoritesData.length > 0;
+          }
+        } else {
+          console.error('No user data found for the logged-in user.');
+          return false;
+        }
       }
+    } else {
+      console.error('No logged-in user found.');
+      return false;
     }
-  
-    disableAddToFavoritesButton() {
-      const addToFavoritesButton = document.getElementById('addToFavoritesButton');
-    
-      if (addToFavoritesButton) {
-        addToFavoritesButton.setAttribute('disabled', 'true');
+  }
+
+  disableAddToFavoritesButton() {
+    const addToFavoritesButton = document.getElementById(
+      'addToFavoritesButton'
+    );
+
+    if (addToFavoritesButton) {
+      addToFavoritesButton.setAttribute('disabled', 'true');
+    }
+  }
+
+  clinicDetailsClickedInFavoritesTab() {
+    this.isFavorite = true;
+  }
+
+  navigateToHome() {
+    this.router.navigate(['/']);
+  }
+
+  navigateToClinic() {
+    this.router.navigate(['/clinic']);
+  }
+
+  navigateToFind() {
+    this.router.navigate(['/find']);
+  }
+
+  navigateToAppointment() {
+    this.router.navigate(['/appointment']);
+  }
+
+  navigateToPricing() {
+    this.router.navigate(['/pricing']);
+  }
+
+  // fetching highest appointment clinics logo
+  async fetchAppointmentLogo() {
+    const fetchPromises = this.status.map(async (clinic) => {
+      const filename = `${clinic.aName}_clinicLogo`;
+      try {
+        const { data, error } = await this.supabaseService.getSupabase().storage
+          .from('clinicLogo')
+          .download(filename);
+
+        if (error) {
+          clinic.profile = 'assets/logoo.png';
+        } else {
+          clinic.profile = URL.createObjectURL(data);
+          console.log(filename)
+        }
+      } catch (error) {
+        clinic.profile = 'assets/logoo.png';
       }
-    }
-  
-    clinicDetailsClickedInFavoritesTab() {
-      this.isFavorite = true;
-    }
+    });
 
-
-  navigateToHome(){
-    this.router.navigate(['/'])
+    await Promise.all(fetchPromises);
+    this.cdr.detectChanges(); // Ensure Angular detects the changes
   }
 
-  navigateToClinic(){
-    this.router.navigate(['/clinic'])
+  // fetching recommendation from favorites logo
+  async fetchFavoritesLogo() {
+    const fetchPromises = this.clinics.map(async (clinic) => {
+      const filename = `${clinic.fvmName}_clinicLogo`;
+      try {
+        const { data, error } = await this.supabaseService.getSupabase().storage
+          .from('clinicLogo')
+          .download(filename);
+
+        if (error) {
+          clinic.profile = 'assets/logoo.png';
+        } else {
+          clinic.profile = URL.createObjectURL(data);
+          console.log(filename)
+        }
+      } catch (error) {
+        clinic.profile = 'assets/logoo.png';
+      }
+    });
+
+    await Promise.all(fetchPromises);
+    this.cdr.detectChanges(); // Ensure Angular detects the changes
   }
 
-  navigateToFind(){
-    this.router.navigate(['/find'])
-  }
+  // fetching recommendation from initial preference logo
+  async fetchInitialLogo() {
+    const fetchPromises = this.initialClinics.map(async (clinic) => {
+      const filename = `${clinic.mName}_clinicLogo`;
+      try {
+        const { data, error } = await this.supabaseService.getSupabase().storage
+          .from('clinicLogo')
+          .download(filename);
 
-  navigateToAppointment(){
-    this.router.navigate(['/appointment'])
-  }
+        if (error) {
+          clinic.profile = 'assets/logoo.png';
+        } else {
+          clinic.profile = URL.createObjectURL(data);
+          console.log(filename)
+        }
+      } catch (error) {
+        clinic.profile = 'assets/logoo.png';
+      }
+    });
 
+    await Promise.all(fetchPromises);
+    this.cdr.detectChanges(); // Ensure Angular detects the changes
+  }
 }

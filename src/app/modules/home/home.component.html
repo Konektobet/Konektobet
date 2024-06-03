@@ -46,18 +46,49 @@
     </div> 
     
     <div class="video-container">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/LgVlJUGBa4I?si=1X_GYa6LoePuX0rW" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/LgVlJUGBa4I?si=AM8MJwVlRRS9xq-Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
 
+      
     <div class="clinic-container" *ngIf="user">
-      <h1 class="clinic-title">Suggested for you</h1>
-      <h2 class="clinic-title1">Based on your favorite clinics, you may also like this:</h2>
+      <h1 class="clinic-title">Highest Clinic Appointments</h1>
       <div class="clinic-card-container">
+        <a *ngFor="let clinic of status" [routerLink]="['/matched-details', clinic.aClinic_id]" style="text-decoration: none;">
+          <mat-card class="clinic-card" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" style="background-image: url('assets/bg.png');">
+            <mat-card-content>
+              <div class="clinic-logo">
+                <img [src]="clinic.profile || 'assets/logoo.png'" alt="Profile Image">
+                <div class="clinic-txt">
+                  <!-- <h1>{{ clinic.aName }}</h1>
+                  <h2>{{ clinic.aAddress }}</h2>
+                  <h3>{{ clinic.count }} approved appointments</h3> -->
+                </div>
+              </div>
+              <div class="see-more1" *ngIf="isHovered">
+                <mat-icon>arrow_forward_ios</mat-icon>
+                <label><strong>See more</strong></label>
+              </div>
+              <div class="bot-part-container">
+                <div class="see-more">
+                  <h1>{{ clinic.aName }}</h1>
+                  <h2>{{ clinic.aAddress }}</h2>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </a>
+      </div>
+    </div>
+
+    <div class="clinic-list-container" *ngIf="user">
+      <h1 class="clinic-list-title">Suggested for you</h1>
+      <h2 class="clinic-title1">Based on your favorite clinics, you may also like this:</h2>
+      <div class="clinic-cardlist-container">
         <a *ngFor="let clinic of clinics" [routerLink]="['/fav-details', clinic.fvmClinic_id]" style="text-decoration: none;">
           <mat-card class="clinic-card" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" style="background-image: url('assets/bg.png');">
             <mat-card-content>
               <div class="clinic-logo">
-                <img [src]="clinic.logo || 'assets/logoo.png'" alt="Profile Image">
+                <img [src]="clinic.profile || 'assets/logoo.png'" alt="Profile Image">
                 <div class="clinic-txt">
                   <!-- <h1>{{ clinic.cName }}</h1> -->
                   <!-- <h2>{{ clinic.cAddress }}</h2> -->
@@ -80,14 +111,14 @@
       </div>
     </div>
   
-    <div class="clinic-list-container" *ngIf="user">
-      <h1 class="clinic-list-title">Recommended for you</h1>
-      <div class="clinic-cardlist-container">
+    <div class="clinic-container" *ngIf="user">
+      <h1 class="clinic-title">Recommended for you</h1>
+      <div class="clinic-card-container">
         <a *ngFor="let clinic of initialClinics" [routerLink]="['/matched-details', clinic.mClinic_id]" style="text-decoration: none;">
           <mat-card class="clinic-card" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" style="background-image: url('assets/bg.png');">
             <mat-card-content>
               <div class="clinic-logo">
-                <img [src]="clinic.logo || 'assets/logoo.png'" alt="Profile Image">
+                <img [src]="clinic.profile || 'assets/logoo.png'" alt="Profile Image">
                 <div class="clinic-txt">
                   <!-- <h1>{{ clinic.cName }}</h1> -->
                   <!-- <h2>{{ clinic.cAddress }}</h2> -->
@@ -153,8 +184,11 @@
           <img src="assets/mockup.png" alt="">
         </div>
         <div class="amazon-as">
-          <a href="https://www.amazon.com/dp/B0CTYM2LZF/ref=apps_sf_sta" target="_blank"><img src="assets/amazon.png" alt=""></a>
+          <a href="https://www.amazon.com/dp/B0CTYM2LZF/ref=apps_sf_sta" target="_blank" class="amazon-pic"><img src="assets/amazon.png" alt=""></a>
+          <a href="https://play.google.com/store/apps/details?id=com.QuantumX.Konektobet" target="_blank" class="playstore"><img src="assets/playstore.png" alt=""></a>
         </div>
+        <!-- <div class="amazon-as">
+        </div> -->
       </div>
     </div>
 
@@ -217,7 +251,7 @@
             <mat-card-subtitle>Fullstack Developer</mat-card-subtitle>
           </mat-card-header>
           <div class="dev-img">
-            <img mat-card-image src="assets/raniel.png" alt="Photo of a Shiba Inu">
+            <img mat-card-image src="assets/raniel.jpg" alt="Photo of a Shiba Inu">
           </div>
           <mat-card-content>
             <p>
@@ -264,7 +298,7 @@
           <img src="assets/logoo.png" alt="">
         </div>
         <div class="thesis-title">
-          <h2>Konektobet: A Dog Clinic Recommendation System using Matching and Content-based Filtering Algorithm</h2>
+          <h2>Konektobet: A Dog and Cat Clinic Recommendation and Appointment System using Matching and Content-based Filtering Algorithm</h2>
         </div>
       </div>
 
@@ -289,6 +323,7 @@
         <h2 class="navigate" (click)="navigateToClinic()">Clinic</h2>
         <h2 class="navigate" (click)="navigateToFind()">Find Clinic</h2>
         <h2 class="navigate" (click)="navigateToAppointment()">Appointment</h2>
+        <h2 class="navigate" (click)="navigateToPricing()">Pricing</h2>
       </div>
     </div>
 
